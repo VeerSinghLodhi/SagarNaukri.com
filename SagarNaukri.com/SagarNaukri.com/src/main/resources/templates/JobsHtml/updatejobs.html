@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Title</title>
+  <title>UPDATE</title>
   <link th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css}" rel="stylesheet">
   <link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css}">
   <style>
@@ -120,7 +120,7 @@
       <i class="fas fa-exclamation-circle me-2"></i>
       <span th:text="${error}"></span>
     </div>
-    <form method="post" th:action="@{/company/savejob}"  th:object="${jobs}"
+    <form method="post" th:action="@{/company/jobupdate}"  th:object="${jobs}"
           enctype="multipart/form-data">
 
       <div class="form-group mb-3">
@@ -131,7 +131,7 @@
         <p th:each="err : ${#fields.errors('jobtitle')}" th:text="${err}" style="color:red;"
            id="companynameerrormessage"></p>
       </div>
-
+      <input type="hidden" th:value="${jobs.jobid}" id="jobid" name="jobid" >
       <div class="form-group mb-3">
         <label class="form-label" for="description">Jobs Description</label>
         <i class="fas fa-info-circle"></i>
@@ -197,28 +197,23 @@
           <option value="internship" th:selected="${jobs.job_type == 'internship'}">Internship</option>
         </select>
       </div>
-
       <div class="form-group mb-3">
         <label for="deadline" class="form-label">Application Deadline</label>
         <i class="fas fa-hourglass-end"></i>
         <input type="date" class="form-control" th:value="${jobs.deadline}" id="deadline" name="deadline" required>
       </div>
-
-
-
       <div class="form-group mb-3">
         <label for="skills" class="form-label">Skills</label>
         <i class="fas fa-code "></i>
         <input type="text" class="form-control" th:value="${jobs.skills}" name="skills" id="skills" placeholder="E.g., Java, Python, React">
       </div>
-
       <div class="mb-3">
         <input type="checkbox" class="form-check-input" id="agreement" name="agreement" required>I agree to
         abide by all terms and
         policies.
       </div>
       <button type="submit" class="btn btn-primary register-button">
-        <i class="fa-solid fa-plus me-1"></i>Add Job
+        <i class="fa-solid fa-plus me-1"></i>Update
       </button>
     </form>
   </div>
