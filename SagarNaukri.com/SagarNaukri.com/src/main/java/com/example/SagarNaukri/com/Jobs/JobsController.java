@@ -79,9 +79,7 @@ public class JobsController {
 
     @GetMapping("/company/updatejob")
     public String updateJob(@RequestParam("jobid") String jobid, Model model, HttpSession session){
-
         System.out.println("Job is "+jobid);
-
         Company company = (Company) session.getAttribute("comdata");
         Optional<Jobs>  optional =  jobsRepository.findByJobid(Integer.parseInt(jobid));
         if(!optional.isPresent()){
@@ -96,4 +94,32 @@ public class JobsController {
         model.addAttribute("jobs",jobs);
         return "JobsHtml/updatejobs";
     }
+
+    @PostMapping("/company/jobupdate")
+    public String jobUpdate(@Valid @ModelAttribute("jobs") Jobs jobs,BindingResult bindingResult,HttpSession session , Model model){
+        if(bindingResult.hasErrors()){
+            return "JobsHtml/addjobs";
+        }
+        Optional<Jobs> optional = jobsRepository.findByJobid(jobs.getJobid());
+        Jobs jobs1 = optional.get();
+
+        jobs1.setJobtitle(jobs.getJobtitle());
+        jobs1.setDescription(jobs.getDescription());
+        jobs1.setLocation(jobs.getLocation());
+        jobs1.setMax_salary(jobs.getMax_salary());
+        jobs1.setMin_salary(jobs.getMin_salary());
+        jobs1.setDeadline(jobs.getDeadline());
+        jobs1.setExperience(jobs.getExperience());
+        jobs1.setSkills(jobs.getSkills());
+        jobs1.setJob_type(jobs.getJob_type());
+        jobsRepository.save(jobs1);
+        Company company = (Company) session.getAttribute("comdata");
+        List<Jobs> jobsList = jobsRepository.findByCompanyid(company.getCompanyid());
+        session.setAttribute("comdata" , company);
+        model.addAttribute("jobsList" , jobsList);
+        model.addAttribute("comdata" ,company);
+        model.addAttribute("jobupdated" , "jobupdated");
+        return "JobsHtml/showalljobs";
+    }
+
 }
