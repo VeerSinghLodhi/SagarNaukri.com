@@ -73,9 +73,9 @@ public class CompanyController {
                 );
                 emailService.getAfterRegistrationMail(comdata.getEmail(),comdata.getCompanyname());
                 System.out.println("Successful");
-                session.setAttribute("comdata",comdata);
-                model.addAttribute("comdata",comdata);
-                return "CompaniesHTML/companydashboard";
+//                session.setAttribute("comdata",comdata);
+                model.addAttribute("register","Registration has been successful");
+                return "CompaniesHTML/companylogin";
             } catch (Exception e) {
                 model.addAttribute("error","Error processing files: " + e.getMessage());
                 return "CompaniesHTML/companydashboard";
@@ -94,9 +94,10 @@ public class CompanyController {
                                 Model model){
 
         Optional<Company>optional=companyRepository.findByEmailAndPassword(email,password);
+        System.out.println("Login Result "+optional.isPresent());
         if(optional.isPresent()){
-            session.setAttribute("comdata",optional.get());
-            model.addAttribute("comdata",optional.get());
+            session.setAttribute("comdata",optional.get());// c
+            model.addAttribute("comdata",optional.get()); //c
             return "CompaniesHTML/companydashboard";
         }
 
@@ -184,6 +185,42 @@ public class CompanyController {
             return ResponseEntity.ok()
                     .contentType(MediaType.IMAGE_JPEG)
                     .body(company1.getCompanylogo());
+        }
+
+        @GetMapping("/company/update")
+        public String getCompanyUpdatePage(HttpSession session,Model model){
+            Company company=(Company) session.getAttribute("comdata");
+            model.addAttribute("comdata",company);
+            return "CompaniesHTML/updatecompany";
+        }
+
+        @PostMapping("company/getcompanyupdate")
+        public String getCompanyUpdate(@Valid @ModelAttribute("comdata") Company company,BindingResult bindingResult,HttpSession session,Model model){
+            if(bindingResult.hasErrors()){
+                bindingResult.getAllErrors().forEach(err->System.out.println(err.getDefaultMessage()));
+                return "CompaniesHTML/updatecompany";
+            }
+            Company company1=(Company)session.getAttribute("comdata");
+            System.out.println("Company Id : "+company1.getCompanyid());
+
+            Company company2 = companyRepository.findById(company1.getCompanyid()).orElse(null);
+            if(company2==null) {
+                model.addAttribute("error", "Id not found!");
+                return "CompaniesHTML/companydashboard";
+            }
+
+            company2.setCompanyname(company.getCompanyname());
+            company2.setAddress(company.getAddress());
+            company2.setContact(company.getContact());
+            company2.setEmail(company.getEmail());
+            company2.setDescription(company.getDescription());
+            System.out.println("company logo "+company2.getCompanylogo());// byte
+
+            companyRepository.save(company2);
+            model.addAttribute("updated","Company Info Updated");
+            model.addAttribute("comdata",company2);
+            session.setAttribute("comdata",company2);
+            return "CompaniesHTML/companydashboard";
         }
 
 }
