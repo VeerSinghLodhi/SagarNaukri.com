@@ -110,6 +110,11 @@
     </div>
   </div>
 </nav>
+
+<script th:if="${jobupdated}">
+   alert("Job Updated.");
+ </script>
+
 <!--Main Section-->
 <main>
   <div class="container my-4">
@@ -122,7 +127,6 @@
 <!--            <a href="#" class="btn btn-sm btn-outline-primary"><i class="fas fa-info-circle me-1"></i>More</a>-->
           </div>
           <div class="card-body">
-
             <p><strong>Description:</strong> <span th:text="${job.description}">Description</span></p>
             <p><strong>Location:</strong> <span th:text="${job.location}">Location</span></p>
             <p><strong>Experience Required:</strong> <span th:text="${job.experience}">Experience</span></p>
