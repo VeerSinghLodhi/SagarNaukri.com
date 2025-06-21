@@ -57,7 +57,7 @@ public class JobsController {
         jobs1.setSkills(jobs.getSkills());
         jobs1.setMin_salary(jobs.getMin_salary());
         jobs1.setMax_salary(jobs.getMax_salary());
-
+        jobs1.setIsenabled(true);
         jobsRepository.save(jobs1);
         model.addAttribute("comdata" , company);
         session.setAttribute("comdata" , company);
@@ -119,6 +119,19 @@ public class JobsController {
         model.addAttribute("jobsList" , jobsList);
         model.addAttribute("comdata" ,company);
         model.addAttribute("jobupdated" , "jobupdated");
+        return "JobsHtml/showalljobs";
+    }
+
+    @GetMapping("/company/jobdelete")
+    public String jobDelete(@RequestParam("jobid") int jobid , HttpSession session , Model model){
+
+        jobsRepository.deleteJobById(jobid);
+        Company company = (Company) session.getAttribute("comdata");
+        List<Jobs> jobsList = jobsRepository.findByCompanyid(company.getCompanyid());
+        session.setAttribute("comdata" , company);
+        model.addAttribute("jobsList" , jobsList);
+        model.addAttribute("comdata" ,company);
+        model.addAttribute("deleted" , "deleted");
         return "JobsHtml/showalljobs";
     }
 
