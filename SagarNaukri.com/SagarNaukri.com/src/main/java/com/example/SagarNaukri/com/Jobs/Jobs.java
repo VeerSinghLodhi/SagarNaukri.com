@@ -1,25 +1,27 @@
 package com.example.SagarNaukri.com.Jobs;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 public class Jobs {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int jobid;
+    int companyid;
    String jobtitle , description, location , min_salary, max_salary , experience , job_type , skills;
-   LocalDate postdate, deadline;
+   Date dateposted;
+   LocalDate deadline;
+   boolean isenabled;
 
     public Jobs() {
     }
 
-    public Jobs(int jobid, String jobtitle, String description, String location, String min_salary, String max_salary, String experience, String job_type, String skills, LocalDate postdate, LocalDate deadline) {
+    public Jobs(int jobid, int companyid, String jobtitle, String description, String location, String min_salary, String max_salary, String experience, String job_type, String skills, Date dateposted, LocalDate deadline, boolean isenabled) {
         this.jobid = jobid;
+        this.companyid = companyid;
         this.jobtitle = jobtitle;
         this.description = description;
         this.location = location;
@@ -28,8 +30,17 @@ public class Jobs {
         this.experience = experience;
         this.job_type = job_type;
         this.skills = skills;
-        this.postdate = postdate;
+        this.dateposted = dateposted;
         this.deadline = deadline;
+        this.isenabled = isenabled;
+    }
+
+    public boolean isIsenabled() {
+        return isenabled;
+    }
+
+    public void setIsenabled(boolean isenabled) {
+        this.isenabled = isenabled;
     }
 
     public int getJobid() {
@@ -42,6 +53,14 @@ public class Jobs {
 
     public String getJobtitle() {
         return jobtitle;
+    }
+
+    public int getCompanyid() {
+        return companyid;
+    }
+
+    public void setCompanyid(int companyid) {
+        this.companyid = companyid;
     }
 
     public void setJobtitle(String jobtitle) {
@@ -104,12 +123,12 @@ public class Jobs {
         this.skills = skills;
     }
 
-    public LocalDate getPostdate() {
-        return postdate;
+    public Date getDateposted() {
+        return dateposted;
     }
 
-    public void setPostdate(LocalDate postdate) {
-        this.postdate = postdate;
+    public void setDateposted(Date dateposted) {
+        this.dateposted = dateposted;
     }
 
     public LocalDate getDeadline() {
