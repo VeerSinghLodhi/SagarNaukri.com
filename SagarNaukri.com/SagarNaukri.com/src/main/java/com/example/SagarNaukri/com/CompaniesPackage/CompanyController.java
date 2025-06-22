@@ -1,6 +1,7 @@
 package com.example.SagarNaukri.com.CompaniesPackage;
 
 import com.example.SagarNaukri.com.EmailServices.EmailService;
+import com.example.SagarNaukri.com.Jobs.JobsRepository;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,8 @@ import java.util.Optional;
 
 @Controller
 public class CompanyController {
+
+
 
 
     @GetMapping("/company/companyform")
@@ -74,6 +77,8 @@ public class CompanyController {
                 emailService.getAfterRegistrationMail(comdata.getEmail(),comdata.getCompanyname());
                 System.out.println("Successful");
 //                session.setAttribute("comdata",comdata);
+                int totalJobs = jobsRepository.getCountJobs(comdata.getCompanyid());
+                model.addAttribute("totaljobs" , totalJobs);
                 model.addAttribute("register","Registration has been successful");
                 return "CompaniesHTML/companylogin";
             } catch (Exception e) {
@@ -87,6 +92,10 @@ public class CompanyController {
         return "CompaniesHTML/companylogin";
     }
 
+    @Autowired
+    JobsRepository jobsRepository;
+
+
     @PostMapping("/company/login")
     public String getCheckLogin(@RequestParam String email,
                                 @RequestParam String password,
@@ -96,6 +105,8 @@ public class CompanyController {
         Optional<Company>optional=companyRepository.findByEmailAndPassword(email,password);
         System.out.println("Login Result "+optional.isPresent());
         if(optional.isPresent()){
+            int totalJobs = jobsRepository.getCountJobs(optional.get().getCompanyid());
+            model.addAttribute("totaljobs" , totalJobs);
             session.setAttribute("comdata",optional.get());// c
             model.addAttribute("comdata",optional.get()); //c
             return "CompaniesHTML/companydashboard";
@@ -202,6 +213,8 @@ public class CompanyController {
             }
             Company company1=(Company)session.getAttribute("comdata");
             System.out.println("Company Id : "+company1.getCompanyid());
+            int totalJobs = jobsRepository.getCountJobs(company.getCompanyid());
+            model.addAttribute("totaljobs" , totalJobs);
 
             Company company2 = companyRepository.findById(company1.getCompanyid()).orElse(null);
             if(company2==null) {
@@ -222,5 +235,19 @@ public class CompanyController {
             session.setAttribute("comdata",company2);
             return "CompaniesHTML/companydashboard";
         }
+
+        @GetMapping("/forgotpassword")
+         public String forgotPassword(){
+            return "CompaniesHTML/forgotpassword";
+        }
+
+    @RequestMapping(value = "/sendforgototp")
+    public String setForgotOTP(@RequestParam("email")String email,Model model){
+        if(!companyRepository.findByEmail(email).isPresent()){
+            model.addAttribute("error","Email address is not register!");
+            return "CompaniesHTML/forgotpassword";
+        }
+        return "";
+    }
 
 }
