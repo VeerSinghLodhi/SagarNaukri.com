@@ -22,4 +22,6 @@ public interface JobsRepository extends JpaRepository<Jobs , Integer> {
     @Query("update Jobs e set e.isenabled = false where e.jobid =:jobid")
     void deleteJobById(@Param("jobid") int jobid);
 
+    @Query("select count(e) from Jobs e where e.companyid =:companyid and e.isenabled=true")
+    int getCountJobs(@Param("companyid") int companyid);
 }
