@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Verify OTP | Update Password</title>
+  <link th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css}" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link rel="stylesheet" th:href="@{https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css}">
+  <style>
+    .form-title {
+      text-align: center;
+      font-weight: bold;
+      color: teal;
+    }
+    .form-card {
+      background: #fff;
+      max-width: 500px;
+      margin: 50px auto;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+    .otpsize {
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="form-card">
+    <h3 class="form-title">Verify OTP</h3>
+    <form th:action="@{/company/verifyotp}" method="get">
+
+      <div class="mb-3">
+        <p class="fs-6">
+          An OTP has been sent to your registered email address: <b th:text="${email}"></b>. Please check your inbox carefully and enter the OTP in the field below to proceed.
+        </p>
+      </div>
+
+      <div th:if="${error}" class="alert alert-danger" role="alert">
+        <i class="fas fa-exclamation-circle me-2"></i>
+        <span th:text="${error}"></span>
+      </div>
+
+
+      <div class="form-group mb-3">
+        <label class="form-label" for="otp">Enter OTP</label>
+        <input class="form-control" type="number" id="otp" name="userotp" placeholder="Enter OTP sent to your email" required>
+        <p class="ms-2 otpsize text-muted">
+          Didn't receive an OTP? <a th:href="@{/user/resendotp}" class="text-decoration-none">RESEND OTP</a>
+        </p>
+      </div>
+
+      <input type="submit" class="btn btn-outline-success w-100 mt-3" value="Verify OTP">
+    </form>
+  </div>
+</div>
+<script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js}"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+</body>
+</html>
