@@ -58,5 +58,33 @@ public class EmailService {
         mailSender.send(message);
         return otp;
     }
+    public String getPasswordResetOTP(String email,String companyName) throws Exception{
+        MimeMessage message=mailSender.createMimeMessage();
+        MimeMessageHelper helper=new MimeMessageHelper(message,true);
+
+        // OTP Generate Using Random Package
+        Random random=new Random();
+        String otp=random.nextInt(111111,999999)+"";
+        System.out.println("OTP is "+otp);
+
+        helper.setFrom("contactjobsagar@gmail.com");
+        helper.setTo(email);
+        helper.setSubject("Welcome to "+companyName);
+        String htmlBody = "<div style='font-family: Arial, sans-serif; line-height: 1.6;'>" +
+                "<h2>Hi User,</h2>" +
+                "<p>We received a request to reset your password for your account at <strong>" + companyName + "</strong>.</p>" +
+                "<p>Please use the following One-Time Password (OTP) to reset your password:</p>" +
+                "<h2 style='color: #4CAF50; text-align: center;'>" + otp + "</h2>" +
+                "<p style='color: #555;'>This OTP is valid for the next <strong>10 minutes</strong>. If you did not request this, please ignore this email or contact our support team immediately.</p>" +
+                "<br>" +
+                "<p>Need help? Reach out to us at <a href='mailto:contactjobsagar@gmail.com'>contactjobsagar@gmail.com</a>.</p>" +
+                "<br>" +
+                "<h3>Thank you,</h3>" +
+                "<h3>The " + companyName + " Team</h3>" +
+                "</div>";
+        helper.setText(htmlBody,true);
+        mailSender.send(message);
+        return otp;
+    }
 
 }
