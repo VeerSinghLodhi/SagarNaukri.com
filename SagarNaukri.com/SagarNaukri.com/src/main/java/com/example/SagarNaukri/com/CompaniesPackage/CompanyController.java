@@ -241,13 +241,57 @@ public class CompanyController {
             return "CompaniesHTML/forgotpassword";
         }
 
-    @RequestMapping(value = "/sendforgototp")
-    public String setForgotOTP(@RequestParam("email")String email,Model model){
+//    @RequestMapping(value = "/sendforgototp")
+    @PostMapping("/company/checkemail")
+    public String setForgotOTP(@RequestParam("email")String email,Model model,HttpSession session){
         if(!companyRepository.findByEmail(email).isPresent()){
             model.addAttribute("error","Email address is not register!");
             return "CompaniesHTML/forgotpassword";
         }
-        return "";
+        try {
+            String systemOTP = emailService.getPasswordResetOTP(email, companyRepository.findCompanyNameByEmail(email));
+            model.addAttribute("email", email);
+            LocalTime tenMinutesLater = LocalTime.now().plusMinutes(10);
+            System.out.println("OTP sent time +10 added, "+tenMinutesLater);
+            session.setAttribute("systemOTP",systemOTP);
+            session.setAttribute("tenMinutesLater",tenMinutesLater);
+            session.setAttribute("companyName", companyRepository.findCompanyNameByEmail(email));
+            return "CompaniesHTML/verifyOTP";
+        }catch(Exception e){
+            System.out.println("Error is "+e);
+            return "CompaniesHTML/confirmationpage";
+        }
+    }
+
+    @GetMapping("/company/verifyotp")
+    public String getVerifyOTP(@RequestParam("userotp")String userOTP,HttpSession session,Model model){
+
+
+        String systemOTP=session.getAttribute("systemOTP").toString();
+        LocalTime tenMinutesLater=(LocalTime) session.getAttribute("tenMinutesLater");// Added plus 10m
+        LocalTime currentTime=LocalTime.now();
+        System.out.println("Current time "+currentTime);
+        System.out.println("Time Condition "+currentTime.isAfter(tenMinutesLater));
+
+        // If OTPs didn't match
+        if(!systemOTP.equals(userOTP)){
+            model.addAttribute("error","Invalid OTP");
+            return "CompaniesHTML/verifyOTP";
+        }
+
+        //If OTP time expired
+        if(currentTime.isAfter((tenMinutesLater))){
+            model.addAttribute("error","OTP expired. Request a new one.");
+            return "CompaniesHTML/verifyOTP";
+        }
+
+
+        return "CompaniesHTML/resetpassword";
+    }
+
+    @GetMapping("/company/confirm")
+    public String getConfirm(){
+        return "CompaniesHTML/confirmationpage";
     }
 
 }
