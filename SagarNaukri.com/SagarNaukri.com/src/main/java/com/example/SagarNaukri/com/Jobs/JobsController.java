@@ -29,6 +29,8 @@ public class JobsController {
     @GetMapping("/back")
     public String getBack(HttpSession session,Model model){
         Company comdata=(Company)session.getAttribute("comdata");
+        int totalJobs = jobsRepository.getCountJobs(comdata.getCompanyid());
+        model.addAttribute("totaljobs" , totalJobs);
         model.addAttribute("comdata",comdata);
         return "CompaniesHTML/companydashboard";
     }
@@ -40,7 +42,6 @@ public class JobsController {
         if(bindingResult.hasErrors()){
             return "JobsHtml/addjobs";
         }
-
 
         Company company = (Company) session.getAttribute("comdata");
 
@@ -60,6 +61,7 @@ public class JobsController {
         jobs1.setIsenabled(true);
         jobsRepository.save(jobs1);
         model.addAttribute("comdata" , company);
+        model.addAttribute("totaljobs" , jobsRepository.getCountJobs(company.getCompanyid()));
         session.setAttribute("comdata" , company);
         model.addAttribute("newjob","new job added");
         return "CompaniesHTML/companydashboard";
