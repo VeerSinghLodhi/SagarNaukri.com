@@ -6,147 +6,231 @@
   <title>All Jobs</title>
   <link th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css}" rel="stylesheet">
   <link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css}">
-
   <style>
     :root {
         --primary-color: #3498db;
-        --secondary-color: #2c3e50;
-        --accent-color: #e74c3c;
-        --light-bg: #f8f9fa;
+        --text-color: #2c3e50;
+        --bg-color: #ffffff;
+        --shadow-color: rgba(0, 0, 0, 0.1);
+        --highlight-color: #f1f1f1;
+        --button-hover-color: #2ecc71;
     }
 
     body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background-color: var(--light-bg);
+        background-color: #f9f9f9;
+        color: var(--text-color);
     }
 
     .navbar-brand {
-        font-weight: 700;
+        font-weight: bold;
         color: var(--primary-color) !important;
     }
 
-    .profile-img {
-        width: 100px;
-        height: 100px;
-        object-fit: cover;
-        border: 3px solid var(--primary-color);
-    }
-
-
-
     .card {
-        border-radius: 10px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        transition: transform 0.5s;
-        margin-bottom: 20px;
-        animation-name: anima_name;
-        animation-duration: 1.5s;
-        animation-timing-function: ease;
-        animation-iteration-count: 1;
+        background-color: var(--bg-color);
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px var(--shadow-color);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        z-index: 0;
     }
 
     .card:hover {
-        transform: scale(1.02);
-        background-color: yellow;
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
     }
-    .card-header:hover {
-        background-color: yellow;
+
+    .card-header {
+        background-color: var(--primary-color);
+        color: #fff;
+        font-weight: bold;
+        font-size: 1.25rem;
+        padding: 10px;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
     }
-    @keyframes anima_name {
-            0% {
-                transform: translateY(700px);
-            }
-            100% {
-              transform: translateY(-1px);
-            }
+
+    .card-body {
+        padding: 20px;
+    }
+
+    .card-body p {
+        font-size: 1rem;
+        margin: 5px 0;
+        line-height: 1.5;
+    }
+
+    .card-footer {
+        background-color: var(--highlight-color);
+        border-top: 1px solid #eee;
+        padding: 15px;
+        border-bottom-left-radius: 15px;
+        border-bottom-right-radius: 15px;
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .btn-outline-success {
+        color: var(--primary-color);
+        border-color: var(--primary-color);
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .btn-outline-success:hover {
+        background-color: var(--button-hover-color);
+        color: #fff;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: scale(0.95);
         }
+
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    .card {
+        animation: fadeIn 0.5s ease-in-out;
+    }
+
+    .popup {
+        width: 400px;
+        height: 80px;
+        background-color: #fff;
+        border-radius: 10px;
+        position: fixed;
+        bottom: -90%;
+        right: 2%;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        visibility: hidden;
+        opacity: 0;
+        z-index: 1;
+        transition: bottom 0.4s, opacity 0.4s;
+    }
+
+    .popup img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin-right: 15px;
+    }
+
+    .popup-content {
+        display: flex;
+        align-items: center;
+        flex-grow: 1;
+    }
+
+    .popup h2 {
+        font-size: 20px;
+        font-weight: 500;
+        margin-bottom: 5px;
+    }
+
+    .popup p {
+        font-size: 16px;
+        margin: 0;
+        color: #555;
+    }
+
+    .popup button {
+        padding: 8px 15px;
+        background-color: #00BD48;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .popup button:hover {
+        background-color: #5bbd3e;
+    }
+
+    .open-popup {
+        visibility: visible;
+        bottom: 50px;
+        opacity: 1;
+    }
   </style>
 </head>
 
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
   <div class="container">
-    <a class="navbar-brand" href="#"><img th:src="@{../Images/websitelogo.png}" width="45px"
-                                          height="45px">JobSagar</a>
+    <a class="navbar-brand" href="#">
+      <img th:src="@{../Images/websitelogo.png}" width="45px" height="45px" alt="Logo"> JobSagar
+    </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav me-auto">
-        <li class="nav-item">
-          <a class="nav-link active" href="/back">Dashboard</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="jobs.html">Jobs</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="applications.html">Applications</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link " href="profile.html">Profile</a>
-        </li>
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link active" href="/back">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" href="jobs.html">Jobs</a></li>
+        <li class="nav-item"><a class="nav-link" href="applications.html">Applications</a></li>
+        <li class="nav-item"><a class="nav-link" href="profile.html">Profile</a></li>
       </ul>
-      <div class="d-flex align-items-center">
-        <div class="dropdown">
-          <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle"
-             id="dropdownUser" data-bs-toggle="dropdown">
-            <img th:if="${comdata.companylogo != null}" th:src="@{/companylogo}"
-                 class="rounded-circle me-2" width="40" height="40">
-            <img th:unless="${comdata.companylogo != null}"
-                 src="../Images/personimage.png"
-                 class="rounded-circle me-2" width="40" height="40">
-            <span class="d-none d-sm-inline text-dark" th:text="${comdata.companyname}"></span>
-          </a>
-          <ul class="dropdown-menu dropdown-menu-end">
-            <li><a class="dropdown-item" href="#">Company Profile</a></li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-            <li><a class="dropdown-item" th:href="@{/logout}">Sign out</a></li>
-          </ul>
-        </div>
-      </div>
     </div>
   </div>
 </nav>
 
-<script th:if="${jobupdated}">
-  alert("Job Updated.");
-</script>
-<script th:if="${deleted}">
-  alert("Job Deleted.");
-</script>
-<!--Main Section-->
-<main>
-  <div class="container my-4">
-    <div class="row">
-      <div th:each="job : ${jobsList}" class="col-lg-4 col-sm-6 col-12 mb-4">
-        <div class="card bg-white">
+<!--Popup-->
+<div class="popup open-popup" id="popup" th:if="${jobupdated}">
+  <div class="popup-content">
+    <img src="../Images/information_icon.png"
+         alt="Job Updated">
+    <div>
+      <h2>Job Updated!</h2>
+      <p>Your job posting details are successfully updated.</p>
+    </div>
+  </div>
+  <button type="button" id="closeBTN">Close</button>
+</div>
 
-          <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
-            <h4 th:text="${job.jobtitle}">Job Title</h4>
-            <!--            <a href="#" class="btn btn-sm btn-outline-primary"><i class="fas fa-info-circle me-1"></i>More</a>-->
+<script>
+  document.getElementById("closeBTN").addEventListener('click', function () {
+      document.getElementById("popup").classList.remove("open-popup");
+  });
+</script>
+
+<main>
+  <div class="container my-5">
+    <div class="row">
+      <div th:each="job : ${jobsList}" class="col-lg-4 col-md-6 col mb-3">
+        <div class="card">
+          <div class="card-header">
+            <span th:text="${job.jobtitle}">Job Title</span>
           </div>
           <div class="card-body">
             <p><strong>Description:</strong> <span th:text="${job.description}">Description</span></p>
             <p><strong>Location:</strong> <span th:text="${job.location}">Location</span></p>
-            <p><strong>Experience Required:</strong> <span th:text="${job.experience}">Experience</span></p>
-            <p><strong>Job Type:</strong> <span th:text="${job.job_type}">Job Type</span></p>
+            <p><strong>Experience:</strong> <span th:text="${job.experience}">Experience</span></p>
             <p><strong>Skills:</strong> <span th:text="${job.skills}">Skills</span></p>
-            <p><strong>Salary Range:</strong> ₹<span th:text="${job.min_salary}">Min Salary</span> - ₹<span th:text="${job.max_salary}">Max Salary</span></p>
-            <p><strong>Date Posted:</strong> <span th:text="${job.dateposted}">Date Posted</span></p>
-            <p><strong>Deadline:</strong> <span th:text="${job.deadline}">Deadline</span></p>
+            <p><strong>Salary:</strong> ₹<span th:text="${job.min_salary}">Min</span> - ₹<span
+                    th:text="${job.max_salary}">Max</span></p>
           </div>
-          <div class="card-footer d-flex justify-content-around p-3">
-            <a href="#" class="btn  btn-outline-success px-3 "> More </a>
-            <form th:action="@{/company/updatejob}" method="GET">
-              <input type="hidden" th:value="${job.jobid}"  name="jobid" >
-              <button type="submit" class="btn  btn-outline-success ">Update</button>
+          <div class="card-footer">
+            <a href="#" class="btn btn-outline-success">More</a>
+            <form th:action="@{/company/updatejob}" method="GET" style="display:inline;">
+              <input type="hidden" th:value="${job.jobid}" name="jobid">
+              <button type="submit" class="btn btn-outline-success">Update</button>
             </form>
-            <form th:action="@{/company/jobdelete}" id="del" method="GET" onsubmit="return checkDelete()">
-              <input type="hidden" th:value="${job.jobid}"  name="jobid" >
-              <button type="submit" class="btn  btn-outline-success ">Delete</button>
+            <form th:action="@{/company/jobdelete}" method="GET" style="display:inline;"
+                  onsubmit="return confirm('Are you sure you want to delete this job?');">
+              <input type="hidden" th:value="${job.jobid}" name="jobid">
+              <button type="submit" class="btn btn-outline-success">Delete</button>
             </form>
           </div>
         </div>
@@ -154,13 +238,6 @@
     </div>
   </div>
 </main>
-<script>
-  const veer=document.getElementById('del');
-  veer.add
-  const checkDelete =()=>{
-       return  confirm("Do you want to delete this job?");
-  }
-</script>
 
 <script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js}"></script>
 </body>
