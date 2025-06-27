@@ -76,9 +76,7 @@ public class CompanyController {
             emailService.getAfterRegistrationMail(comdata.getEmail(), comdata.getCompanyname());
             System.out.println("Successful");
 //                session.setAttribute("comdata",comdata);
-            int totalJobs = jobsRepository.getCountJobs(comdata.getCompanyid());
-            model.addAttribute("totaljobs", totalJobs);
-            model.addAttribute("register", "Registration has been successful");
+            model.addAttribute("register", true);
             return "CompaniesHTML/companylogin";
         } catch (Exception e) {
             model.addAttribute("error", "Error processing files: " + e.getMessage());
