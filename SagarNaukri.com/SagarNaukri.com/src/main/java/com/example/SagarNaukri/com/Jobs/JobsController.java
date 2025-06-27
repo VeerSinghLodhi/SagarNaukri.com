@@ -120,7 +120,8 @@ public class JobsController {
         session.setAttribute("comdata" , company);
         model.addAttribute("jobsList" , jobsList);
         model.addAttribute("comdata" ,company);
-        model.addAttribute("jobupdated" , "jobupdated");
+        model.addAttribute("isPopupEnabled",true);
+        model.addAttribute("popupType" , "jobUpdated");
         return "JobsHtml/showalljobs";
     }
 
@@ -133,7 +134,8 @@ public class JobsController {
         session.setAttribute("comdata" , company);
         model.addAttribute("jobsList" , jobsList);
         model.addAttribute("comdata" ,company);
-        model.addAttribute("deleted" , "deleted");
+        model.addAttribute("isPopupEnabled",true);
+        model.addAttribute("popupType" , "jobDeleted");
         return "JobsHtml/showalljobs";
     }
 
