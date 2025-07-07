@@ -216,25 +216,111 @@
         transform: translate(-50%, -50%) scale(1);
     }
 
+    /*      Second Popup for password */
+    .popup2 {
+        width: 400px;
+        height: 80px;
+        background-color: #fff;
+        border-radius: 10px;
+        position: fixed;
+        bottom: -90%;
+        right: 2%;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        visibility: hidden;
+        opacity: 0;
+        z-index: 1;
+        transition: bottom 0.4s, opacity 0.4s;
+    }
+
+    .popup2 img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin-right: 15px;
+    }
+
+    .popup-content2 {
+        display: flex;
+        align-items: center;
+        flex-grow: 1;
+    }
+
+    .popup2 h5 {
+        font-size: 20px;
+        font-weight: 500;
+        margin-bottom: 5px;
+    }
+
+    .popup2 p {
+        font-size: 16px;
+        margin: 0;
+        color: #555;
+    }
+
+    .popup2 button {
+        padding: 8px 15px;
+        background-color: #00BD48;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .popup2 button:hover {
+        background-color: #5bbd3e;
+    }
+
+    .open-popup2 {
+        visibility: visible;
+        bottom: 50px;
+        opacity: 1;
+    }
   </style>
 </head>
 
 <body>
-<script th:if="${passwordUpdated}">
-  alert("Password Updated!");
+<!--<script th:if="${passwordUpdated}">-->
+<!--  alert("Password Updated!");-->
+<!--</script>-->
+
+<div class="popup2 open-popup2" id="popup2" th:if="${passwordUpdated}">
+  <div class="popup-content2">
+    <img src="../Images/information_icon.png" alt="Info">
+    <div>
+      <h5>Password Updated!</h5>
+      <p >Your company password has been successfully updated.</p>
+    </div>
+  </div>
+  <button type="button" id="closeBTN2">Close</button>
+</div>
+<script>
+  document.getElementById("closeBTN2").addEventListener('click', function () {
+      document.getElementById("popup2").classList.remove("open-popup2");
+  });
 </script>
+
+
 <div class="popup open-popup" id="popup" th:if="${register}">
-  <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhmUtLhHFvavEfjuNDe0lFempLC217AD7bMnzcZX2_0brtUs2REHufRmjPJHIarv-Yeku6jOxEQUi-RUrh4Gr0vVmMYhyZGIxUZsmd2FSjbSpKbsTK4rG-zCPJ9HBwUQLSL1NA_9wAis-KDAlaHf54F0LVam6FadOhIsSe_uWn2urFvAXZ-_IUY5tyxTVC8/s199/tick.png">
+  <img
+          src="../Images/tick.png">
   <h2>Thank You!</h2>
   <p>Company registration has been successful, Thanks!</p>
-  <button type="button" id="closeBTN" >OK</button>
+  <button type="button" id="closeBTN">OK</button>
 </div>
+
+
 <div class="container" id="container" th:style="${register} ? 'visibility:hidden' : 'visibility:visible' ">
 
   <div class="login-container">
     <div class="login-header">
       <h2 th:if="${register}"><i class="fas fa-briefcase me-2"></i>Welcome!</h2>
-      <h2 th:unless="${register}"><i class="fas fa-briefcase me-2"></i>Welcome Back</h2>
+      <h2 th:unless="${register}"><i class="fas fa-briefcase me-2"></i>Welcome Back!</h2>
       <p>Sign in to Access your company's dashboard</p>
     </div>
 
@@ -246,7 +332,8 @@
     <form th:action="@{/company/login}" method="post">
       <div class="input-icon mb-4">
         <i class="fas fa-envelope"></i>
-        <input type="email" name="email" th:value="${email}"  class="form-control" placeholder="Email Address" required>
+        <input type="email" name="email" th:value="${email}" class="form-control"
+               placeholder="Email Address" required>
       </div>
 
       <div class="input-icon mb-4">
@@ -272,8 +359,10 @@
 
       <div class="social-login">
         <a href="#" class="text-decoration-none social-btn bg-google"><i class="fab fa-google"></i></a>
-        <a href="#" class="text-decoration-none social-btn bg-linkedin"><i class="fab fa-linkedin-in"></i></a>
-        <a href="#" class="text-decoration-none social-btn bg-facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" class="text-decoration-none social-btn bg-linkedin"><i
+                class="fab fa-linkedin-in"></i></a>
+        <a href="#" class="text-decoration-none social-btn bg-facebook"><i
+                class="fab fa-facebook-f"></i></a>
       </div>
 
       <div class="additional-options">
@@ -285,7 +374,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-  document.querySelector('form').addEventListener('submit', function(e) {
+  document.querySelector('form').addEventListener('submit', function (e) {
       const email = document.querySelector('input[name="email"]');
       const password = document.querySelector('input[name="password"]');
 
@@ -294,11 +383,10 @@
           alert('Please fill in all required fields');
       }
   });
-  document.getElementById("closeBTN").addEventListener('click',function(){
-    const popup=document.getElementById("popup");
-    const container=document.getElementById("container");
-    container.style.visibility="visible";
-    popup.classList.remove("open-popup");
+  document.getElementById("closeBTN").addEventListener('click', function () {
+      const popup = document.getElementById("popup");
+      document.getElementById("container").style.visibility = "visible";
+      popup.classList.remove("open-popup");
   });
 
 </script>
