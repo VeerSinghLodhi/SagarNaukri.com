@@ -2,88 +2,103 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Title</title>
+  <title>Verify OTP - JobSagar</title>
+
+  <!-- Bootstrap CSS -->
   <link th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css}" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-  <link rel="stylesheet" th:href="@{https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css}">
+
+  <!-- Bootstrap Icons -->
+  <link th:href="@{https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css}" rel="stylesheet">
+
   <style>
-    .form-title{
-       text-align:center;
-       font-weight:bold;
-       color:teal;
- }
- .form-card{
-       background:#fff;
-      max-width:500px;
-       margin:50px auto;
-       padding:30px;
-       border-radius:10px;
-       box-shadow:0 4px 10px rgba(0,0,0,0.2);
- }
-    .otpsize{
-      font-size: 12px;
+    body {
+      background-color: #ffffff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .form-card {
+      background: #fff;
+      width: 100%;
+      max-width: 500px;
+      padding: 35px 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-title {
+      font-weight: 700;
+      color: #117a8b;
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      font-weight: 600;
+    }
+
+    .btn-custom {
+      background-color: #117a8b;
+      color: white;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-custom:hover {
+      background-color: #0d5d6c;
+    }
+
+    .otpsize {
+      font-size: 13px;
+    }
+
+    .resend-link {
+      text-decoration: none;
+      color: #117a8b;
+    }
+
+    .resend-link:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
-<div class="container">
-  <div class="form-card">
-    <h3 class="form-title">Enter OTP</h3>
-    <form th:action="@{/company/companyregister}" method="post" >
 
-<!--      <div>-->
-<!--        <input type="hidden" name="companyname" id="companyname" th:value="${comdata.companyname}" >-->
-<!--      </div>-->
-<!--      <div>-->
-<!--        <input type="hidden" name="email" id="email" th:value="${comdata.email}" >-->
-<!--      </div>-->
+<div class="form-card">
+  <h3 class="form-title text-center">
+    <i class="bi bi-shield-lock-fill me-2"></i>OTP Verification
+  </h3>
 
-<!--      <div>-->
-<!--        <input type="hidden" name="contact" id="contact" th:value="${comdata.contact}" >-->
-<!--      </div>-->
-<!--      <div>-->
-<!--        <input type="hidden" name="address" id="address" th:value="${comdata.address}" >-->
-<!--      </div>-->
-<!--      <div>-->
-<!--        <input type="hidden" name="description" id="description" th:value="${comdata.description}" >-->
-<!--      </div>-->
-<!--      <div>-->
-<!--        <input type="hidden" name="companylogo" id="companylogo" th:value="${comdata.companylogo  }" >-->
-<!--      </div>-->
-<!--      <div>-->
-<!--        <input type="hidden" name="password" id="password" th:value="${comdata.password}" >-->
-<!--      </div>-->
+  <form th:action="@{/company/companyregister}" method="post">
+    <div class="mb-3">
+      <p class="text-muted fs-6">
+        An OTP has been sent to your registered email:
+        <strong th:text="${comdata.email}">example@email.com</strong>.<br>
+        Please enter the OTP below to continue.
+      </p>
+    </div>
 
-<!--        <div>-->
-<!--          <input type="hidden" name="systemotp" id="systemotp" th:value="${systemotp}" >-->
-<!--        </div>-->
+    <div th:if="${error}" class="alert alert-danger d-flex align-items-center" role="alert">
+      <i class="bi bi-exclamation-circle-fill me-2"></i>
+      <span th:text="${error}"></span>
+    </div>
 
-<!--      <div>-->
-<!--        <input type="hidden" name="tenMinutesLater" id="tenMinutesLater" th:value="${otptime}" >-->
-<!--      </div>-->
-
-
-      <div class="mb-3">
-        <p class="fs-6">
-          An OTP has been sent to your registered email address: <b th:text="${comdata.email}"></b>. Please check your inbox carefully and enter the OTP in the field below to proceed with the next steps.
-        </p>
+    <div class="form-group mb-3">
+      <label for="userotp" class="form-label">Enter OTP</label>
+      <input type="number" class="form-control" id="userotp" name="userotp" placeholder="Enter OTP here" required>
+      <div class="mt-1 otpsize text-muted">
+        Didn't receive the OTP?
+        <a th:href="@{/company/getresendotp}" class="resend-link">Resend OTP</a>
       </div>
+    </div>
 
-      <div th:if="${error}" class="alert alert-danger" role="alert">
-        <i class="fas fa-exclamation-circle me-2"></i>
-        <span th:text="${error}"></span>
-      </div>
-
-      <div class="form-group mb-3">
-        <label class="form-label" for="userotp">Enter OTP</label>
-        <input class="form-control" type="number" id="userotp" name="userotp" placeholder="Enter OTP sent on your email address">
-        <p class="ms-2 otpsize text-muted">Didn't receive an OTP? <a th:href="@{/company/getresendotp}" class="text-decoration-none">RESEND OTP</a></p>
-      </div>
-      <input type="submit" class="btn btn-outline-success w-100 mt-3">
-
-    </form>
-  </div>
+    <button type="submit" class="btn btn-custom w-100 mt-3">Verify OTP</button>
+  </form>
 </div>
+
+<!-- Bootstrap JS -->
 <script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js}"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
