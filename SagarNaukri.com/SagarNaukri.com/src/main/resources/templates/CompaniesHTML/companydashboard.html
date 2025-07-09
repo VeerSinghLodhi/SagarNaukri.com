@@ -20,7 +20,7 @@
             font-weight: 700;
             color: var(--primary-color) !important;
          }
-        .profile-img {
+       .profile-img {
             width: 100px;
             height: 100px;
             object-fit: cover;
@@ -64,128 +64,115 @@
         .box:hover{
             transform:scale(1.05);
         }
+        .popup {
+        width: 400px;
+        height: 80px;
+        background-color: #fff;
+        border-radius: 10px;
+        position: fixed;
+        bottom: -90%;
+        right: 2%;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        visibility: hidden;
+        opacity: 0;
+        z-index: 1;
+        transition: bottom 0.4s, opacity 0.4s;
+    }
+
+    .popup img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin-right: 15px;
+    }
+
+    .popup-content {
+        display: flex;
+        align-items: center;
+        flex-grow: 1;
+    }
+
+    .popup h2 {
+        font-size: 20px;
+        font-weight: 500;
+        margin-bottom: 5px;
+    }
+
+    .popup p {
+        font-size: 16px;
+        margin: 0;
+        color: #555;
+    }
+
+    .popup button {
+        padding: 8px 15px;
+        background-color: #00BD48;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .popup button:hover {
+        background-color: #5bbd3e;
+    }
+
+    .open-popup {
+        visibility: visible;
+        bottom: 50px;
+        opacity: 1;
+    }
     </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-    <div class="container">
-        <a class="navbar-brand" href="#"><img th:src="@{../Images/websitelogo.png}" width="45px" height="45px">JobSagar</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                    <a class="nav-link active" th:href="@{/back}">Dashboard</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="jobs.html">Jobs</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="applications.html">Applications</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " href="profile.html">Profile</a>
-                </li>
-            </ul>
-            <div class="d-flex align-items-center">
-                <div class="dropdown">
-                    <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" id="dropdownUser"
-                       data-bs-toggle="dropdown">
-                        <img th:if="${comdata.companylogo != null}" th:src="@{/companylogo}"
-                             class="rounded-circle me-2" width="40" height="40">
-                        <img th:unless="${comdata.companylogo != null}"
-                             src="https://ui-avatars.com/api/?name=John+Doe&size=150&background=random" class="rounded-circle me-2"
-                             width="40" height="40">
-                        <span class="d-none d-sm-inline text-dark" th:text="${comdata.companyname}"></span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" th:href="@{/company/update}">Company Profile</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item" th:href="@{/logout}">Sign out</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</nav>
+
+<div th:insert="CompaniesHTML/headerfragment :: siteheader(${comdata})"></div>
+
 <div th:if="${updated}">
     <script>
         alert("Updated");
     </script>
 </div>
-<div th:if="${newjob}">
-    <script>
-        alert("New Job Added");
-    </script>
+<!--Popup-->
+<div class="popup open-popup" id="popup" th:if="${newjob}">
+    <div class="popup-content">
+        <img src="../Images/information_icon.png"
+             alt="Job Updated">
+        <div>
+            <h2>Job Posted!</h2>
+            <p>Your job post is successfully posted.</p>
+        </div>
+    </div>
+    <button type="button" id="closeBTN">Close</button>
 </div>
+
+<script>
+    document.getElementById("closeBTN").addEventListener('click', function () {
+        document.getElementById("popup").classList.remove("open-popup");
+    });
+</script>
+
 <!--Main Section-->
 <main>
     <div class="container my-4">
         <div class="row">
-            <div class="col-lg-3 mb-4">
-                <div class="sidebar p-3 sticky-top">
-                    <div class="text-center mb-3">
-                        <div class="text-center mb-3">
-                            <img th:if="${comdata.companylogo != null}" th:src="@{/companylogo}"
-                                 class="profile-img rounded-circle mb-2" alt="Profile Picture">
-
-                            <img th:unless="${comdata.companylogo != null}"
-                                 th:src="@{../Images/websitelogo.png}"
-                                 class="profile-img rounded-circle mb-2" alt="Default Profile Picture">
-                        </div>
-
-                        <h5 th:text="${comdata.companyname}"></h5>
-                        <p class="text-muted">Company</p>
-                        <a th:href="@{/company/update}" class="btn btn-primary btn-sm"><i class="fas fa-edit me-1"></i>Edit Profile</a>
-                    </div>
-                    <hr>
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link sidebar-link active" href="#">
-                                <i class="fas fa-tachometer-alt me-2"></i>Dashboard
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link sidebar-link " href="#company-profile">
-                                <i class="fas fa-user me-2"></i>Company Profile
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link sidebar-link" href="#jobs">
-                                <i class="fas fa-briefcase me-2"></i>Jobs
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link sidebar-link" href="#experience">
-                                <i class="fas fa-info-circle me-2"></i>About
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link sidebar-link" href="#skills">
-                                <i class="fa-solid fa-thumbs-up me-2"></i>Review & Rating
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-lg-9">
-                <div class="card" id="jobs">
-                    <div class="card-header bg-white d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Job Advertisement</h5>
-                        <a th:href="@{/addjob}" class="btn btn-sm btn-outline-primary"><i class="fa-solid fa-plus me-1"></i>Add</a>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
+            <div class="col-lg-3 mb-4" th:include="CompaniesHTML/headerfragment :: sidediv(${comdata})"></div>
+<!--            <a th:href="@{/addjob}" class="btn btn-sm btn-outline-primary"><i class="fa-solid fa-plus me-1"></i>Add</a>-->
+            <div class="col-lg-9 ">
+                        <div class="row mb-4">
                             <!--  SM4 -->
                             <div class="col-sm-4 ">
                                 <div class="m-2 box">
-                                    <h5 class="form-label text-center"><strong>Total Jobs</strong></h5>
+                                    <h5 class="form-label text-center"><strong th:text="'Total Jobs Posted '+${totaljobs}"></strong></h5>
+
                                     <hr style="color:teal;">
-                                    <p class="form-control-static text-end" th:text="${totaljobs}">----</p>
+                                    <p class="text-end"><a th:href="@{/addjob}" class="btn btn-sm btn-outline-primary"><i class="fa-solid fa-plus me-1"></i>Add</a></p>
                                 </div>
                             </div>
                             <!--  SM4 -->
@@ -208,8 +195,7 @@
                             </div>
                             <!--  SM4 -->
                         </div>
-                    </div>
-                </div>
+
 
                 <div class="card">
                     <div class="card-header bg-white  d-flex justify-content-between align-items-center">
