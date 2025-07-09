@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Update</title>
+  <link th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css}" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css}">
+  <style>
+    :root {
+        --primary-color: #4e73df;
+        --secondary-color: #f8f9fc;
+        --accent-color: #2e59d9;
+        --text-color: #5a5c69;
+    }
+
+    body {
+        background-color: #f5f7fa;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+    }
+
+    .form-title {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .form-title h2 {
+        color: var(--primary-color);
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    .form-container {
+        background: #ffffff;
+        max-width: 500px;
+        margin: 40px auto;
+        padding: 2.5rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s;
+    }
+
+    .form-container:hover {
+        transform: translateY(-3px);
+    }
+
+
+    #agreement {
+        margin-right: 10px;
+        border-radius: 50%;
+    }
+
+    .register-button {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+        width: 100%;
+        padding: 0.75rem;
+        font-weight: 600;
+        margin-top: 0.5rem;
+        transition: all 0.3s;
+    }
+
+    .register-button:hover {
+        background-color: var(--accent-color);
+        transform: translateY(-1px);
+    }
+
+    .form-group {
+        position: relative;
+    }
+
+    .form-group i {
+        position: absolute;
+        top: 74%;
+        transform: translateY(-50%);
+        left: 15px;
+        color: #d1d3e2;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+        padding-left: 2.5rem;
+    }
+
+    .alreadyhaveaccount {
+        float: left;
+        margin-top: 20px
+    }
+
+    .alreadyhaveaccount a {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+        color: white;
+        transition: all 0.3s;
+    }
+
+    .alreadyhaveaccount a:hover {
+        background-color: var(--accent-color);
+        transform: translateX(-1px);
+    }
+
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        visibility: hidden;
+        opacity: 0;
+        transition: visibility 0.3s, opacity 0.3s;
+        z-index:1;
+    }
+
+    .popup {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 400px;
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        text-align: center;
+    }
+
+    .popup h3 {
+        margin-bottom: 20px;
+        font-size: 18px;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .popup-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+
+    .popup-buttons button {
+        padding: 10px 20px;
+        font-size: 14px;
+        font-weight: 500;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+    }
+
+    .popup-buttons .cancel-btn {
+        background-color: #e74c3c;
+        color: white;
+    }
+
+    .popup-buttons .cancel-btn:hover {
+        background-color: #c0392b;
+    }
+
+    .popup-buttons .confirm-btn {
+        background-color: #2ecc71;
+        color: white;
+    }
+
+    .popup-buttons .confirm-btn:hover {
+        background-color: #27ae60;
+    }
+
+    .overlay.show {
+        visibility: visible;
+        opacity: 1;
+    }
+  </style>
+
+</head>
+
+<body>
+
+<div class="overlay" id="confirmationOverlay">
+  <div class="popup">
+    <h3>Are you sure, you want to update this job?</h3>
+    <div class="popup-buttons">
+      <button class="cancel-btn" id="cancelBtn">Cancel</button>
+      <button class="confirm-btn" id="confirmBtn">Yes, Update</button>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  let isConfirmed = false; // Variable to track confirmation state
+
+ function checkConfirmation(event) {
+     event.preventDefault(); // Prevent form submission by default
+
+     const overlay = document.getElementById('confirmationOverlay')
+
+     overlay.classList.add('show');
+
+     // Cancel button functionality
+     document.getElementById('cancelBtn').onclick = () => {
+         overlay.classList.remove('show');
+         isConfirmed = false;
+     };
+
+     // Confirm button functionality
+     document.getElementById('confirmBtn').onclick = () => {
+         overlay.classList.remove('show');
+         isConfirmed = true;
+
+         // Proceed with form submission
+         if (isConfirmed) {
+             event.target.submit(); // Manually submit the form
+         }
+     };
+ }
+
+
+
+</script>
+
+
+<div class="container">
+  <div class="alreadyhaveaccount">
+    <a th:href="@{/back}" class="btn btn-outline-primary text-decoration-none btn-sm"> <i
+            class="fa fa-arrow-left me-2"></i>Back</a>
+  </div>
+  <div class="form-container">
+    <div class="form-title">
+      <h2>
+        <i class="fas fa-building me-2"></i>Update Job
+      </h2>
+    </div>
+    <div th:if="${error}" class="alert alert-danger" role="alert">
+      <i class="fas fa-exclamation-circle me-2"></i>
+      <span th:text="${error}"></span>
+    </div>
+    <form method="post" th:action="@{/company/jobupdate}" th:object="${jobs}" enctype="multipart/form-data"
+          onsubmit="return checkConfirmation(event)">
+
+      <div class="form-group mb-3">
+        <label class="form-label" for="jobtitle">Job Title </label>
+        <i class="fas fa-heading"></i>
+        <input type="text" id="jobtitle" th:value="${jobs.jobtitle}" name="jobtitle" class="form-control"
+               placeholder="Enter job title" required>
+        <p th:each="err : ${#fields.errors('jobtitle')}" th:text="${err}" style="color:red;"
+           id="companynameerrormessage"></p>
+      </div>
+      <input type="hidden" th:value="${jobs.jobid}" id="jobid" name="jobid">
+      <div class="form-group mb-3">
+        <label class="form-label" for="description">Jobs Description</label>
+        <i class="fas fa-info-circle"></i>
+        <textarea id="description" th:value="${jobs.description}" th:text="${jobs.description}"
+                  name="description" class="form-control" placeholder="Enter job description" required></textarea>
+        <p th:each="err : ${#fields.errors('description')}" th:text="${err}" style="color:red;"
+           id="descriptionerrormessage"></p>
+      </div>
+
+      <div class="form-group mb-3">
+        <label class="form-label" for="location">Location</label>
+        <i class="fas fa-map-marker-alt"></i>
+        <input type="text" id="location" th:value="${jobs.location}" name="location" class="form-control"
+               placeholder="Enter job location" required>
+        <p th:each="err : ${#fields.errors('location')}" th:text="${err}" style="color:red;"
+           id="emailerrormessage"></p>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <div class="form-group mb-3">
+            <label class="form-label" for="min_salary">Minimum Salary</label>
+            <i class="fas fa-money-bill-wave"></i>
+            <input type="number" id="min_salary" th:value="${jobs.min_salary}" name="min_salary"
+                   class="form-control" placeholder="Enter minimum salary" required>
+            <p th:each="err : ${#fields.errors('min_salary')}" th:text="${err}" style="color:red;"
+               id="contacterrormessage1"></p>
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group mb-3">
+            <label class="form-label" for="max_salary">Maximum Salary</label>
+            <i class="fas fa-money-bill-wave"></i>
+            <input type="number" id="max_salary" th:value="${jobs.max_salary}" name="max_salary"
+                   class="form-control" placeholder="Enter maximum salary" required>
+            <p th:each="err : ${#fields.errors('max_salary')}" th:text="${err}" style="color:red;"
+               id="contacterrormessage2"></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="experience" class="form-label">Experience Required</label>
+        <i class="fas fa-briefcase"></i>
+        <select class="form-select" th:value="${jobs.experience}" id="experience" name="experience"
+                required>
+          <option value="" disabled>Select experience level</option>
+          <option value="fresher" th:selected="${jobs.experience == 'fresher'}">Fresher</option>
+          <option value="1-3" th:selected="${jobs.experience == '1-3'}">1-3 Years</option>
+          <option value="3+" th:selected="${jobs.experience == '3+'}">3+ Years</option>
+        </select>
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="job_type" class="form-label">Job Type</label>
+        <i class="fas fa-clipboard-list"></i>
+        <select class="form-select" th:value="${jobs.job_type}" id="job_type" name="job_type" required>
+          <option value="" disabled>Select job type</option>
+          <option value="full-time" th:selected="${jobs.job_type == 'full-time'}">Full-Time</option>
+          <option value="part-time" th:selected="${jobs.job_type == 'part-time'}">Part-Time</option>
+          <option value="contract" th:selected="${jobs.job_type == 'contract'}">Contract</option>
+          <option value="internship" th:selected="${jobs.job_type == 'internship'}">Internship</option>
+        </select>
+      </div>
+      <div class="form-group mb-3">
+        <label for="deadline" class="form-label">Application Deadline</label>
+        <i class="fas fa-hourglass-end"></i>
+        <input type="date" class="form-control" th:value="${jobs.deadline}" id="deadline" name="deadline"
+               required>
+      </div>
+      <div class="form-group mb-3">
+        <label for="skills" class="form-label">Skills</label>
+        <i class="fas fa-code "></i>
+        <input type="text" class="form-control" th:value="${jobs.skills}" name="skills" id="skills"
+               placeholder="E.g., Java, Python, React">
+      </div>
+      <div class="mb-3">
+        <input type="checkbox" class="form-check-input" id="agreement" name="agreement" required>I agree to
+        abide by all terms and
+        policies.
+      </div>
+      <button type="submit" class="btn btn-primary register-button">
+        <i class="fa-solid fa-plus me-1"></i>Update
+      </button>
+    </form>
+  </div>
+</div>
+<script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js}"></script>
+</body>
+
+</html>
