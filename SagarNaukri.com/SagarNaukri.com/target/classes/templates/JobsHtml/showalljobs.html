@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>All Jobs</title>
+  <link th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css}" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css}">
+  <style>
+    :root {
+        --primary-color: #3498db;
+        --text-color: #2c3e50;
+        --bg-color: #ffffff;
+        --shadow-color: rgba(0, 0, 0, 0.1);
+        --highlight-color: #f1f1f1;
+        --button-hover-color: #2ecc71;
+    }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f9f9f9;
+        color: var(--text-color);
+    }
+
+    .navbar-brand {
+        font-weight: bold;
+        color: var(--primary-color) !important;
+    }
+
+    .card {
+        background-color: var(--bg-color);
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px var(--shadow-color);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        z-index: 0;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-header {
+        background-color: var(--primary-color);
+        color: #fff;
+        font-weight: bold;
+        font-size: 1.25rem;
+        padding: 10px;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+    }
+
+    .card-body {
+        padding: 20px;
+    }
+
+    .card-body p {
+        font-size: 1rem;
+        margin: 5px 0;
+        line-height: 1.5;
+    }
+
+    .card-footer {
+        background-color: var(--highlight-color);
+        border-top: 1px solid #eee;
+        padding: 15px;
+        border-bottom-left-radius: 15px;
+        border-bottom-right-radius: 15px;
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .btn-outline-success {
+        color: var(--primary-color);
+        border-color: var(--primary-color);
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .btn-outline-success:hover {
+        background-color: var(--button-hover-color);
+        color: #fff;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: scale(0.95);
+        }
+
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    .card {
+        animation: fadeIn 0.5s ease-in-out;
+    }
+
+    .popup {
+        width: 400px;
+        height: 80px;
+        background-color: #fff;
+        border-radius: 10px;
+        position: fixed;
+        bottom: -100%;
+        right: 2%;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        visibility: hidden;
+        opacity: 0;
+        z-index: 1;
+        transition: bottom 0.4s, opacity 0.4s;
+    }
+
+    .popup img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin-right: 15px;
+    }
+
+    .popup-content {
+        display: flex;
+        align-items: center;
+        flex-grow: 1;
+    }
+
+    .popup h2 {
+        font-size: 20px;
+        font-weight: 500;
+        margin-bottom: 5px;
+    }
+
+    .popup p {
+        font-size: 16px;
+        margin: 0;
+        color: #555;
+    }
+
+    .popup button {
+        padding: 8px 15px;
+        background-color: #00BD48;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .popup button:hover {
+        background-color: #5bbd3e;
+    }
+
+    .open-popup {
+        visibility: visible;
+        bottom: 50px;
+        opacity: 1;
+    }
+
+
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        visibility: hidden;
+        opacity: 0;
+        transition: visibility 0.3s, opacity 0.3s;
+        z-index: 1;
+    }
+
+    .popup2 {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 400px;
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        text-align: center;
+    }
+
+    .popup2 h3 {
+        margin-bottom: 20px;
+        font-size: 18px;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .popup-buttons2 {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+
+    .popup-buttons2 button {
+        padding: 10px 20px;
+        font-size: 14px;
+        font-weight: 500;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+    }
+
+    .popup-buttons2 .cancel-btn2 {
+        background-color: #e74c3c;
+        color: white;
+    }
+
+    .popup-buttons2 .cancel-btn2:hover {
+        background-color: #c0392b;
+    }
+
+    .popup-buttons2 .confirm-btn2 {
+        background-color: #2ecc71;
+        color: white;
+    }
+
+    .popup-buttons2 .confirm-btn2:hover {
+        background-color: #27ae60;
+    }
+
+    .overlay.show {
+        visibility: visible;
+        opacity: 1;
+    }
+  </style>
+</head>
+
+<body>
+
+<!--Popup-->
+<div class="popup open-popup" id="popup" th:if="${isPopupEnabled}">
+  <div class="popup-content">
+    <img src="../Images/information_icon.png" alt="Info">
+    <div th:switch="${popupType}">
+      <div th:case="'jobUpdated'">
+        <h2>Job Updated!</h2>
+        <p>The job posting has been successfully updated.</p>
+      </div>
+      <div th:case="'jobDeleted'">
+        <h2>Job Deleted!</h2>
+        <p>The job has been successfully deleted.</p>
+      </div>
+    </div>
+  </div>
+  <button type="button" id="closeBTN">Close</button>
+</div>
+
+
+<script>
+  document.getElementById("closeBTN").addEventListener('click', function () {
+      document.getElementById("popup").classList.remove("open-popup");
+  });
+</script>
+
+
+
+<div class="overlay" id="confirmationOverlay">
+  <div class="popup2">
+    <h3>Are you sure, you want to delete this job?</h3>
+    <div class="popup-buttons2">
+      <button class="cancel-btn2" id="cancelBtn2">Cancel</button>
+      <button class="confirm-btn2" id="confirmBtn2">Yes, Delete</button>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  let isConfirmed = false; // Variable to track confirmation state
+
+  function checkConfirmation(event) {
+      event.preventDefault(); // Prevent form submission by default
+
+      const overlay = document.getElementById('confirmationOverlay')
+
+      overlay.classList.add('show');
+
+      // Cancel button functionality
+      document.getElementById('cancelBtn2').onclick = () => {
+          overlay.classList.remove('show');
+          isConfirmed = false;
+      };
+
+      // Confirm button functionality
+      document.getElementById('confirmBtn2').onclick = () => {
+          overlay.classList.remove('show');
+          isConfirmed = true;
+
+          // Proceed with form submission
+          if (isConfirmed) {
+              event.target.submit(); // Manually submit the form
+          }
+      };
+  }
+
+</script>
+
+<div th:insert="CompaniesHTML/headerfragment :: siteheader(${comdata})"></div>
+
+<main>
+  <div class="container my-5">
+    <div class="row">
+      <div th:each="job : ${jobsList}" class="col-lg-4 col-md-6 col mb-3">
+        <div class="card">
+          <div class="card-header">
+            <span th:text="${job.jobtitle}">Job Title</span>
+          </div>
+          <div class="card-body">
+            <p><strong>Description:</strong> <span th:text="${job.description}">Description</span></p>
+            <p><strong>Location:</strong> <span th:text="${job.location}">Location</span></p>
+            <p><strong>Experience:</strong> <span th:text="${job.experience}">Experience</span></p>
+            <p><strong>Skills:</strong> <span th:text="${job.skills}">Skills</span></p>
+            <p><strong>Salary:</strong> ₹<span th:text="${job.min_salary}">Min</span> - ₹<span
+                    th:text="${job.max_salary}">Max</span></p>
+          </div>
+          <div class="card-footer">
+            <a href="#" class="btn btn-outline-success">More</a>
+            <form th:action="@{/company/updatejob}" method="GET" style="display:inline;">
+              <input type="hidden" th:value="${job.jobid}" name="jobid">
+              <button type="submit" class="btn btn-outline-success">Update</button>
+            </form>
+            <form th:action="@{/company/jobdelete}" method="GET" style="display:inline;"
+                  onsubmit="return checkConfirmation(event)">
+              <input type="hidden" th:value="${job.jobid}" name="jobid">
+              <button type="submit" class="btn btn-outline-success">Delete</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js}"></script>
+</body>
+
+</html>
