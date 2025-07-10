@@ -1,395 +1,403 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
   <title>Company Login | CareerConnect</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
   <style>
     :root {
-        --primary-color: #4e73df;
-        --secondary-color: #f8f9fc;
-        --accent-color: #2e59d9;
-        --text-color: #5a5c69;
+      --primary-color: #4e73df;
+      --secondary-color: #f8f9fc;
+      --accent-color: #2e59d9;
+      --text-color: #5a5c69;
     }
 
     body {
-        background-color: #f5f7fa;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        height: 100vh;
-        display: flex;
-        align-items: center;
+      background-color: #f5f7fa;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
     }
 
     .login-container {
-        max-width: 450px;
-        margin: 0 auto;
-        padding: 2.5rem;
-        background: white;
-        border-radius: 10px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      width: 100%;
+      max-width: 450px;
+      padding: 2rem;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     }
 
     .login-header {
-        text-align: center;
-        margin-bottom: 2rem;
+      text-align: center;
+      margin-bottom: 2rem;
     }
 
     .login-header h2 {
-        color: var(--primary-color);
-        font-weight: 700;
-        margin-bottom: 0.5rem;
+      color: var(--primary-color);
+      font-weight: 700;
+      margin-bottom: 0.5rem;
     }
 
     .login-header p {
-        color: #6c757d;
+      color: #6c757d;
     }
 
     .form-control {
-        padding: 0.75rem 1rem;
-        border-radius: 0.35rem;
-        margin-bottom: 1.25rem;
-        border: 1px solid #e0e0e0;
+      padding: 0.75rem 1rem;
+      border-radius: 0.35rem;
+      margin-bottom: 1.25rem;
+      border: 1px solid #e0e0e0;
     }
 
     .form-control:focus {
-        border-color: var(--primary-color);
-        box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
     }
 
     .btn-login {
-        background-color: var(--primary-color);
-        border-color: var(--primary-color);
-        padding: 0.75rem;
-        font-weight: 600;
-        width: 100%;
-        margin-top: 0.5rem;
-        transition: all 0.3s;
+      background-color: var(--primary-color);
+      border-color: var(--primary-color);
+      padding: 0.75rem;
+      font-weight: 600;
+      width: 100%;
+      margin-top: 0.5rem;
+      transition: all 0.3s;
     }
 
     .btn-login:hover {
-        background-color: var(--accent-color);
-        transform: translateY(-1px);
+      background-color: var(--accent-color);
+      transform: translateY(-1px);
     }
 
     .input-icon {
-        position: relative;
+      position: relative;
     }
 
     .input-icon i {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        left: 15px;
-        color: #d1d3e2;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      left: 15px;
+      color: #d1d3e2;
     }
 
     .input-icon input {
-        padding-left: 2.5rem;
+      padding-left: 2.5rem;
     }
 
     .alert-danger {
-        border-radius: 0.35rem;
-        padding: 1rem;
-        background-color: #f8d7da;
-        border-color: #f5c6cb;
-        color: #721c24;
-        margin-bottom: 1.5rem;
+      border-radius: 0.35rem;
+      padding: 1rem;
+      background-color: #f8d7da;
+      border-color: #f5c6cb;
+      color: #721c24;
+      margin-bottom: 1.5rem;
     }
 
     .additional-options {
-        text-align: center;
-        margin-top: 1.5rem;
-        font-size: 0.9rem;
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.9rem;
     }
 
     .additional-options a {
-        color: var(--primary-color);
-        text-decoration: none;
+      color: var(--primary-color);
+      text-decoration: none;
     }
 
     .additional-options a:hover {
-        text-decoration: underline;
+      text-decoration: underline;
     }
 
     .divider {
-        display: flex;
-        align-items: center;
-        margin: 1.5rem 0;
+      display: flex;
+      align-items: center;
+      margin: 1.5rem 0;
     }
 
     .divider::before,
     .divider::after {
-        content: "";
-        flex: 1;
-        border-bottom: 1px solid #e0e0e0;
+      content: "";
+      flex: 1;
+      border-bottom: 1px solid #e0e0e0;
     }
 
     .divider-text {
-        padding: 0 1rem;
-        color: #6c757d;
-        font-size: 0.8rem;
+      padding: 0 1rem;
+      color: #6c757d;
+      font-size: 0.8rem;
     }
 
     .social-login {
-        display: flex;
-        justify-content: center;
-        gap: 1rem;
-        margin-top: 1rem;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1rem;
     }
 
     .social-btn {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-size: 1.2rem;
-        transition: all 0.3s;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.2rem;
+      transition: all 0.3s;
     }
 
     .social-btn:hover {
-        transform: translateY(-2px);
+      transform: translateY(-2px);
     }
 
     .bg-google {
-        background-color: #db4437;
+      background-color: #db4437;
     }
 
     .bg-linkedin {
-        background-color: #0077b5;
+      background-color: #0077b5;
     }
 
     .bg-facebook {
-        background-color: #4267b2;
+      background-color: #4267b2;
+    }
+
+    .popup, .popup2 {
+      max-width: 90vw;
     }
 
     .popup {
-        width: 400px;
-        background-color: #fff;
-        border-radius: 7px;
-        position: absolute;
-        /* top:50%; */
-        top: 0;
-        left: 50%;
-        transform: translate(-50%, -50%) scale(0.1);
-        text-align: center;
-        padding: 0 30px 30px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        color: #333;
-        visibility: hidden;
-        transition: transform 0.4s, top 0.4s;
-        z-index: 1;
+      background-color: #fff;
+      border-radius: 7px;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.1);
+      text-align: center;
+      padding: 0 30px 30px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      color: #333;
+      visibility: hidden;
+      transition: transform 0.4s, top 0.4s;
+      z-index: 1;
     }
 
     .popup img {
-        width: 100px;
-        margin-top: -50px;
-        border-radius: 50%;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      width: 100px;
+      margin-top: -50px;
+      border-radius: 50%;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
     }
 
     .popup h2 {
-        font-size: 38px;
-        font-weight: 500;
-        margin: 30px 0 10px;
+      font-size: 38px;
+      font-weight: 500;
+      margin: 30px 0 10px;
     }
 
     .popup button {
-        width: 100%;
-        margin-top: 50px;
-        padding: 10px 0;
-        background: #6fd649;
-        color: #fff;
-        border: 0;
-        font-size: 18px;
-        border-radius: 4px;
-        cursor: pointer;
-        box-shadow: 0 5px 5px rgba(0, 0, 0, 0.3);
+      width: 100%;
+      margin-top: 50px;
+      padding: 10px 0;
+      background: #6fd649;
+      color: #fff;
+      border: 0;
+      font-size: 18px;
+      border-radius: 4px;
+      cursor: pointer;
+      box-shadow: 0 5px 5px rgba(0, 0, 0, 0.3);
     }
 
     .open-popup {
-        visibility: visible;
-        top: 50%;
-        transform: translate(-50%, -50%) scale(1);
+      visibility: visible;
+      top: 50%;
+      transform: translate(-50%, -50%) scale(1);
     }
 
-    /*      Second Popup for password */
     .popup2 {
-        width: 400px;
-        height: 80px;
-        background-color: #fff;
-        border-radius: 10px;
-        position: fixed;
-        bottom: -90%;
-        right: 2%;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        padding: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        visibility: hidden;
-        opacity: 0;
-        z-index: 1;
-        transition: bottom 0.4s, opacity 0.4s;
+      background-color: #fff;
+      border-radius: 10px;
+      position: fixed;
+      bottom: -90%;
+      right: 2%;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      visibility: hidden;
+      opacity: 0;
+      z-index: 1;
+      transition: bottom 0.4s, opacity 0.4s;
     }
 
     .popup2 img {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        margin-right: 15px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      margin-right: 15px;
     }
 
     .popup-content2 {
-        display: flex;
-        align-items: center;
-        flex-grow: 1;
+      display: flex;
+      align-items: center;
+      flex-grow: 1;
     }
 
     .popup2 h5 {
-        font-size: 20px;
-        font-weight: 500;
-        margin-bottom: 5px;
+      font-size: 20px;
+      font-weight: 500;
+      margin-bottom: 5px;
     }
 
     .popup2 p {
-        font-size: 16px;
-        margin: 0;
-        color: #555;
+      font-size: 16px;
+      margin: 0;
+      color: #555;
     }
 
     .popup2 button {
-        padding: 8px 15px;
-        background-color: #00BD48;
-        color: #fff;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 14px;
-        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+      padding: 8px 15px;
+      background-color: #00BD48;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
     }
 
     .popup2 button:hover {
-        background-color: #5bbd3e;
+      background-color: #5bbd3e;
     }
 
     .open-popup2 {
-        visibility: visible;
-        bottom: 50px;
-        opacity: 1;
+      visibility: visible;
+      bottom: 50px;
+      opacity: 1;
+    }
+
+    @media screen and (max-width: 576px) {
+      .popup2 {
+        width: 95%;
+        right: 2.5%;
+        flex-direction: column;
+        height: auto;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .popup-content2 {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .popup2 button {
+        align-self: flex-end;
+        margin-top: 10px;
+      }
     }
   </style>
 </head>
 
 <body>
-<!--<script th:if="${passwordUpdated}">-->
-<!--  alert("Password Updated!");-->
-<!--</script>-->
 
 <div class="popup2 open-popup2" id="popup2" th:if="${passwordUpdated}">
   <div class="popup-content2">
     <img src="../Images/information_icon.png" alt="Info">
     <div>
       <h5>Password Updated!</h5>
-      <p >Your company password has been successfully updated.</p>
+      <p>Your company password has been successfully updated.</p>
     </div>
   </div>
   <button type="button" id="closeBTN2">Close</button>
 </div>
-<script>
-  document.getElementById("closeBTN2").addEventListener('click', function () {
-      document.getElementById("popup2").classList.remove("open-popup2");
-  });
-</script>
-
 
 <div class="popup open-popup" id="popup" th:if="${register}">
-  <img
-          src="../Images/tick.png">
+  <img src="../Images/tick.png">
   <h2>Thank You!</h2>
   <p>Company registration has been successful, Thanks!</p>
   <button type="button" id="closeBTN">OK</button>
 </div>
 
-
-<div class="container" id="container" th:style="${register} ? 'visibility:hidden' : 'visibility:visible' ">
-
-  <div class="login-container">
-    <div class="login-header">
-      <h2 th:if="${register}"><i class="fas fa-briefcase me-2"></i>Welcome!</h2>
-      <h2 th:unless="${register}"><i class="fas fa-briefcase me-2"></i>Welcome Back!</h2>
-      <p>Sign in to Access your company's dashboard</p>
-    </div>
-
-    <div th:if="${error}" class="alert alert-danger" role="alert">
-      <i class="fas fa-exclamation-circle me-2"></i>
-      <span th:text="${error}"></span>
-    </div>
-
-    <form th:action="@{/company/login}" method="post">
-      <div class="input-icon mb-4">
-        <i class="fas fa-envelope"></i>
-        <input type="email" name="email" th:value="${email}" class="form-control"
-               placeholder="Email Address" required>
-      </div>
-
-      <div class="input-icon mb-4">
-        <i class="fas fa-lock"></i>
-        <input type="password" name="password" class="form-control" placeholder="Password" required>
-      </div>
-
-      <div class="d-flex justify-content-between mb-4">
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="rememberMe">
-          <label class="form-check-label" for="rememberMe">Remember me</label>
-        </div>
-        <a href="/forgotpassword" class="text-decoration-none">Forgot password?</a>
-      </div>
-
-      <button type="submit" class="btn btn-primary btn-login">
-        <i class="fas fa-sign-in-alt me-2"></i> Login
-      </button>
-
-      <div class="divider">
-        <span class="divider-text">OR CONTINUE WITH</span>
-      </div>
-
-      <div class="social-login">
-        <a href="#" class="text-decoration-none social-btn bg-google"><i class="fab fa-google"></i></a>
-        <a href="#" class="text-decoration-none social-btn bg-linkedin"><i
-                class="fab fa-linkedin-in"></i></a>
-        <a href="#" class="text-decoration-none social-btn bg-facebook"><i
-                class="fab fa-facebook-f"></i></a>
-      </div>
-
-      <div class="additional-options">
-        <p>Don't have an account? <a th:href="@{/company/companyform}">Sign up</a></p>
-      </div>
-    </form>
+<div class="container login-container" id="container" th:style="${register} ? 'visibility:hidden' : 'visibility:visible'">
+  <div class="login-header">
+    <h2 th:if="${register}"><i class="fas fa-briefcase me-2"></i>Welcome!</h2>
+    <h2 th:unless="${register}"><i class="fas fa-briefcase me-2"></i>Welcome Back!</h2>
+    <p>Sign in to Access your company's dashboard</p>
   </div>
+
+  <div th:if="${error}" class="alert alert-danger" role="alert">
+    <i class="fas fa-exclamation-circle me-2"></i>
+    <span th:text="${error}"></span>
+  </div>
+
+  <form th:action="@{/company/login}" method="post">
+    <div class="input-icon mb-4">
+      <i class="fas fa-envelope"></i>
+      <input type="email" name="email" th:value="${email}" class="form-control" placeholder="Email Address" required>
+    </div>
+
+    <div class="input-icon mb-4">
+      <i class="fas fa-lock"></i>
+      <input type="password" name="password" class="form-control" placeholder="Password" required>
+    </div>
+
+    <div class="d-flex justify-content-between mb-4">
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="rememberMe">
+        <label class="form-check-label" for="rememberMe">Remember me</label>
+      </div>
+      <a href="/forgotpassword" class="text-decoration-none">Forgot password?</a>
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-login">
+      <i class="fas fa-sign-in-alt me-2"></i> Login
+    </button>
+
+    <div class="divider">
+      <span class="divider-text">OR CONTINUE WITH</span>
+    </div>
+
+    <div class="social-login">
+      <a href="#" class="text-decoration-none social-btn bg-google"><i class="fab fa-google"></i></a>
+      <a href="#" class="text-decoration-none social-btn bg-linkedin"><i class="fab fa-linkedin-in"></i></a>
+      <a href="#" class="text-decoration-none social-btn bg-facebook"><i class="fab fa-facebook-f"></i></a>
+    </div>
+
+    <div class="additional-options">
+      <p>Don't have an account? <a th:href="@{/company/companyform}">Sign up</a></p>
+    </div>
+  </form>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
   document.querySelector('form').addEventListener('submit', function (e) {
-      const email = document.querySelector('input[name="email"]');
-      const password = document.querySelector('input[name="password"]');
-
-      if (!email.value || !password.value) {
-          e.preventDefault();
-          alert('Please fill in all required fields');
-      }
+    const email = document.querySelector('input[name="email"]');
+    const password = document.querySelector('input[name="password"]');
+    if (!email.value || !password.value) {
+      e.preventDefault();
+      alert('Please fill in all required fields');
+    }
   });
+
   document.getElementById("closeBTN").addEventListener('click', function () {
-      const popup = document.getElementById("popup");
-      document.getElementById("container").style.visibility = "visible";
-      popup.classList.remove("open-popup");
+    document.getElementById("container").style.visibility = "visible";
+    document.getElementById("popup").classList.remove("open-popup");
   });
 
+  document.getElementById("closeBTN2").addEventListener('click', function () {
+    document.getElementById("popup2").classList.remove("open-popup2");
+  });
 </script>
 </body>
-
 </html>
