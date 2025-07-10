@@ -6,19 +6,21 @@
 
   <!-- Bootstrap CSS -->
   <link th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css}" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+        crossorigin="anonymous" />
 
   <!-- Bootstrap Icons -->
-  <link th:href="@{https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css}" rel="stylesheet">
+  <link th:href="@{https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css}" rel="stylesheet" />
 
   <style>
     body {
-      background-color: #ffffff;
+      background-color: #f5f7fa;
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding: 1rem;
     }
 
     .form-card {
@@ -62,6 +64,15 @@
     .resend-link:hover {
       text-decoration: underline;
     }
+
+    @media (max-width: 576px) {
+      .form-card {
+        padding: 25px 20px;
+      }
+      .form-title {
+        font-size: 1.3rem;
+      }
+    }
   </style>
 </head>
 <body>
@@ -80,21 +91,25 @@
       </p>
     </div>
 
+    <!-- Error message if any -->
     <div th:if="${error}" class="alert alert-danger d-flex align-items-center" role="alert">
       <i class="bi bi-exclamation-circle-fill me-2"></i>
       <span th:text="${error}"></span>
     </div>
 
+    <!-- OTP input -->
     <div class="form-group mb-3">
       <label for="userotp" class="form-label">Enter OTP</label>
-      <input type="number" class="form-control" id="userotp" name="userotp" placeholder="Enter OTP here" required>
+      <input type="number" class="form-control" id="userotp" name="userotp" placeholder="Enter OTP here" required autofocus />
       <div class="mt-1 otpsize text-muted">
         Didn't receive the OTP?
         <a th:href="@{/company/getresendotp}" class="resend-link">Resend OTP</a>
       </div>
     </div>
 
-    <button type="submit" class="btn btn-custom w-100 mt-3">Verify OTP</button>
+    <button type="submit" class="btn btn-custom w-100 mt-3">
+      <i class="bi bi-check-circle me-1"></i>Verify OTP
+    </button>
   </form>
 </div>
 
@@ -102,5 +117,114 @@
 <script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js}"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
+
 </body>
 </html>
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--  <meta charset="UTF-8">-->
+<!--  <title>Verify OTP - JobSagar</title>-->
+
+<!--  &lt;!&ndash; Bootstrap CSS &ndash;&gt;-->
+<!--  <link th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css}" rel="stylesheet"-->
+<!--        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">-->
+
+<!--  &lt;!&ndash; Bootstrap Icons &ndash;&gt;-->
+<!--  <link th:href="@{https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css}" rel="stylesheet">-->
+
+<!--  <style>-->
+<!--    body {-->
+<!--      background-color: #ffffff;-->
+<!--      min-height: 100vh;-->
+<!--      display: flex;-->
+<!--      align-items: center;-->
+<!--      justify-content: center;-->
+<!--      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;-->
+<!--    }-->
+
+<!--    .form-card {-->
+<!--      background: #fff;-->
+<!--      width: 100%;-->
+<!--      max-width: 500px;-->
+<!--      padding: 35px 30px;-->
+<!--      border-radius: 15px;-->
+<!--      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);-->
+<!--    }-->
+
+<!--    .form-title {-->
+<!--      font-weight: 700;-->
+<!--      color: #117a8b;-->
+<!--      margin-bottom: 20px;-->
+<!--    }-->
+
+<!--    .form-group label {-->
+<!--      font-weight: 600;-->
+<!--    }-->
+
+<!--    .btn-custom {-->
+<!--      background-color: #117a8b;-->
+<!--      color: white;-->
+<!--      transition: background-color 0.3s ease;-->
+<!--    }-->
+
+<!--    .btn-custom:hover {-->
+<!--      background-color: #0d5d6c;-->
+<!--    }-->
+
+<!--    .otpsize {-->
+<!--      font-size: 13px;-->
+<!--    }-->
+
+<!--    .resend-link {-->
+<!--      text-decoration: none;-->
+<!--      color: #117a8b;-->
+<!--    }-->
+
+<!--    .resend-link:hover {-->
+<!--      text-decoration: underline;-->
+<!--    }-->
+<!--  </style>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--<div class="form-card">-->
+<!--  <h3 class="form-title text-center">-->
+<!--    <i class="bi bi-shield-lock-fill me-2"></i>OTP Verification-->
+<!--  </h3>-->
+
+<!--  <form th:action="@{/company/companyregister}" method="post">-->
+<!--    <div class="mb-3">-->
+<!--      <p class="text-muted fs-6">-->
+<!--        An OTP has been sent to your registered email:-->
+<!--        <strong th:text="${comdata.email}">example@email.com</strong>.<br>-->
+<!--        Please enter the OTP below to continue.-->
+<!--      </p>-->
+<!--    </div>-->
+
+<!--    <div th:if="${error}" class="alert alert-danger d-flex align-items-center" role="alert">-->
+<!--      <i class="bi bi-exclamation-circle-fill me-2"></i>-->
+<!--      <span th:text="${error}"></span>-->
+<!--    </div>-->
+
+<!--    <div class="form-group mb-3">-->
+<!--      <label for="userotp" class="form-label">Enter OTP</label>-->
+<!--      <input type="number" class="form-control" id="userotp" name="userotp" placeholder="Enter OTP here" required>-->
+<!--      <div class="mt-1 otpsize text-muted">-->
+<!--        Didn't receive the OTP?-->
+<!--        <a th:href="@{/company/getresendotp}" class="resend-link">Resend OTP</a>-->
+<!--      </div>-->
+<!--    </div>-->
+
+<!--    <button type="submit" class="btn btn-custom w-100 mt-3">Verify OTP</button>-->
+<!--  </form>-->
+<!--</div>-->
+
+<!--&lt;!&ndash; Bootstrap JS &ndash;&gt;-->
+<!--<script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js}"-->
+<!--        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"-->
+<!--        crossorigin="anonymous"></script>-->
+<!--</body>-->
+<!--</html>-->
