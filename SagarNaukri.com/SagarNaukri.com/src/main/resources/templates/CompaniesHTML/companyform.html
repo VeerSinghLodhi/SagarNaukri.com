@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Company Registration Form</title>
     <link rel="stylesheet" th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -20,6 +21,8 @@
             min-height: 100vh;
             display: flex;
             align-items: center;
+            justify-content: center;
+            padding: 20px;
         }
 
         .form-title {
@@ -27,26 +30,26 @@
             margin-bottom: 2rem;
         }
 
-        .form-title h2{
+        .form-title h2 {
             color: var(--primary-color);
             font-weight: 700;
             margin-bottom: 0.5rem;
         }
 
         .form-container {
-            background:#ffffff;
+            background: #ffffff;
+            margin:0 auto;
             max-width: 500px;
-            margin: 40px auto;
-            padding:2.5rem;
-            border-radius:10px;
+            width: 100%;
+            padding: 2.5rem;
+            border-radius: 10px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
             transition: all 0.3s;
         }
 
-        .form-container:hover{
+        .form-container:hover {
             transform: translateY(-3px);
         }
-
 
         #agreement {
             margin-right: 10px;
@@ -68,20 +71,21 @@
             transform: translateY(-1px);
         }
 
-        .form-group{
-            position:relative;
+        .form-group {
+            position: relative;
         }
 
-        .form-group i{
-            position:absolute;
-            top:74%;
+        .form-group i {
+            position: absolute;
+            top: 74%;
             transform: translateY(-50%);
             left: 15px;
             color: #d1d3e2;
         }
 
-        .form-group input,.form-group textarea{
-            padding-left : 2.5rem;
+        .form-group input,
+        .form-group textarea {
+            padding-left: 2.5rem;
         }
 
         .alreadyhaveaccount {
@@ -96,205 +100,479 @@
         .alreadyhaveaccount a:hover {
             text-decoration: underline;
         }
+
+        /*  Responsive adjustments only below */
+        @media (max-width: 576px) {
+            body {
+                padding: 10px;
+                align-items: flex-start;
+            }
+
+            .form-container {
+                padding: 1.5rem;
+            }
+
+            .form-title h2 {
+                font-size: 1.5rem;
+            }
+
+            .form-group i {
+                top: 70%;
+            }
+
+            .register-button {
+                font-size: 1rem;
+            }
+        }
     </style>
 </head>
 
 <body>
 <div class="container">
-        <div class="form-container">
-            <div class="form-title">
-                <h2>
-                    <i class="fas fa-briefcase me-2"></i>Register Your Company
-                </h2>
-            </div>
-            <div th:if="${error}" class="alert alert-danger" role="alert">
+    <div class="form-container">
+        <div class="form-title">
+            <h2><i class="fas fa-briefcase me-2"></i>Register Your Company</h2>
+        </div>
+
+        <div th:if="${error}" class="alert alert-danger" role="alert">
             <i class="fas fa-exclamation-circle me-2"></i>
             <span th:text="${error}"></span>
         </div>
-        <form method="post" th:action="@{/company/getotp}" onsubmit="return checkPasswords()" th:object="${comdata}"
-              enctype="multipart/form-data">
+
+        <form method="post" th:action="@{/company/getotp}" onsubmit="return checkPasswords()" th:object="${comdata}" enctype="multipart/form-data">
 
             <div class="form-group mb-3">
                 <label class="form-label" for="companyname">Company name</label>
                 <i class="fas fa-building"></i>
-                <input type="text" id="companyname" th:value="${comdata.companyname}" onkeyup="checkErrorMessage()"
-                       name="companyname" class="form-control" placeholder="Enter company name" required>
-                <p th:each="err : ${#fields.errors('companyname')}" th:text="${err}" style="color:red;"
-                   id="companynameerrormessage"></p>
+                <input type="text" id="companyname" th:value="${comdata.companyname}" onkeyup="checkErrorMessage()" name="companyname" class="form-control" placeholder="Enter company name" required>
+                <p th:each="err : ${#fields.errors('companyname')}" th:text="${err}" style="color:red;" id="companynameerrormessage"></p>
             </div>
 
             <div class="form-group mb-3">
                 <label class="form-label" for="email">Email</label>
                 <i class="fas fa-envelope"></i>
-                <input type="text" id="email" th:value="${comdata.email}" onkeyup="checkErrorMessage()" name="email"
-                       class="form-control" placeholder="Enter email address" required>
-                <p th:each="err : ${#fields.errors('email')}" th:text="${err}" style="color:red;"
-                   id="emailerrormessage"></p>
-            </div>
-            <div th:if="${error}" class="alert alert-danger" role="alert">
-                <i class="fas fa-exclamation-circle me-2"></i>
-                <span th:text="${error}"></span>
+                <input type="text" id="email" th:value="${comdata.email}" onkeyup="checkErrorMessage()" name="email" class="form-control" placeholder="Enter email address" required>
+                <p th:each="err : ${#fields.errors('email')}" th:text="${err}" style="color:red;" id="emailerrormessage"></p>
             </div>
 
             <div class="form-group mb-3">
                 <label class="form-label" for="contact">Contact</label>
                 <i class="fas fa-phone"></i>
-                <input type="text" id="contact" th:value="${comdata.contact}" name="contact"
-                       onkeyup="checkErrorMessage()" class="form-control" placeholder="Enter contact number" required>
-                <p th:each="err : ${#fields.errors('contact')}" th:text="${err}" style="color:red;"
-                   id="contacterrormessage"></p>
+                <input type="text" id="contact" th:value="${comdata.contact}" name="contact" onkeyup="checkErrorMessage()" class="form-control" placeholder="Enter contact number" required>
+                <p th:each="err : ${#fields.errors('contact')}" th:text="${err}" style="color:red;" id="contacterrormessage"></p>
             </div>
+
             <div class="form-group mb-3">
                 <label class="form-label" for="address">Company Address</label>
                 <i class="fas fa-map-marker-alt"></i>
-                <textarea id="address" name="address" th:value="${comdata.address}" class="form-control"
-                          onkeyup="checkErrorMessage()" placeholder="Enter company address" required></textarea>
-                <p th:each="err : ${#fields.errors('address')}" th:text="${err}" style="color:red;"
-                   id="addresserrormessage"></p>
+                <textarea id="address" name="address" th:text="${comdata.address}" class="form-control" onkeyup="checkErrorMessage()" placeholder="Enter company address" required></textarea>
+                <p th:each="err : ${#fields.errors('address')}" th:text="${err}" style="color:red;" id="addresserrormessage"></p>
             </div>
+
             <div class="form-group mb-3">
                 <label class="form-label" for="description">Company Description</label>
                 <i class="fas fa-info-circle"></i>
-                <textarea id="description" th:value="${comdata.description}" name="description" class="form-control"
-                          onkeyup="checkErrorMessage()" placeholder="Enter company description" required></textarea>
-                <p th:each="err : ${#fields.errors('description')}" th:text="${err}" style="color:red;"
-                   id="descriptionerrormessage"></p>
+                <textarea id="description" th:text="${comdata.description}" name="description" class="form-control" onkeyup="checkErrorMessage()" placeholder="Enter company description" required></textarea>
+                <p th:each="err : ${#fields.errors('description')}" th:text="${err}" style="color:red;" id="descriptionerrormessage"></p>
             </div>
+
             <div class="form-group mb-3">
                 <label class="form-label" for="companylogo">Company Logo</label>
                 <i class="fas fa-upload"></i>
                 <input type="file" id="companylogo" name="company_logo" class="form-control" required>
             </div>
-            <div class="form-group  mb-3 ">
+
+            <div class="form-group mb-3">
                 <label for="password" class="form-label">Create Password</label>
                 <i class="fas fa-lock"></i>
-                <input type="password" th:value="${comdata.password}" onkeyup="checkErrorMessage()"
-                       class="form-control" id="password" name="password" placeholder="Enter password" required>
-                <p th:each="err : ${#fields.errors('password')}" th:text="${err}" style="color:red;"
-                   id="passworderrormessage"></p>
-                <div>
-                    <ul id="error">
-                    </ul>
-                </div>
+                <input type="password" th:value="${comdata.password}" onkeyup="checkErrorMessage()" class="form-control" id="password" name="password" placeholder="Enter password" required>
+                <p th:each="err : ${#fields.errors('password')}" th:text="${err}" style="color:red;" id="passworderrormessage"></p>
+                <ul id="error" class="mt-2 ps-3"></ul>
             </div>
-            <div class="form-group  mb-3">
+
+            <div class="form-group mb-3">
                 <label for="confirm-password" class="form-label">Confirm Password</label>
                 <i class="fas fa-lock"></i>
-                <input type="password" onkeyup="checkErrorMessage()" class="form-control" id="confirm-password"
-                       name="confirm-password" placeholder="Enter confirm password" required>
+                <input type="password" onkeyup="checkErrorMessage()" class="form-control" id="confirm-password" name="confirm-password" placeholder="Enter confirm password" required>
                 <p id="err_confirmpassword" style="color:red;"></p>
             </div>
+
             <div class="mb-3">
-                <input type="checkbox" class="form-check-input" id="agreement" name="agreement" required>I agree to abide by all terms and
-                policies.
+                <input type="checkbox" class="form-check-input" id="agreement" name="agreement" required>
+                I agree to abide by all terms and policies.
             </div>
+
             <button type="submit" class="btn btn-primary register-button">
                 <i class="fas fa-paper-plane me-2"></i>Register
             </button>
         </form>
+
         <div class="alreadyhaveaccount">
             <p>Already have an account? <a th:href="@{/company/companylogin}">Login</a></p>
         </div>
     </div>
 </div>
+</body>
+
 <script>
-    function checkPasswords(){
+    function checkPasswords() {
         const pass1 = document.getElementById('password').value;
         const pass2 = document.getElementById('confirm-password').value;
-        const err= document.getElementById('err_confirmpassword');
-        console.log("Password 1: " + pass1);
-        console.log("Password 2: " + pass2);
+        const err = document.getElementById('err_confirmpassword');
         if (pass1 === pass2) {
-                console.log("Passwords match.");
-                err.innerHTML="";
-                return true;
-            } else {
-                console.log("Passwords do not match.");
-                err.innerHTML="Passwords do not match.";
-                return false;
-            }
+            err.innerHTML = "";
+            return true;
+        } else {
+            err.innerHTML = "Passwords do not match.";
+            return false;
+        }
     }
-    function checkErrorMessage(){
-        const companynamemessage=document.getElementById('companyname').value;
-        const emailmessage=document.getElementById('email').value;
-        const contactmessage=document.getElementById('contact').value;
-        const addressmessage=document.getElementById('address').value;
-        const descriptionmessage=document.getElementById('description').value;
+
+    function checkErrorMessage() {
+        const fields = ['companyname', 'email', 'contact', 'address', 'description', 'password'];
+        fields.forEach(field => {
+            const value = document.getElementById(field).value;
+            if (value.length > 0) {
+                const errId = field + 'errormessage';
+                document.getElementById(errId).innerHTML = "";
+            }
+        });
+
         const pass1 = document.getElementById('password').value;
         const pass2 = document.getElementById('confirm-password').value;
-        const err= document.getElementById('err_confirmpassword');
-
-        if(companynamemessage.length>0){
-            document.getElementById('companynameerrormessage').innerHTML="";
+        const err = document.getElementById('err_confirmpassword');
+        if (pass1 === pass2) {
+            err.innerHTML = "";
+        } else {
+            err.innerHTML = "Passwords do not match.";
         }
-        if(emailmessage.length>0){
-           document.getElementById('emailerrormessage').innerHTML="";
-        }
-        if(contactmessage.length>0){
-            document.getElementById('contacterrormessage').innerHTML="";
-        }
-        if(addressmessage.length>0){
-            document.getElementById('addresserrormessage').innerHTML="";
-        }
-        if(descriptionmessage.length>0){
-            document.getElementById('descriptionerrormessage').innerHTML="";
-        }
-
-        if(pass1.length>0){
-                document.getElementById('passworderrormessage').innerHTML="";
-        }
-
-          if (pass1 === pass2) {
-                console.log("Passwords match.");
-                err.innerHTML="";
-          } else{
-                 console.log("Passwords do not match.");
-                 err.innerHTML="Passwords do not match.";
-          }
     }
 
     document.getElementById('password').addEventListener('keyup', function () {
         const password = document.getElementById('password');
         const errorElement = document.getElementById('error');
         errorElement.innerHTML = "";
-        // Validation rules
+
         const rules = [
-            {
-                regex: /.{8,}/,
-                message: "Password must be at least 8 characters long.",
-            },
-            {
-                regex: /[A-Z]/,
-                message: "Password must contain at least one uppercase letter.",
-            },
-            {
-                regex: /[a-z]/,
-                message: "Password must contain at least one lowercase letter.",
-            },
-            {
-                regex: /\d/,
-                message: "Password must contain at least one number.",
-            },
-            {
-                regex: /[@$!%*?&]/,
-                message: "Password must contain at least one special character (@, $, !, %, *, ?, &).",
-            },
+            { regex: /.{8,}/, message: "Password must be at least 8 characters long." },
+            { regex: /[A-Z]/, message: "Password must contain at least one uppercase letter." },
+            { regex: /[a-z]/, message: "Password must contain at least one lowercase letter." },
+            { regex: /\d/, message: "Password must contain at least one number." },
+            { regex: /[@$!%*?&]/, message: "Password must contain at least one special character (@, $, !, %, *, ?, &)." }
         ];
 
-        rules.forEach((rule) => {
+        rules.forEach(rule => {
             const li = document.createElement("li");
             li.textContent = rule.message;
-            if (!rule.regex.test(password.value)) {
-                li.style.color = "red";
-            } else {
-                li.style.color = "green";
-            }
+            li.style.color = rule.regex.test(password.value) ? "green" : "red";
             errorElement.appendChild(li);
         });
     });
 </script>
 <script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js}"></script>
 
-</body>
-
 </html>
+
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.thymeleaf.org">-->
+
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Company Registration Form</title>-->
+<!--    <link rel="stylesheet" th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css}">-->
+<!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">-->
+<!--    <style>-->
+<!--        :root {-->
+<!--            &#45;&#45;primary-color: #4e73df;-->
+<!--            &#45;&#45;secondary-color: #f8f9fc;-->
+<!--            &#45;&#45;accent-color: #2e59d9;-->
+<!--            &#45;&#45;text-color: #5a5c69;-->
+<!--        }-->
+
+<!--        body {-->
+<!--            background-color: #f5f7fa;-->
+<!--            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;-->
+<!--            min-height: 100vh;-->
+<!--            display: flex;-->
+<!--            align-items: center;-->
+<!--        }-->
+
+<!--        .form-title {-->
+<!--            text-align: center;-->
+<!--            margin-bottom: 2rem;-->
+<!--        }-->
+
+<!--        .form-title h2{-->
+<!--            color: var(&#45;&#45;primary-color);-->
+<!--            font-weight: 700;-->
+<!--            margin-bottom: 0.5rem;-->
+<!--        }-->
+
+<!--        .form-container {-->
+<!--            background:#ffffff;-->
+<!--            max-width: 500px;-->
+<!--            margin: 40px auto;-->
+<!--            padding:2.5rem;-->
+<!--            border-radius:10px;-->
+<!--            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);-->
+<!--            transition: all 0.3s;-->
+<!--        }-->
+
+<!--        .form-container:hover{-->
+<!--            transform: translateY(-3px);-->
+<!--        }-->
+
+
+<!--        #agreement {-->
+<!--            margin-right: 10px;-->
+<!--            border-radius: 50%;-->
+<!--        }-->
+
+<!--        .register-button {-->
+<!--            background-color: var(&#45;&#45;primary-color);-->
+<!--            border-color: var(&#45;&#45;primary-color);-->
+<!--            width: 100%;-->
+<!--            padding: 0.75rem;-->
+<!--            font-weight: 600;-->
+<!--            margin-top: 0.5rem;-->
+<!--            transition: all 0.3s;-->
+<!--        }-->
+
+<!--        .register-button:hover {-->
+<!--            background-color: var(&#45;&#45;accent-color);-->
+<!--            transform: translateY(-1px);-->
+<!--        }-->
+
+<!--        .form-group{-->
+<!--            position:relative;-->
+<!--        }-->
+
+<!--        .form-group i{-->
+<!--            position:absolute;-->
+<!--            top:74%;-->
+<!--            transform: translateY(-50%);-->
+<!--            left: 15px;-->
+<!--            color: #d1d3e2;-->
+<!--        }-->
+
+<!--        .form-group input,.form-group textarea{-->
+<!--            padding-left : 2.5rem;-->
+<!--        }-->
+
+<!--        .alreadyhaveaccount {-->
+<!--            text-align: center;-->
+<!--            margin-top: 20px-->
+<!--        }-->
+
+<!--        .alreadyhaveaccount a {-->
+<!--            text-decoration: none;-->
+<!--        }-->
+
+<!--        .alreadyhaveaccount a:hover {-->
+<!--            text-decoration: underline;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+
+<!--<body>-->
+<!--<div class="container">-->
+<!--        <div class="form-container">-->
+<!--            <div class="form-title">-->
+<!--                <h2>-->
+<!--                    <i class="fas fa-briefcase me-2"></i>Register Your Company-->
+<!--                </h2>-->
+<!--            </div>-->
+<!--            <div th:if="${error}" class="alert alert-danger" role="alert">-->
+<!--            <i class="fas fa-exclamation-circle me-2"></i>-->
+<!--            <span th:text="${error}"></span>-->
+<!--        </div>-->
+<!--        <form method="post" th:action="@{/company/getotp}" onsubmit="return checkPasswords()" th:object="${comdata}"-->
+<!--              enctype="multipart/form-data">-->
+
+<!--            <div class="form-group mb-3">-->
+<!--                <label class="form-label" for="companyname">Company name</label>-->
+<!--                <i class="fas fa-building"></i>-->
+<!--                <input type="text" id="companyname" th:value="${comdata.companyname}" onkeyup="checkErrorMessage()"-->
+<!--                       name="companyname" class="form-control" placeholder="Enter company name" required>-->
+<!--                <p th:each="err : ${#fields.errors('companyname')}" th:text="${err}" style="color:red;"-->
+<!--                   id="companynameerrormessage"></p>-->
+<!--            </div>-->
+
+<!--            <div class="form-group mb-3">-->
+<!--                <label class="form-label" for="email">Email</label>-->
+<!--                <i class="fas fa-envelope"></i>-->
+<!--                <input type="text" id="email" th:value="${comdata.email}" onkeyup="checkErrorMessage()" name="email"-->
+<!--                       class="form-control" placeholder="Enter email address" required>-->
+<!--                <p th:each="err : ${#fields.errors('email')}" th:text="${err}" style="color:red;"-->
+<!--                   id="emailerrormessage"></p>-->
+<!--            </div>-->
+<!--            <div th:if="${error}" class="alert alert-danger" role="alert">-->
+<!--                <i class="fas fa-exclamation-circle me-2"></i>-->
+<!--                <span th:text="${error}"></span>-->
+<!--            </div>-->
+
+<!--            <div class="form-group mb-3">-->
+<!--                <label class="form-label" for="contact">Contact</label>-->
+<!--                <i class="fas fa-phone"></i>-->
+<!--                <input type="text" id="contact" th:value="${comdata.contact}" name="contact"-->
+<!--                       onkeyup="checkErrorMessage()" class="form-control" placeholder="Enter contact number" required>-->
+<!--                <p th:each="err : ${#fields.errors('contact')}" th:text="${err}" style="color:red;"-->
+<!--                   id="contacterrormessage"></p>-->
+<!--            </div>-->
+<!--            <div class="form-group mb-3">-->
+<!--                <label class="form-label" for="address">Company Address</label>-->
+<!--                <i class="fas fa-map-marker-alt"></i>-->
+<!--                <textarea id="address" name="address" th:value="${comdata.address}" class="form-control"-->
+<!--                          onkeyup="checkErrorMessage()" placeholder="Enter company address" required></textarea>-->
+<!--                <p th:each="err : ${#fields.errors('address')}" th:text="${err}" style="color:red;"-->
+<!--                   id="addresserrormessage"></p>-->
+<!--            </div>-->
+<!--            <div class="form-group mb-3">-->
+<!--                <label class="form-label" for="description">Company Description</label>-->
+<!--                <i class="fas fa-info-circle"></i>-->
+<!--                <textarea id="description" th:value="${comdata.description}" name="description" class="form-control"-->
+<!--                          onkeyup="checkErrorMessage()" placeholder="Enter company description" required></textarea>-->
+<!--                <p th:each="err : ${#fields.errors('description')}" th:text="${err}" style="color:red;"-->
+<!--                   id="descriptionerrormessage"></p>-->
+<!--            </div>-->
+<!--            <div class="form-group mb-3">-->
+<!--                <label class="form-label" for="companylogo">Company Logo</label>-->
+<!--                <i class="fas fa-upload"></i>-->
+<!--                <input type="file" id="companylogo" name="company_logo" class="form-control" required>-->
+<!--            </div>-->
+<!--            <div class="form-group  mb-3 ">-->
+<!--                <label for="password" class="form-label">Create Password</label>-->
+<!--                <i class="fas fa-lock"></i>-->
+<!--                <input type="password" th:value="${comdata.password}" onkeyup="checkErrorMessage()"-->
+<!--                       class="form-control" id="password" name="password" placeholder="Enter password" required>-->
+<!--                <p th:each="err : ${#fields.errors('password')}" th:text="${err}" style="color:red;"-->
+<!--                   id="passworderrormessage"></p>-->
+<!--                <div>-->
+<!--                    <ul id="error">-->
+<!--                    </ul>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="form-group  mb-3">-->
+<!--                <label for="confirm-password" class="form-label">Confirm Password</label>-->
+<!--                <i class="fas fa-lock"></i>-->
+<!--                <input type="password" onkeyup="checkErrorMessage()" class="form-control" id="confirm-password"-->
+<!--                       name="confirm-password" placeholder="Enter confirm password" required>-->
+<!--                <p id="err_confirmpassword" style="color:red;"></p>-->
+<!--            </div>-->
+<!--            <div class="mb-3">-->
+<!--                <input type="checkbox" class="form-check-input" id="agreement" name="agreement" required>I agree to abide by all terms and-->
+<!--                policies.-->
+<!--            </div>-->
+<!--            <button type="submit" class="btn btn-primary register-button">-->
+<!--                <i class="fas fa-paper-plane me-2"></i>Register-->
+<!--            </button>-->
+<!--        </form>-->
+<!--        <div class="alreadyhaveaccount">-->
+<!--            <p>Already have an account? <a th:href="@{/company/companylogin}">Login</a></p>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--</div>-->
+<!--<script>-->
+<!--    function checkPasswords(){-->
+<!--        const pass1 = document.getElementById('password').value;-->
+<!--        const pass2 = document.getElementById('confirm-password').value;-->
+<!--        const err= document.getElementById('err_confirmpassword');-->
+<!--        console.log("Password 1: " + pass1);-->
+<!--        console.log("Password 2: " + pass2);-->
+<!--        if (pass1 === pass2) {-->
+<!--                console.log("Passwords match.");-->
+<!--                err.innerHTML="";-->
+<!--                return true;-->
+<!--            } else {-->
+<!--                console.log("Passwords do not match.");-->
+<!--                err.innerHTML="Passwords do not match.";-->
+<!--                return false;-->
+<!--            }-->
+<!--    }-->
+<!--    function checkErrorMessage(){-->
+<!--        const companynamemessage=document.getElementById('companyname').value;-->
+<!--        const emailmessage=document.getElementById('email').value;-->
+<!--        const contactmessage=document.getElementById('contact').value;-->
+<!--        const addressmessage=document.getElementById('address').value;-->
+<!--        const descriptionmessage=document.getElementById('description').value;-->
+<!--        const pass1 = document.getElementById('password').value;-->
+<!--        const pass2 = document.getElementById('confirm-password').value;-->
+<!--        const err= document.getElementById('err_confirmpassword');-->
+
+<!--        if(companynamemessage.length>0){-->
+<!--            document.getElementById('companynameerrormessage').innerHTML="";-->
+<!--        }-->
+<!--        if(emailmessage.length>0){-->
+<!--           document.getElementById('emailerrormessage').innerHTML="";-->
+<!--        }-->
+<!--        if(contactmessage.length>0){-->
+<!--            document.getElementById('contacterrormessage').innerHTML="";-->
+<!--        }-->
+<!--        if(addressmessage.length>0){-->
+<!--            document.getElementById('addresserrormessage').innerHTML="";-->
+<!--        }-->
+<!--        if(descriptionmessage.length>0){-->
+<!--            document.getElementById('descriptionerrormessage').innerHTML="";-->
+<!--        }-->
+
+<!--        if(pass1.length>0){-->
+<!--                document.getElementById('passworderrormessage').innerHTML="";-->
+<!--        }-->
+
+<!--          if (pass1 === pass2) {-->
+<!--                console.log("Passwords match.");-->
+<!--                err.innerHTML="";-->
+<!--          } else{-->
+<!--                 console.log("Passwords do not match.");-->
+<!--                 err.innerHTML="Passwords do not match.";-->
+<!--          }-->
+<!--    }-->
+
+<!--    document.getElementById('password').addEventListener('keyup', function () {-->
+<!--        const password = document.getElementById('password');-->
+<!--        const errorElement = document.getElementById('error');-->
+<!--        errorElement.innerHTML = "";-->
+<!--        // Validation rules-->
+<!--        const rules = [-->
+<!--            {-->
+<!--                regex: /.{8,}/,-->
+<!--                message: "Password must be at least 8 characters long.",-->
+<!--            },-->
+<!--            {-->
+<!--                regex: /[A-Z]/,-->
+<!--                message: "Password must contain at least one uppercase letter.",-->
+<!--            },-->
+<!--            {-->
+<!--                regex: /[a-z]/,-->
+<!--                message: "Password must contain at least one lowercase letter.",-->
+<!--            },-->
+<!--            {-->
+<!--                regex: /\d/,-->
+<!--                message: "Password must contain at least one number.",-->
+<!--            },-->
+<!--            {-->
+<!--                regex: /[@$!%*?&]/,-->
+<!--                message: "Password must contain at least one special character (@, $, !, %, *, ?, &).",-->
+<!--            },-->
+<!--        ];-->
+
+<!--        rules.forEach((rule) => {-->
+<!--            const li = document.createElement("li");-->
+<!--            li.textContent = rule.message;-->
+<!--            if (!rule.regex.test(password.value)) {-->
+<!--                li.style.color = "red";-->
+<!--            } else {-->
+<!--                li.style.color = "green";-->
+<!--            }-->
+<!--            errorElement.appendChild(li);-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->
+<!--<script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js}"></script>-->
+
+<!--</body>-->
+
+<!--</html>-->
