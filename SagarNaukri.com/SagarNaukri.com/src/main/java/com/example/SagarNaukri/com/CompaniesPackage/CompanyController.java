@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalTime;
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -199,6 +198,13 @@ public class CompanyController {
         return "CompaniesHTML/updatecompany";
     }
 
+    @GetMapping("/company/profile")
+    public String getCompanyProfile(HttpSession session, Model model) {
+        Company company = (Company) session.getAttribute("comdata");
+        model.addAttribute("comdata", company);
+        return "CompaniesHTML/companyprofile";
+    }
+
     @PostMapping("company/getcompanyupdate")
     public String getCompanyUpdate(@Valid @ModelAttribute("comdata") Company company, BindingResult bindingResult, HttpSession session, Model model) {
         if (bindingResult.hasErrors()) {
@@ -207,9 +213,6 @@ public class CompanyController {
         }
         Company company1 = (Company) session.getAttribute("comdata");
         System.out.println("Company Id : " + company1.getCompanyid());
-        int totalJobs = jobsRepository.getCountJobs(company.getCompanyid());
-        model.addAttribute("totaljobs", totalJobs);
-
         Company company2 = companyRepository.findById(company1.getCompanyid()).orElse(null);
         if (company2 == null) {
             model.addAttribute("error", "Id not found!");
@@ -227,6 +230,7 @@ public class CompanyController {
         model.addAttribute("updated", "Company Info Updated");
         model.addAttribute("comdata", company2);
         session.setAttribute("comdata", company2);
+        model.addAttribute("totaljobs", jobsRepository.getCountJobs(company2.getCompanyid()));
         return "CompaniesHTML/companydashboard";
     }
 
@@ -294,6 +298,21 @@ public class CompanyController {
         companyRepository.getResetPassword(email, newPassword);
         model.addAttribute("passwordUpdated", "Password Updated");
         return "CompaniesHTML/companylogin";
+    }
+
+    @PostMapping("/company/profile/update")
+    public String getUpdateProfileImage(@RequestParam()MultipartFile file,HttpSession session,Model model){
+        try {
+            Company company=(Company) session.getAttribute("comdata");
+            companyLogoService.getLogoUpdate(file.getBytes(),company);
+            model.addAttribute("comdata", company);
+            model.addAttribute("profileUpdated","updated");
+            return "CompaniesHTML/companyprofile";
+        }catch(Exception e){
+            System.out.println("Error is "+e);
+            return "CompaniesHTML/companyprofile";
+        }
+
     }
 
 }
