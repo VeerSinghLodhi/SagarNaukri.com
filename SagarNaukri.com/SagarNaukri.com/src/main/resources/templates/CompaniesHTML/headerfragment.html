@@ -3,39 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <style>
-        .profile-img {
-           width: 100px;
-           height: 100px;
-           object-fit: cover;
-           border: 3px solid var(--primary-color);
-       }
-       .sidebar {
-          background-color: white;
-          border-radius: 10px;
-          transition: transform 0.3s;
-          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      }
-      .sidebar:hover{
-          transform: translateY(-5px);
-      }
-      .sidebar-link {
-         color: var(--secondary-color);
-          font-weight: 500;
-          transition: color 0.3s ease, border-left 0.3s ease;
-      }
 
-          .sidebar-link.active {
-              color: var(--primary-color);
-              border-left: 3px solid var(--primary-color);
-          }
-    </style>
 </head>
 <body>
 <div th:fragment="siteheader(comdata)" >
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
         <div class="container">
-            <a class="navbar-brand" href="#"><img th:src="@{../Images/websitelogo.png}" width="45px" height="45px">JobSagar</a>
+            <a class="navbar-brand" href="#" style="color:#4e73df;"><img th:src="@{../Images/websitelogo.png}" width="45px" height="45px">JobSagar</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                     aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -61,17 +35,17 @@
                            data-bs-toggle="dropdown">
                             <img th:if="${comdata.companylogo != null}" th:src="@{/companylogo}"
                                  class="rounded-circle me-2" width="40" height="40">
-                            <img th:unless="${comdata.companylogo != null}"
-                                 src="https://ui-avatars.com/api/?name=John+Doe&size=150&background=random" class="rounded-circle me-2"
-                                 width="40" height="40">
+                            <div th:unless="${comdata.companylogo != null}">
+                                 <i class="fas fa-user-circle rounded-circle me-2 fs-1"></i>
+                            </div>
                             <span class="d-none d-sm-inline text-dark" th:text="${comdata.companyname}"></span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" th:href="@{/company/update}">Company Profile</a></li>
+                            <li><a class="dropdown-item" th:href="@{/company/profile}"><i class="fas fa-user me-2"></i>Company Profile</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item" th:href="@{/logout}">Sign out</a></li>
+                            <li><a class="dropdown-item" th:href="@{/logout}"><i class="fas fa-sign-in-alt me-2"></i>Sign out</a></li>
                         </ul>
                     </div>
                 </div>
@@ -85,8 +59,8 @@
         <div class="sidebar p-3 sticky-top">
             <div class="text-center mb-3">
                 <div class="text-center mb-3">
-                    <img th:if="${comdata.companylogo != null}" th:src="@{/companylogo}"
-                         class="profile-img rounded-circle mb-2" alt="Profile Picture">
+                    <a th:href="@{/company/profile}"><img th:if="${comdata.companylogo != null}" th:src="@{/companylogo}"
+                         class="profile-img rounded-circle mb-2" alt="Profile Picture"></a>
 
                     <img th:unless="${comdata.companylogo != null}"
                          th:src="@{../Images/websitelogo.png}"
@@ -127,7 +101,15 @@
             </ul>
         </div>
     </div>
-
+    <script>
+        const links = document.querySelectorAll('.sidebar-link');
+        links.forEach(link => {
+        link.addEventListener('click', function () {
+            links.forEach(link => link.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+    </script>
 </div>
 </body>
 </html>
