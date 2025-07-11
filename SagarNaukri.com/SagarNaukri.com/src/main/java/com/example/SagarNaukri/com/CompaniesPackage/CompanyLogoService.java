@@ -23,4 +23,8 @@ public class CompanyLogoService {
         company.setJoining_date(joining_date);
         return companyRepository.save(company);
     }
+    public void getLogoUpdate(byte[] companylogo,Company company){
+        company.setCompanylogo(companylogo);
+        companyRepository.save(company);
+    }
 }
