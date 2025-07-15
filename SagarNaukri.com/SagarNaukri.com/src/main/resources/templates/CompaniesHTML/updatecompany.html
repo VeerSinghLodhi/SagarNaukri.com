@@ -114,64 +114,18 @@
     <!--    background-color: var(&#45;&#45;accent-color);-->
     <!--        transform: translateX(-1px);-->
     <!--    }-->*/
+
+        .input-group-text {
+      background-color: #f1f3f5;
+      border: none;
+    }
     </style>
 </head>
 
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-    <div class="container">
-        <a class="navbar-brand" href="#"><img th:src="@{../Images/websitelogo.png}" width="45px"
-                                              height="45px">JobSagar</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                    <a class="nav-link active" th:href="@{/back}">Dashboard</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="jobs.html">Jobs</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="applications.html">Applications</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " href="profile.html">Profile</a>
-                </li>
-            </ul>
-            <div class="d-flex align-items-center">
-                <div class="dropdown">
-                    <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" id="dropdownUser"
-                       data-bs-toggle="dropdown">
-                        <img th:if="${comdata.companylogo != null}" th:src="@{/companylogo}" class="rounded-circle me-2"
-                             width="40" height="40">
-                        <img th:unless="${comdata.companylogo != null}"
-                             src="https://ui-avatars.com/api/?name=John+Doe&size=150&background=random" class="rounded-circle me-2"
-                             width="40" height="40">
-                        <span class="d-none d-sm-inline text-dark" th:text="${comdata.companyname}"></span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" th:href="@{/company/update}">Company Profile</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item" th:href="@{/logout}">Sign out</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</nav>
+<div th:insert="CompaniesHTML/headerfragment :: siteheader(${comdata})"></div>
 <div class="container">
-    <!--    <div class="alreadyhaveaccount">-->
-    <!--        <a th:href="@{/back}" class="btn btn-outline-primary text-decoration-none btn-sm"> <i class="fa fa-arrow-left me-2"></i>Back</a>-->
-    <!--    </div>-->
     <div class="row">
-        <!--    <div class="col-lg-6">-->
-        <!--        <img src="../Images/img1.jpg" id="sideimage">-->
-        <!--    </div>-->
         <div class="col-lg-12">
             <div class="form-container">
                 <div class="form-title">
@@ -186,48 +140,86 @@
                 <form method="post" th:action="@{/company/getcompanyupdate}" onsubmit="return checkPasswords()"
                       th:object="${comdata}" enctype="multipart/form-data">
 
-                    <div class="form-group mb-3">
-                        <label class="form-label" for="companyname">Company name</label>
-                        <i class="fas fa-building"></i>
+<!--                    <div class="form-group mb-3">-->
+<!--                        <label class="form-label" for="companyname">Company name</label>-->
+<!--                        <i class="fas fa-building"></i>-->
+<!--                        <input type="text" id="companyname" th:value="${comdata.companyname}" onkeyup="checkErrorMessage()"-->
+<!--                               name="companyname" class="form-control" placeholder="Enter company name" required>-->
+<!--                        <p th:each="err : ${#fields.errors('companyname')}" th:text="${err}" style="color:red;"-->
+<!--                           id="companynameerrormessage"></p>-->
+<!--                    </div>-->
+
+                    <label class="form-label" for="companyname">Company name</label>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text"><i class="fas fa-building"></i></span>
                         <input type="text" id="companyname" th:value="${comdata.companyname}" onkeyup="checkErrorMessage()"
                                name="companyname" class="form-control" placeholder="Enter company name" required>
                         <p th:each="err : ${#fields.errors('companyname')}" th:text="${err}" style="color:red;"
                            id="companynameerrormessage"></p>
                     </div>
 
-                    <div class="form-group mb-3">
-                        <label class="form-label" for="email">Email</label>
-                        <i class="fas fa-envelope"></i>
-                        <input type="text" id="email" th:value="${comdata.email}" onkeyup="checkErrorMessage()" name="email"
-                               class="form-control" placeholder="Enter email address" required>
+<!--                    <div class="form-group mb-3">-->
+<!--                        <label class="form-label" for="email">Email</label>-->
+<!--                        <i class="fas fa-envelope"></i>-->
+<!--                        <input type="text" id="email" th:value="${comdata.email}"  name="email"-->
+<!--                               class="form-control"  readonly>-->
+<!--                        <p th:each="err : ${#fields.errors('email')}" th:text="${err}" style="color:red;" id="emailerrormessage">-->
+<!--                        </p>-->
+<!--                    </div>-->
+
+                    <label class="form-label">Email</label>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                        <input type="text" id="email" th:value="${comdata.email}"  name="email"
+                               class="form-control"  readonly>
                         <p th:each="err : ${#fields.errors('email')}" th:text="${err}" style="color:red;" id="emailerrormessage">
-                        </p>
-                    </div>
-                    <div th:if="${error}" class="alert alert-danger" role="alert">
-                        <i class="fas fa-exclamation-circle me-2"></i>
-                        <span th:text="${error}"></span>
                     </div>
 
-                    <div class="form-group mb-3">
-                        <label class="form-label" for="contact">Contact</label>
-                        <i class="fas fa-phone"></i>
+<!--                    <div class="form-group mb-3">-->
+<!--                        <label class="form-label" for="contact">Contact</label>-->
+<!--                        <i class="fas fa-phone"></i>-->
+<!--                        <input type="text" id="contact" th:value="${comdata.contact}" name="contact" onkeyup="checkErrorMessage()"-->
+<!--                               class="form-control" placeholder="Enter contact number" required>-->
+<!--                        <p th:each="err : ${#fields.errors('contact')}" th:text="${err}" style="color:red;"-->
+<!--                           id="contacterrormessage"></p>-->
+<!--                    </div>-->
+
+                    <label class="form-label">Contact</label>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text"><i class="fas fa-phone"></i></span>
                         <input type="text" id="contact" th:value="${comdata.contact}" name="contact" onkeyup="checkErrorMessage()"
                                class="form-control" placeholder="Enter contact number" required>
                         <p th:each="err : ${#fields.errors('contact')}" th:text="${err}" style="color:red;"
                            id="contacterrormessage"></p>
                     </div>
-                    <div class="form-group mb-3">
-                        <label class="form-label" for="address">Company Address</label>
-                        <i class="fas fa-map-marker-alt"></i>
+
+
+
+<!--                    <div class="form-group mb-3">-->
+<!--                        <label class="form-label" for="address">Company Address</label>-->
+<!--                        <i class="fas fa-map-marker-alt"></i>-->
+<!--                        <textarea id="address" name="address" th:value="${comdata.address}" th:text="${comdata.address}"-->
+<!--                                  class="form-control" onkeyup="checkErrorMessage()" placeholder="Enter company address"-->
+<!--                                  required></textarea>-->
+<!--                        <p th:each="err : ${#fields.errors('address')}" th:text="${err}" style="color:red;"-->
+<!--                           id="addresserrormessage"></p>-->
+<!--                    </div>-->
+
+                    <label class="form-label">Company Address</label>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
                         <textarea id="address" name="address" th:value="${comdata.address}" th:text="${comdata.address}"
                                   class="form-control" onkeyup="checkErrorMessage()" placeholder="Enter company address"
                                   required></textarea>
                         <p th:each="err : ${#fields.errors('address')}" th:text="${err}" style="color:red;"
                            id="addresserrormessage"></p>
                     </div>
-                    <div class="form-group mb-3">
-                        <label class="form-label" for="description">Company Description</label>
-                        <i class="fas fa-info-circle"></i>
+
+
+
+                    <label class="form-label">Company Description</label>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text"><i class="fas fa-info-circle"></i></span>
                         <textarea id="description" th:value="${comdata.description}" th:text="${comdata.description}"
                                   name="description" class="form-control" onkeyup="checkErrorMessage()"
                                   placeholder="Enter company description" required></textarea>
