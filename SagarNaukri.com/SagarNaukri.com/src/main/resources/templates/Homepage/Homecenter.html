@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" th:replace="~{/Homepage/ProjectHome_page::layout(~{::section})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .carousel-item {
+              height: 100vh;
+              background-size: cover;
+              background-position: center;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              color: white;
+              text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+            }
+
+            .carousel-caption-custom {
+              background-color: rgba(0, 0, 0, 0.6);
+              padding: 30px;
+              border-radius: 10px;
+              width: 100%;
+              max-width: 1000px;
+            }
+
+            .form-inline-group {
+              display: flex;
+              flex-wrap: nowrap;
+              gap: 10px;
+              margin-top: 20px;
+            }
+
+            .form-inline-group .form-control,
+            .form-inline-group .form-select,
+            .form-inline-group .input-group {
+              flex: 1;
+              min-width: 150px;
+            }
+
+            @media (max-width: 768px) {
+              .form-inline-group {
+                flex-direction: column;
+              }
+            }
+    </style>
+</head>
+<body>
+<section id="jobCarousel" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+        <div class="carousel-item" th:style="'background-image: url(' + @{/Images/Home2.jpg} +');height :540px;'">
+            <div class="container text-center carousel-caption-custom">
+                <h1 class="display-5 fw-bold">Build a Career You Love</h1>
+                <p class="lead">Thousands of openings at your fingertips.</p>
+                <form class="form-inline-group">
+                    <input type="text" class="form-control" placeholder="Search Job Titles..." />
+                    <select class="form-select">
+                        <option value="">Experience</option>
+                        <option value="0-1">0-1 Year</option>
+                        <option value="1-3">1-3 Years</option>
+                        <option value="3-5">3-5 Years</option>
+                        <option value="5+">5+ Years</option>
+                    </select>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-geo-alt-fill"></i></span>
+                        <input type="text" class="form-control" placeholder="Location" />
+                    </div>
+                    <button type="submit" class="btn btn-warning">Search</button>
+                </form>
+            </div>
+        </div>
+
+
+    </div>
+
+    <!-- Carousel Controls -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#jobCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#jobCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+    </button>
+</section>
+</body>
+</html>
