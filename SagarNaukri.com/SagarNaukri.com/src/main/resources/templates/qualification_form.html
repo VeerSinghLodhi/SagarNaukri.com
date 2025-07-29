@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add/Edit Qualification</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    body {
+        font-family: 'Lato', sans-serif;
+        background-color: #f8f9fa;
+        color: #333;
+    }
+    .container {
+        margin-top: 50px;
+    }
+    .card {
+        border-radius: 12px;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
+        border: none;
+    }
+    .card-header {
+        background-color: #3498db;
+        color: white;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+        padding: 1.25rem 1.5rem;
+    }
+    .form-label {
+        font-weight: 600;
+        color: #555;
+    }
+    .btn-primary {
+        background-color: #3498db;
+        border-color: #3498db;
+    }
+    .btn-primary:hover {
+        background-color: #2980b9;
+        border-color: #2980b9;
+    }
+    .alert {
+        border-radius: 8px;
+    }
+    .form-control.is-invalid + .invalid-feedback,
+    .form-select.is-invalid + .invalid-feedback {
+        display: block;
+    }
+        }
+
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--primary-color) !important;
+            font-size: 1.5rem;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-brand .company-logo-nav {
+            height: 35px;
+            margin-right: 10px;
+        }
+
+
+
+
+
+
+
+
+
+     .card {
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            margin-bottom: 25px;
+            border: none;
+            overflow: hidden;
+        }
+
+        .card-header {
+            background-color: white;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 1.25rem 1.5rem;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .btn-outline-primary {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+            border-color: #2980b9;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            border-color: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
+        }
+
+        h2 {
+            color: var(--secondary-color);
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        h5, h6 {
+            font-weight: 600;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+
+        .form-control {
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            border: 1px solid #ced4da;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+        }
+
+        .text-danger {
+            font-size: 0.875em;
+            margin-top: 0.25rem;
+        }
+
+        .dropdown-menu {
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border: none;
+        }
+
+        .dropdown-item {
+            padding: 0.5rem 1.5rem;
+        }
+
+        .dropdown-item:hover {
+            background-color: rgba(52, 152, 219, 0.1);
+            color: var(--primary-color);
+        }
+
+        .dropdown-divider {
+            border-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-link {
+            transition: all 0.2s ease;
+        }
+
+
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm ">
+  <div class="container">
+    <a class="navbar-brand" href="#">
+      <img th:src="@{/websitelogo.png}" alt="Company Logo" class="company-logo-nav">
+      JobSeeker
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/jobseeker/dashboard}">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Jobs</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Applications</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" th:href="@{/jobseeker/dashboard}">Profile</a>
+        </li>
+      </ul>
+      <div class="d-flex align-items-center">
+        <div class="dropdown">
+          <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown">
+            <img th:if="${jobSeeker != null and jobSeeker.profilePicture != null}"
+                 th:src="@{/jobseeker/profile-picture}"
+                 alt="Profile Picture"
+                 class="rounded-circle me-2" width="40" height="40">
+            <img th:unless="${jobSeeker != null and jobSeeker.profilePicture != null}"
+                 src="/images/default-profile.png"
+                 alt="Default Profile Picture"
+                 class="rounded-circle me-2" width="40" height="40">
+
+            <span class="d-none d-sm-inline" th:text="${jobSeeker != null ? jobSeeker.name : 'Job Seeker'}">Job Seeker</span>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" th:href="@{/jobseeker/edit}"><i class="fas fa-user-edit me-2"></i>Profile</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" th:href="@{/jobseeker/logout}"><i class="fas fa-sign-out-alt me-2"></i>Sign out</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <h4 class="mb-0">
+        <i class="fas fa-graduation-cap me-2"></i>
+        <span th:text="${qualification.id != null ? 'Edit Qualification' : 'Add New Qualification'}">Add New Qualification</span>
+      </h4>
+    </div>
+    <div class="card-body">
+      <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="fas fa-check-circle me-2"></i><span th:text="${successMessage}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="fas fa-exclamation-circle me-2"></i><span th:text="${errorMessage}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+
+      <form th:action="@{/jobseeker/save-qualification}" th:object="${qualification}" method="post">
+        <input type="hidden" th:field="*{id}" th:if="${qualification.id != null}">
+        <input type="hidden" th:field="*{jobSeeker.JSId}">
+        <input type="hidden" id="instituteSelectValue" name="instituteSelect" th:value="${qualification.institute?.id != null ? qualification.institute.id : 'NEW'}">
+
+        <div class="mb-3">
+          <label for="type" class="form-label">Qualification Type</label>
+          <select id="type" class="form-select" th:field="*{type}" required>
+            <option value="">Select Type</option>
+            <option th:each="type : ${qualificationTypes}"
+                    th:value="${type}"
+                    th:text="${type.displayName}"></option>
+          </select>
+          <div class="invalid-feedback" th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></div>
+          <div class="invalid-feedback" th:unless="${#fields.hasErrors('type')}">Please select a qualification type.</div>
+        </div>
+
+        <div class="mb-3">
+          <label for="degreeProgram" class="form-label">Degree Program / Certification Name</label>
+          <input type="text" id="degreeProgram" class="form-control" th:field="*{degreeProgram}" required
+                 placeholder="e.g., Bachelor of Technology, AWS Certified Developer" maxlength="255">
+          <div class="invalid-feedback" th:if="${#fields.hasErrors('degreeProgram')}" th:errors="*{degreeProgram}"></div>
+          <div class="invalid-feedback" th:unless="${#fields.hasErrors('degreeProgram')}">Degree Program / Certification Name is required.</div>
+        </div>
+
+        <div class="mb-3">
+          <label for="majorSpecialization" class="form-label">Major / Specialization (Optional)</label>
+          <input type="text" id="majorSpecialization" class="form-control" th:field="*{majorSpecialization}"
+                 placeholder="e.g., Computer Science, Data Science" maxlength="255">
+          <div class="invalid-feedback" th:if="${#fields.hasErrors('majorSpecialization')}" th:errors="*{majorSpecialization}"></div>
+        </div>
+
+        <div class="mb-3">
+          <label for="instituteSelect" class="form-label">Institute / University</label>
+          <select id="instituteSelect" class="form-select" required>
+            <option value="">Select Institute</option>
+            <option th:each="inst : ${institutes}"
+                    th:value="${inst.id}"
+                    th:text="${inst.name}"
+                    th:selected="${qualification.institute != null and qualification.institute.id == inst.id}"></option>
+            <option value="NEW">Other (Add New Institute)</option>
+          </select>
+          <input type="hidden" id="instituteId" th:field="*{institute.id}" />
+          <div class="invalid-feedback" id="instituteSelectFeedback" th:if="${#fields.hasErrors('institute')}" th:errors="*{institute}"></div>
+          <div class="invalid-feedback" id="instituteSelectFeedbackDefault" th:unless="${#fields.hasErrors('institute')}">Please select an institute or add a new one.</div>
+        </div>
+
+        <div id="newInstituteGroup" class="mb-3" style="display: none;">
+          <label for="newInstituteName" class="form-label">New Institute Name</label>
+          <input type="text" id="newInstituteName" name="newInstituteName" class="form-control"
+                 th:value="${qualification.institute?.id == null ? qualification.institute?.name : ''}"
+                 placeholder="Enter new institute name">
+          <div class="invalid-feedback" id="newInstituteNameFeedback">Please provide a name for the new institute.</div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="startDate" class="form-label">Start Date</label>
+            <input type="date" id="startDate" class="form-control" th:field="*{startDate}" required>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}"></div>
+            <div class="invalid-feedback" th:unless="${#fields.hasErrors('startDate')}">Please provide a valid start date.</div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="endDate" class="form-label">End Date (Optional)</label>
+            <input type="date" id="endDate" class="form-control" th:field="*{endDate}">
+            <div class="form-text">Leave blank if currently pursuing.</div>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}"></div>
+            <div class="invalid-feedback" th:unless="${#fields.hasErrors('endDate')}">End date cannot be before start date.</div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="gradeGPA" class="form-label">Grade / GPA (Optional)</label>
+          <input type="text" id="gradeGPA" class="form-control" th:field="*{gradeGPA}"
+                 placeholder="e.g., 3.8/4.0, A+, First Class" maxlength="50">
+          <div class="invalid-feedback" th:if="${#fields.hasErrors('gradeGPA')}" th:errors="*{gradeGPA}"></div>
+        </div>
+
+        <div class="mb-3">
+          <label for="description" class="form-label">Description (Optional)</label>
+          <textarea id="description" class="form-control" rows="3" th:field="*{description}"
+                    placeholder="e.g., Relevant coursework, projects, achievements" maxlength="1000"></textarea>
+          <div class="invalid-feedback" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+        </div>
+
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+          <a th:href="@{/jobseeker/dashboard#qualifications}" class="btn btn-secondary me-2">
+            <i class="fas fa-times-circle me-1"></i> Cancel
+          </a>
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-save me-1"></i>
+            <span th:text="${qualification.id != null ? 'Update Qualification' : 'Save Qualification'}">Save Qualification</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+      const instituteSelect = document.getElementById('instituteSelect');
+      const newInstituteGroup = document.getElementById('newInstituteGroup');
+      const newInstituteNameInput = document.getElementById('newInstituteName');
+      const instituteIdInput = document.getElementById('instituteId');
+      const instituteSelectValueInput = document.getElementById('instituteSelectValue');
+
+      // Handle the "Other (Add New Institute)" option
+      instituteSelect.addEventListener('change', function() {
+          if (this.value === 'NEW') {
+              newInstituteGroup.style.display = 'block';
+              newInstituteNameInput.setAttribute('required', 'required');
+              newInstituteNameInput.focus();
+              instituteIdInput.value = '';
+              instituteSelectValueInput.value = 'NEW';
+          } else {
+              newInstituteGroup.style.display = 'none';
+              newInstituteNameInput.removeAttribute('required');
+              newInstituteNameInput.value = '';
+              instituteIdInput.value = this.value;
+              instituteSelectValueInput.value = this.value;
+          }
+      });
+
+      // Initialize state based on existing data
+      const initialInstituteId = instituteIdInput.value;
+      const initialNewInstituteName = newInstituteNameInput.value;
+
+      if (initialInstituteId && initialInstituteId !== 'null' && initialInstituteId.trim() !== '') {
+          instituteSelect.value = initialInstituteId;
+          newInstituteGroup.style.display = 'none';
+          instituteSelectValueInput.value = initialInstituteId;
+      } else if (initialNewInstituteName && initialNewInstituteName.trim() !== '') {
+          instituteSelect.value = 'NEW';
+          newInstituteGroup.style.display = 'block';
+          newInstituteNameInput.setAttribute('required', 'required');
+          instituteIdInput.value = '';
+          instituteSelectValueInput.value = 'NEW';
+      } else {
+          instituteSelect.value = '';
+          newInstituteGroup.style.display = 'none';
+          instituteSelectValueInput.value = '';
+      }
+
+      // Handle server-side validation errors
+      if (document.querySelector('#newInstituteNameFeedback.invalid-feedback').textContent.trim() !== '') {
+          newInstituteGroup.style.display = 'block';
+          instituteSelect.value = 'NEW';
+          instituteSelectValueInput.value = 'NEW';
+      }
+  });
+</script>
+</body>
+</html>
