@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Manage Your Skills</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+        --primary-color: #3498db;
+        --secondary-color: #2c3e50;
+        --accent-color: #e74c3c;
+        --light-bg: #f8f9fa;
+        --success-color: #2ecc71;
+        --warning-color: #f39c12;
+        --dark-color: #343a40;
+    }
+
+    body {
+        font-family: 'Lato', sans-serif;
+        background-color: var(--light-bg);
+        color: #333;
+        line-height: 1.6;
+    }
+
+    .container {
+        max-width: 1200px;
+    }
+
+    /* Card consistency with dashboard */
+    .card {
+        border-radius: 12px;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+        margin-bottom: 25px; /* Added for consistent spacing */
+        border: none;
+        overflow: hidden;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-header {
+        background-color: white; /* Dashboard's default card header bg */
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        padding: 1.25rem 1.5rem;
+        font-size: 1.25rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        color: var(--secondary-color); /* Matches dashboard text color */
+    }
+
+    /* Specific card header colors for consistency */
+    .card-header.bg-primary {
+        background-color: var(--primary-color) !important; /* Force primary color */
+        color: white !important;
+    }
+    .card-header.bg-success {
+        background-color: var(--success-color) !important; /* Force success color */
+        color: white !important;
+    }
+    .card-header.bg-info {
+        background-color: var(--primary-color) !important; /* Using primary for info to match theme */
+        color: white !important;
+    }
+
+    .skill-card {
+        transition: all 0.3s ease;
+        border: 1px solid #e0e0e0; /* Subtle border for individual skill cards */
+        border-radius: 10px;
+        background-color: #fff;
+        position: relative;
+        overflow: hidden;
+    }
+    .skill-card:hover {
+        transform: translateY(-5px); /* Less aggressive than main cards */
+        box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+    }
+    .skill-card .card-title {
+        color: var(--secondary-color);
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .badge-category {
+        font-size: 0.75rem;
+        padding: 0.4em 0.7em;
+        border-radius: 5px;
+        background-color: #e9ecef; /* Light gray from dashboard */
+        color: #6c757d;
+        font-weight: 500;
+    }
+
+    /* Button consistency with dashboard */
+    .btn {
+        border-radius: 8px;
+        font-weight: 600; /* Slightly bolder text */
+        transition: all 0.2s ease;
+    }
+    .btn-danger {
+        background-color: var(--accent-color);
+        border-color: var(--accent-color);
+    }
+    .btn-danger:hover {
+        background-color: #c0392b;
+        border-color: #c0392b;
+    }
+    .btn-success {
+        background-color: var(--success-color);
+        border-color: var(--success-color);
+    }
+    .btn-success:hover {
+        background-color: #27ae60;
+        border-color: #27ae60;
+    }
+    .btn-primary {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+    }
+    .btn-primary:hover {
+        background-color: #2980b9;
+        border-color: #2980b9;
+    }
+    .btn-outline-secondary { /* Used for Suggest button */
+        border-color: var(--primary-color); /* Use primary color for outline */
+        color: var(--primary-color);
+    }
+    .btn-outline-secondary:hover {
+        background-color: var(--primary-color);
+        color: white;
+    }
+    .btn-outline-primary { /* For manage/edit buttons */
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+    }
+    .btn-outline-primary:hover {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
+
+    /* Form element consistency */
+    .form-control, .form-select {
+        border-radius: 8px;
+        padding: 0.75rem 1rem;
+        border: 1px solid #ddd;
+        background-color: #fff; /* Ensure white background */
+    }
+    .form-control:focus, .form-select:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25); /* Primary color shadow */
+    }
+
+    #suggestionsContainer {
+        display: none;
+        background-color: #eaf6ff; /* Lighter primary tint */
+        border: 1px solid var(--primary-color);
+        border-radius: 8px;
+        padding: 1rem;
+    }
+    .suggestion-badge {
+        cursor: pointer;
+        margin-right: 8px;
+        margin-bottom: 8px;
+        padding: 0.5em 0.9em;
+        border-radius: 20px;
+        background-color: var(--primary-color); /* Using primary color */
+        color: white;
+        font-weight: 500;
+        transition: background-color 0.2s ease;
+    }
+    .suggestion-badge:hover {
+        background-color: #2980b9; /* Darker primary on hover */
+    }
+    #suggestedCategory {
+        color: var(--primary-color); /* Highlight suggested category */
+    }
+
+    /* Alert consistency with dashboard */
+    .alert {
+        border-radius: 8px;
+        font-weight: 500;
+    }
+    .alert-success {
+        background-color: #d4edda;
+        border-color: #c3e6cb;
+        color: #155724;
+    }
+    .alert-danger {
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+        color: #721c24;
+    }
+    .alert-info {
+        background-color: #d1ecf1;
+        border-color: #bee5eb;
+        color: #0c5460;
+    }
+
+    .testing-mode-banner {
+        background-color: var(--warning-color); /* Use dashboard's warning color */
+        border-left: 5px solid #e74c3c; /* Accent color for the left border */
+        color: white; /* White text for contrast */
+        padding: 1rem 1.5rem;
+        border-radius: 8px;
+    }
+    .duplicate-skill-alert {
+        background-color: var(--accent-color); /* Use dashboard's accent color */
+        border-left: 5px solid #c0392b; /* Darker accent for border */
+        color: white; /* White text for contrast */
+        padding: 1rem 1.5rem;
+        border-radius: 8px;
+    }
+
+    #loadingSpinner {
+        display: none;
+        margin-left: 10px;
+        color: var(--primary-color); /* Use primary color for spinner */
+    }
+
+    /* Adjust input group for rounded corners */
+    .input-group .btn-outline-secondary {
+        border-top-right-radius: 8px;
+        border-bottom-right-radius: 8px;
+        border-left: 1px solid #ddd;
+    }
+    .input-group .form-control:not(:last-child) {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    /* Headings */
+    h1, h2, h3, h4, h5, h6 {
+        font-weight: 700; /* Match dashboard headings */
+        color: var(--secondary-color);
+    }
+
+    .lead {
+        color: #555;
+    }
+
+    .form-label {
+        font-weight: 600; /* Make labels slightly bolder */
+    }
+     .navbar {
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--primary-color) !important;
+            font-size: 1.5rem;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-brand .company-logo-nav {
+            height: 35px;
+            margin-right: 10px;
+        }
+
+
+  </style>
+</head>
+<body>
+<!--<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">-->
+<!--  <div class="container">-->
+<!--    <a class="navbar-brand" href="#">-->
+<!--      <img th:src="@{/websitelogo.png}" alt="Company Logo" class="company-logo-nav">-->
+<!--      JobSeeker-->
+<!--    </a>-->
+<!--    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">-->
+<!--      <span class="navbar-toggler-icon"></span>-->
+<!--    </button>-->
+<!--    <div class="collapse navbar-collapse" id="navbarNav">-->
+<!--      <ul class="navbar-nav me-auto">-->
+<!--        <li class="nav-item">-->
+<!--          <a class="nav-link" th:href="@{/jobseeker/dashboard}">Dashboard</a>-->
+<!--        </li>-->
+<!--        <li class="nav-item">-->
+<!--          <a class="nav-link" href="#">Jobs</a>-->
+<!--        </li>-->
+<!--        <li class="nav-item">-->
+<!--          <a class="nav-link" href="#">Applications</a>-->
+<!--        </li>-->
+<!--        <li class="nav-item">-->
+<!--          <a class="nav-link active" th:href="@{/jobseeker/dashboard}">Profile</a>-->
+<!--        </li>-->
+<!--      </ul>-->
+<!--      <div class="d-flex align-items-center">-->
+<!--        <div class="dropdown">-->
+<!--          <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown">-->
+<!--            <img th:if="${jobSeeker != null and jobSeeker.profilePicture != null}"-->
+<!--                 th:src="@{'/jobseeker/profile-picture/' + ${jobSeeker.id}}"-->
+<!--                 alt="Profile Picture"-->
+<!--                 class="rounded-circle me-2" width="40" height="40">-->
+<!--            <img th:unless="${jobSeeker != null and jobSeeker.profilePicture != null}"-->
+<!--                 src="/images/default-profile.png"-->
+<!--                 alt="Default Profile Picture"-->
+<!--                 class="rounded-circle me-2" width="40" height="40">-->
+
+<!--            <span class="d-none d-sm-inline" th:text="${jobSeeker != null ? jobSeeker.name : 'Job Seeker'}">Job Seeker</span>-->
+<!--          </a>-->
+<!--          <ul class="dropdown-menu dropdown-menu-end">-->
+<!--            <li><a class="dropdown-item" th:href="@{/jobseeker/edit}"><i class="fas fa-user-edit me-2"></i>Profile</a></li>-->
+<!--            <li><hr class="dropdown-divider"></li>-->
+<!--            <li><a class="dropdown-item" th:href="@{/jobseeker/logout}"><i class="fas fa-sign-out-alt me-2"></i>Sign out</a></li>-->
+<!--          </ul>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</nav>-->
+<div class="container py-5">
+  <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+    <i class="fas fa-check-circle me-2"></i>
+    <span th:text="${successMessage}"></span>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+    <i class="fas fa-exclamation-circle me-2"></i>
+    <span th:text="${errorMessage}"></span>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+
+<!--  <div th:if="${jobSeekerId != null and jobSeekerId != currentJobSeekerId}"-->
+<!--       class="alert testing-mode-banner mb-4">-->
+<!--    <i class="fas fa-flask me-2"></i>-->
+<!--    <strong>TESTING MODE</strong> - Managing skills for Job Seeker ID:-->
+<!--    <strong th:text="${jobSeekerId}"></strong>-->
+<!--  </div>-->
+
+  <div id="duplicateSkillAlert" class="alert duplicate-skill-alert mb-4" style="display: none;" role="alert">
+    <i class="fas fa-exclamation-triangle me-2"></i>
+    <span id="duplicateSkillMessage"></span>
+    <button type="button" class="btn-close" onclick="$('#duplicateSkillAlert').hide()" aria-label="Close"></button>
+  </div>
+
+<!--  <div class="row mb-5">-->
+<!--    <div class="col-12 text-center">-->
+<!--      <h1 class="display-5 fw-bold mb-3"><i class="fas fa-tools me-2 text-primary"></i>Manage Your Skills</h1>-->
+<!--      <p class="lead text-muted">Efficiently organize and update your professional competencies.</p>-->
+<!--    </div>-->
+<!--  </div>-->
+
+  <div class="row mb-5">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header bg-secondary text-white">
+          <i class="fas fa-list-check me-2"></i>Your Current Skills
+        </div>
+        <div class="card-body p-4">
+          <div th:if="${#lists.isEmpty(jobSeekerSkills)}" class="alert alert-info text-center py-4">
+            <i class="fas fa-info-circle me-2"></i>You haven't added any skills yet. Start by adding some!
+          </div>
+          <div th:unless="${#lists.isEmpty(jobSeekerSkills)}" class="row">
+            <div th:each="jsSkill : ${jobSeekerSkills}" class="col-xl-3 col-lg-4 col-md-6 mb-4">
+              <div class="card skill-card h-100">
+                <div class="card-body d-flex flex-column">
+                  <div class="d-flex justify-content-between align-items-start mb-2">
+                    <div>
+                      <h5 class="card-title mb-1" th:text="${jsSkill.skill.name}"></h5>
+                      <span class="badge badge-category"
+                            th:text="${jsSkill.skill.category}"></span>
+                    </div>
+                    <form th:action="@{/jobseeker/skills/remove}" method="post">
+                      <input type="hidden" name="skillId" th:value="${jsSkill.skill.id}">
+                      <button type="submit" class="btn btn-sm btn-danger"
+                              onclick="return confirm('Are you sure you want to remove this skill?');">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-lg-6">
+      <div class="card h-100">
+        <div class="card-header bg-success text-white">
+          <i class="fas fa-plus-circle me-2"></i>Add Existing Skill
+        </div>
+        <div class="card-body p-4">
+          <form th:action="@{${jobSeekerId != null ?
+                '/jobseeker/skills/add/' + jobSeekerId :
+                '/jobseeker/skills/add'}}"
+                method="post" id="existingSkillForm">
+            <div class="mb-3">
+              <label for="skillSelect" class="form-label fw-bold">Select from existing skills:</label>
+              <select class="form-select" id="skillSelect" name="skillId" required>
+                <option value="">-- Select a skill --</option>
+                <option th:each="skill : ${allSkills}"
+                        th:value="${skill.id}"
+                        th:text="${skill.name + ' (' + skill.category + ')'}"></option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-success w-100 py-2">
+              <i class="fas fa-plus me-1"></i> Add Selected Skill
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="card h-100">
+        <div class="card-header bg-info text-white">
+          <i class="fas fa-lightbulb me-2"></i>Add New Skill
+        </div>
+        <div class="card-body p-4">
+          <form th:action="@{${jobSeekerId != null ?
+                '/jobseeker/skills/add/' + jobSeekerId :
+                '/jobseeker/skills/add'}}"
+                method="post" id="newSkillForm">
+            <div class="mb-3">
+              <label for="newSkillName" class="form-label fw-bold">Skill Name</label>
+              <div class="input-group">
+                <input type="text" class="form-control" id="newSkillName"
+                       name="newSkillName" placeholder="Enter a new skill (e.g., Python, Marketing)" required>
+                <button class="btn btn-outline-secondary" type="button"
+                        id="getSuggestionsBtn" title="Get AI-powered suggestions for category and related skills">
+                  <i class="fas fa-magic me-1"></i>Suggest
+                </button>
+                <span id="loadingSpinner" class="spinner-border spinner-border-sm align-middle"></span>
+              </div>
+              <div class="form-text text-muted">If the skill already exists, it will be added to your profile.</div>
+            </div>
+
+            <div id="suggestionsContainer" class="mb-3">
+              <div id="categorySuggestion" class="mb-2">
+                <small class="text-muted">Suggested category:</small>
+                <div id="suggestedCategory" class="fw-bold"></div>
+              </div>
+              <div id="relatedSkills" class="mb-2">
+                <small class="text-muted">Related skills:</small>
+                <div id="relatedSkillsBadges" class="d-flex flex-wrap"></div>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="newSkillCategory" class="form-label fw-bold">Category</label>
+              <input type="text" class="form-control" id="newSkillCategory"
+                     name="newSkillCategory" placeholder="e.g., Programming, Soft Skill" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 py-2">
+              <i class="fas fa-save me-1"></i> Add New Skill
+            </button>
+
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container m-3  w-100% mt-0 mb-4 d-flex justify-content-end">
+    <a th:href="@{/jobseeker/dashboard}" class="btn btn-secondary ms-2 m-5 " >Cancel</a>
+  </div>
+
+</div>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function() {
+      // Handle suggestion button click
+      $('#getSuggestionsBtn').click(function() {
+          const skillName = $('#newSkillName').val().trim();
+          if (!skillName) {
+              showDuplicateAlert('Please enter a skill name first to get suggestions.');
+              return;
+          }
+
+          // Show loading state
+          $('#loadingSpinner').show();
+          $('#getSuggestionsBtn').prop('disabled', true);
+
+          // Call API
+          $.ajax({
+              url: '/skills/api/suggest-category',
+              method: 'POST',
+              contentType: 'application/json',
+              data: JSON.stringify({ skill: skillName }),
+              success: function(response) {
+                  $('#loadingSpinner').hide();
+                  $('#getSuggestionsBtn').prop('disabled', false);
+
+                  if (response.success) {
+                      // Show suggestions container
+                      $('#suggestionsContainer').slideDown(); // Use slideDown for a smoother effect
+
+                      // Update category suggestion
+                      $('#suggestedCategory').text(response.suggestedCategory);
+                      // Only pre-fill category if it's currently empty or the user hasn't typed anything
+                      if (!$('#newSkillCategory').val().trim()) {
+                          $('#newSkillCategory').val(response.suggestedCategory);
+                      }
+
+                      // Update related skills
+                      const relatedSkillsBadges = $('#relatedSkillsBadges');
+                      relatedSkillsBadges.empty();
+
+                      if (response.relatedSkills && response.relatedSkills.length > 0) {
+                          response.relatedSkills.forEach(function(skill) {
+                              relatedSkillsBadges.append(
+                                  `<span class="badge bg-info text-dark suggestion-badge"
+                                    onclick="selectSuggestedSkill('${skill}', '${response.suggestedCategory}');">
+                                      ${skill}
+                                  </span>`
+                              );
+                          });
+                      } else {
+                          relatedSkillsBadges.append('<span class="text-muted fst-italic">No specific related skills found.</span>');
+                      }
+                  } else {
+                      showDuplicateAlert(response.message || 'Error getting suggestions. Please try again.');
+                      $('#suggestionsContainer').slideUp(); // Hide if no suggestions
+                  }
+              },
+              error: function(xhr) {
+                  $('#loadingSpinner').hide();
+                  $('#getSuggestionsBtn').prop('disabled', false);
+                  showDuplicateAlert(xhr.responseJSON?.message || 'Error getting suggestions. Please try again.');
+                  $('#suggestionsContainer').slideUp(); // Hide if error
+              }
+          });
+      });
+
+      // Function to handle clicking on a suggested skill badge
+      window.selectSuggestedSkill = function(skillName, suggestedCategory) {
+          $('#newSkillName').val(skillName);
+          // Only pre-fill category if it's currently empty or the user hasn't typed anything
+          if (!$('#newSkillCategory').val().trim()) {
+             $('#newSkillCategory').val(suggestedCategory);
+          }
+          $('#suggestionsContainer').slideUp(); // Hide suggestions after selection
+      };
+
+      // Handle form submission for new skills
+      $('#newSkillForm').submit(function(e) {
+          const skillName = $('#newSkillName').val().trim();
+          if (!skillName) {
+              e.preventDefault();
+              showDuplicateAlert('Please enter a skill name before adding it.');
+              return;
+          }
+
+          // Check if skill exists before submitting
+          $('#loadingSpinner').show();
+          $('button[type="submit"]', this).prop('disabled', true); // Disable submit button
+
+          $.ajax({
+              url: '/skills/api/check-skill?name=' + encodeURIComponent(skillName),
+              method: 'GET',
+              success: function(exists) {
+                  $('#loadingSpinner').hide();
+                  $('button[type="submit"]', '#newSkillForm').prop('disabled', false); // Re-enable button
+
+                  if (exists) {
+                      showDuplicateAlert('This skill already exists in the system. Please add it from the "Add Existing Skill" dropdown instead if you want to add it to your profile.');
+                      e.preventDefault(); // Prevent form submission
+                  } else {
+                      // If skill does not exist, proceed with the form submission
+                      e.currentTarget.submit();
+                  }
+              },
+              error: function() {
+                  $('#loadingSpinner').hide();
+                  $('button[type="submit"]', '#newSkillForm').prop('disabled', false); // Re-enable button
+                  // If the check fails (e.g., API error), we can still allow submission.
+                  // This is a design choice; you might want to prevent submission or retry.
+                  console.warn("Skill existence check failed, proceeding with form submission.");
+                  e.currentTarget.submit();
+              }
+          });
+
+          e.preventDefault(); // Prevent default immediate submission, let AJAX handle it
+      });
+
+      // Function to show duplicate skill alert
+      function showDuplicateAlert(message) {
+          $('#duplicateSkillMessage').text(message);
+          $('#duplicateSkillAlert').slideDown(); // Use slideDown for a smoother effect
+          $('html, body').animate({
+              scrollTop: $('#duplicateSkillAlert').offset().top - 20
+          }, 500);
+      }
+  });
+</script>
+</body>
+</html>
