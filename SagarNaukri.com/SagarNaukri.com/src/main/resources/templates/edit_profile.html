@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+          --primary-color: #3498db;
+          --secondary-color: #2c3e50;
+          --accent-color: #e74c3c;
+          --light-bg: #f8f9fa;
+          --success-color: #2ecc71;
+          --warning-color: #f39c12;
+          --dark-color: #343a40;
+        }
+
+        body {
+          font-family: 'Lato', sans-serif;
+          background-color: var(--light-bg);
+          color: #333;
+          line-height: 1.6;
+        }
+
+        .navbar {
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+          font-weight: 700;
+          color: var(--primary-color) !important;
+          font-size: 1.5rem;
+          letter-spacing: -0.5px;
+          display: flex;
+          align-items: center;
+        }
+
+        .profile-img {
+          width: 150px;
+          height: 150px;
+          object-fit: cover;
+          border: 4px solid var(--primary-color);
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .card {
+          border-radius: 12px;
+          box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
+          margin-bottom: 25px;
+          border: none;
+        }
+
+        .card-header {
+          background-color: white;
+          border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+          padding: 1.25rem 1.5rem;
+        }
+
+        .form-control, .form-select {
+          border-radius: 8px;
+          padding: 10px 15px;
+        }
+
+        .btn-primary {
+          background-color: var(--primary-color);
+          border-color: var(--primary-color);
+          padding: 10px 20px;
+          border-radius: 8px;
+        }
+
+        .btn-primary:hover {
+          background-color: #2980b9;
+          border-color: #2980b9;
+        }
+
+        .btn-outline-secondary {
+          border-radius: 8px;
+          padding: 10px 20px;
+        }
+
+        .file-input-label {
+          display: block;
+          padding: 0.5rem 1rem;
+          border: 1px dashed #ced4da;
+          border-radius: 0.375rem;
+          text-align: center;
+          cursor: pointer;
+          transition: all 0.2s;
+        }
+        .file-input-label:hover {
+          background-color: #f8f9fa;
+        }
+        .file-input-name {
+          display: block;
+          margin-top: 0.5rem;
+          font-size: 0.875rem;
+          color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <div class="container">
+        <a class="navbar-brand" href="#">
+            <img th:src="@{/websitelogo.png}" alt="Company Logo" style="height: 30px; margin-right: 8px;"> JobSeeker
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/jobseeker/dashboard}">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="jobs.html">Jobs</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="applications.html">Applications</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" th:href="@{/jobseeker/profile}">Profile</a>
+                </li>
+            </ul>
+            <div class="d-flex align-items-center">
+                <div class="dropdown">
+                    <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown">
+                        <img th:if="${jobSeeker.profilePicture != null}" th:src="@{/jobseeker/profile-picture}" class="rounded-circle me-2" width="40" height="40">
+                        <img th:unless="${jobSeeker.profilePicture != null}" th:src="@{'https://ui-avatars.com/api/?name=' + ${jobSeeker.name.replace(' ','+')} + '&size=150&background=random'}" class="rounded-circle me-2" width="40" height="40">
+                        <span class="d-none d-sm-inline" th:text="${jobSeeker.name}">John Doe</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" th:href="@{/jobseeker/edit}"><i class="fas fa-user-edit me-2"></i>Edit Profile</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" th:href="@{/jobseeker/logout}"><i class="fas fa-sign-out-alt me-2"></i>Sign out</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="container my-4">
+    <div class="row">
+        <div class="col-lg-3 mb-4">
+            <div class="card p-3">
+                <div class="text-center mb-3">
+                    <img th:if="${jobSeeker.profilePicture != null}"
+                         th:src="@{'/jobseeker/profile-picture'}"
+                         class="profile-img rounded-circle mb-3"
+                         alt="Profile Picture"
+                         id="profilePreview">
+
+                    <img th:unless="${jobSeeker.profilePicture != null}"
+                         th:src="@{'https://ui-avatars.com/api/?name=' + ${jobSeeker.name.replace(' ','+')} + '&size=150&background=random'}"
+                         class="profile-img rounded-circle mb-3"
+                         alt="Default Profile Picture"
+                         id="profilePreview">
+                    <h5 th:text="${jobSeeker.name}">John Doe</h5>
+                    <p class="text-muted mb-3">Job Seeker</p>
+                </div>
+                <hr>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/jobseeker/dashboard}">
+                            <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/jobseeker/profile}">
+                            <i class="fas fa-user me-2"></i>My Profile
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/jobseeker/profile} + '#qualifications'">
+                            <i class="fas fa-graduation-cap me-2"></i>Qualifications
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/jobseeker/profile} + '#experience'">
+                            <i class="fas fa-briefcase me-2"></i>Experience
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/jobseeker/profile} + '#skills'">
+                            <i class="fas fa-code me-2"></i>Skills
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-lg-9">
+            <div class="card">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0"><i class="fas fa-user-edit me-2"></i>Edit Profile</h5>
+                </div>
+                <div class="card-body">
+                    <!-- Success/Error Messages -->
+                    <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+                        <i class="fas fa-check-circle me-2"></i>
+                        <span th:text="${success}">Profile updated successfully!</span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="fas fa-exclamation-circle me-2"></i>
+                        <span th:text="${error}">Error message</span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+
+                    <form th:action="@{/jobseeker/edit}" method="post" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="editName" class="form-label">Full Name</label>
+                                    <input type="text" class="form-control" id="editName" name="name" th:value="${jobSeeker.name}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Email</label>
+                                    <p class="form-control-static" th:text="${jobSeeker.email}"></p>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="editContact" class="form-label">Contact Number</label>
+                                    <input type="tel" class="form-control" id="editContact" name="contact" th:value="${jobSeeker.contact}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="editAddress" class="form-label">Address</label>
+                                    <textarea class="form-control" id="editAddress" name="address" rows="3" th:text="${jobSeeker.address}"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Profile Picture</label>
+                                    <label for="editProfilePicture" class="file-input-label">
+                                        <i class="fas fa-camera me-2"></i>
+                                        <span id="editProfilePictureText">Choose new profile picture</span>
+                                        <input type="file" class="d-none" id="editProfilePicture" name="profilePictureFile" accept="image/*">
+                                        <span id="editProfilePictureName" class="file-input-name">Optional - Max 10MB (JPEG, PNG)</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Resume</label>
+                                    <label for="editResume" class="file-input-label">
+                                        <i class="fas fa-file-alt me-2"></i>
+                                        <span id="editResumeText">Choose new resume</span>
+                                        <input type="file" class="d-none" id="editResume" name="resumeFile" accept=".pdf,.doc,.docx">
+                                        <span id="editResumeName" class="file-input-name">Optional - Max 10MB (PDF, DOC, DOCX)</span>
+                                    </label>
+                                    <div th:if="${jobSeeker.resume != null}" class="mt-2">
+                                        <a th:href="@{/jobseeker/resume}" class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-file-pdf me-1"></i>View Current Resume
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end mt-4">
+                            <a th:href="@{/jobseeker/profile}" class="btn btn-outline-secondary me-3">Cancel</a>
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Profile picture file input handling
+    document.getElementById('editProfilePicture').addEventListener('change', function(e) {
+        const fileInput = e.target;
+        const fileName = fileInput.files[0] ? fileInput.files[0].name : 'Choose new profile picture';
+        document.getElementById('editProfilePictureText').textContent = fileName;
+
+        // Update the secondary text
+        const fileSize = fileInput.files[0] ? ` (${(fileInput.files[0].size / 1024 / 1024).toFixed(2)} MB)` : '';
+        document.getElementById('editProfilePictureName').textContent =
+            fileInput.files[0] ? `Selected: ${fileName}${fileSize}` : 'Optional - Max 10MB (JPEG, PNG)';
+
+        // Preview image
+        if (fileInput.files && fileInput.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                document.getElementById('profilePreview').src = event.target.result;
+            }
+            reader.readAsDataURL(fileInput.files[0]);
+        }
+    });
+
+    // Resume file input handling
+    document.getElementById('editResume').addEventListener('change', function(e) {
+        const fileInput = e.target;
+        const fileName = fileInput.files[0] ? fileInput.files[0].name : 'Choose new resume';
+        document.getElementById('editResumeText').textContent = fileName;
+
+        // Update the secondary text
+        const fileSize = fileInput.files[0] ? ` (${(fileInput.files[0].size / 1024 / 1024).toFixed(2)} MB)` : '';
+        document.getElementById('editResumeName').textContent =
+            fileInput.files[0] ? `Selected: ${fileName}${fileSize}` : 'Optional - Max 10MB (PDF, DOC, DOCX)';
+    });
+</script>
+</body>
+</html>
