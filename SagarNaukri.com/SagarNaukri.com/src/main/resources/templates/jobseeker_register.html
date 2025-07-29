@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobSeeker Registration</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4361ee; /* A vibrant blue for branding */
+            --secondary-color: #3f37c9; /* Darker blue, for accents and deeper hovers */
+            --accent-color: #4895ef;   /* Lighter blue, for softer hovers/highlights */
+            --text-color: #343a40;     /* Dark gray for main body text */
+            --light-text-color: #6c757d; /* Lighter gray for hints/subtext */
+            --bg-gradient-start: #e0f2f7; /* Light blueish background tint */
+            --bg-gradient-end: #ffffff;   /* Pure white background */
+            --card-shadow: 0 0.75rem 2.5rem rgba(0, 0, 0, 0.08); /* Softer, larger shadow for depth */
+            --border-radius-lg: 1rem; /* Larger border-radius for containers */
+            --border-radius-md: 0.5rem; /* Medium border-radius for inputs/buttons */
+        }
+
+        body {
+
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            color: var(--text-color);
+            font-family: 'Poppins', sans-serif; /* Modern, clean font */
+            min-height: 100vh; /* Ensure it takes full viewport height */
+            display: flex; /* Use flexbox for centering content */
+            align-items: center; /* Center vertically */
+            justify-content: center; /* Center horizontally */
+            padding: 2rem 0; /* Add vertical padding for smaller screens */
+        }
+
+        .registration-container {
+            max-width: 600px;
+            width: 95%; /* Responsive width for smaller screens */
+            padding: 3rem; /* Generous padding inside the container */
+            background: white;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--card-shadow);
+            animation: fadeIn 0.8s ease-out; /* Smooth fade-in effect */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .company-logo-container {
+            text-align: center;
+            margin-bottom: 2.5rem; /* Space below the logo */
+        }
+
+        .company-logo {
+            max-width: 180px; /* Control logo size */
+            height: auto;
+            border-radius: var(--border-radius-md); /* Slightly rounded logo corners */
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .form-header h2 {
+            color: var(--primary-color);
+            font-weight: 700;
+            font-size: 2.2rem; /* Prominent heading */
+            margin-bottom: 0.5rem;
+        }
+
+        .form-header p {
+            color: var(--light-text-color);
+            font-size: 1rem;
+        }
+
+        .form-control {
+            padding: 0.9rem 1.2rem; /* Consistent padding for inputs */
+            border-radius: var(--border-radius-md);
+            margin-bottom: 1.5rem; /* Space between form elements */
+            border: 1px solid #ced4da;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(67, 97, 238, 0.25); /* Focus ring using primary color */
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+
+            border-color: var(--primary-color);
+            padding: 0.9rem 1.5rem; /* Larger, more clickable button */
+            font-weight: 600;
+            width: 100%;
+            margin-top: 1rem; /* Space above the button */
+            border-radius: var(--border-radius-md);
+            transition: background-color 0.3s, border-color 0.3s, transform 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+            transform: translateY(-2px); /* Subtle lift on hover */
+        }
+
+        .input-icon {
+            position: relative;
+        }
+
+        .input-icon i {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            left: 15px;
+            color: #b0b5b9; /* Softer icon color */
+            font-size: 1.1rem;
+        }
+
+        .input-icon input,
+        .input-icon textarea {
+            padding-left: 3rem; /* Indent text to make space for the icon */
+        }
+
+        textarea.form-control {
+            padding-top: 0.9rem; /* Vertically align text in textarea with icon */
+        }
+
+        .alert {
+            border-radius: var(--border-radius-md);
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border-color: #f5c6cb;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border-color: #c3e6cb;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 2rem; /* Space below the form */
+            font-size: 0.95rem;
+        }
+
+        .login-link a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .login-link a:hover {
+            color: var(--secondary-color);
+            text-decoration: underline;
+        }
+
+        .file-upload-label {
+            display: block;
+            margin-bottom: 0.6rem;
+            font-weight: 600; /* Bolder label for file inputs */
+            color: var(--text-color);
+        }
+
+        .file-upload-hint {
+            font-size: 0.85rem;
+            color: var(--light-text-color);
+            margin-top: 0.4rem;
+        }
+
+        /* Custom validation styles for Bootstrap 'was-validated' class */
+        .form-control:invalid ~ .invalid-feedback,
+        .form-check-input:invalid ~ .invalid-feedback {
+            display: block;
+            margin-top: 0.25rem;
+            font-size: 0.875em;
+            color: #dc3545; /* Bootstrap's invalid feedback color */
+        }
+    </style>
+</head>
+<body>
+<div class="registration-container">
+    <div class="company-logo-container">
+        <img th:src="@{/websitelogo.png}" alt="Company Logo" class="company-logo">
+    </div>
+
+    <div class="form-header">
+        <h2><i class="fas fa-user-plus me-2"></i>Create Your Account</h2>
+        <p>Join our platform to find your dream job effortlessly.</p>
+    </div>
+
+    <div th:if="${error}" class="alert alert-danger" role="alert">
+        <i class="fas fa-exclamation-circle me-2"></i>
+        <span th:text="${error}"></span>
+    </div>
+
+    <div th:if="${message}" class="alert alert-success" role="alert">
+        <i class="fas fa-check-circle me-2"></i>
+        <span th:text="${message}"></span>
+    </div>
+
+    <form th:action="@{/jobseeker/register}" method="post" th:object="${jobSeeker}" enctype="multipart/form-data" novalidate>
+
+        <div class="input-icon">
+            <i class="fas fa-user"></i>
+            <input type="text" th:field="*{name}" class="form-control" placeholder="Full Name" required aria-label="Full Name">
+            <div class="invalid-feedback">Please provide your full name.</div>
+        </div>
+
+        <div class="input-icon">
+            <i class="fas fa-envelope"></i>
+            <input type="email" th:field="*{email}" class="form-control" placeholder="Email Address" required aria-label="Email Address">
+            <div class="invalid-feedback">Please provide a valid email address.</div>
+        </div>
+
+        <div class="input-icon">
+            <i class="fas fa-phone"></i>
+            <input type="tel" th:field="*{contact}" class="form-control" placeholder="Phone Number (e.g., +91-9876543210)" aria-label="Phone Number">
+            <div class="invalid-feedback">Please provide a valid phone number.</div>
+        </div>
+
+        <div class="input-icon">
+            <i class="fas fa-map-marker-alt" style="top: 15px; transform: none;"></i> <textarea th:field="*{address}" class="form-control" placeholder="Your Full Address" rows="3" aria-label="Address"></textarea>
+            <div class="invalid-feedback">Please provide your address.</div>
+        </div>
+
+        <div class="input-icon">
+            <i class="fas fa-lock"></i>
+            <input type="password" th:field="*{password}" class="form-control" placeholder="Password" required minlength="6" aria-label="Password">
+            <div class="invalid-feedback">Password must be at least 6 characters long.</div>
+        </div>
+
+        <div class="mb-4">
+            <label for="profilePictureFile" class="file-upload-label">
+                <i class="fas fa-image me-1 text-primary"></i> Upload Profile Picture <span class="text-danger">*</span>
+            </label>
+            <input type="file" class="form-control" id="profilePictureFile"
+                   name="profilePictureFile" accept="image/jpeg,image/png,image/gif" required aria-label="Profile Picture Upload">
+            <div class="file-upload-hint">Max size: 10MB (JPG, PNG, GIF)</div>
+            <div class="invalid-feedback">Please upload a profile picture.</div>
+        </div>
+
+        <div class="mb-4">
+            <label for="resumeFile" class="file-upload-label">
+                <i class="fas fa-file-alt me-1 text-primary"></i> Upload Resume <span class="text-danger">*</span>
+            </label>
+            <input type="file" class="form-control" id="resumeFile"
+                   name="resumeFile" accept=".pdf,.doc,.docx" required aria-label="Resume Upload">
+            <div class="file-upload-hint">Max size: 10MB (PDF, DOC, DOCX)</div>
+            <div class="invalid-feedback">Please upload your resume.</div>
+        </div>
+
+        <div class="mb-4 form-check">
+            <input type="checkbox" class="form-check-input" id="termsCheck" required aria-label="Agree to Terms and Conditions">
+            <label class="form-check-label" for="termsCheck">
+                I agree to the <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Terms and Conditions</a>
+            </label>
+            <div class="invalid-feedback">You must agree to the terms and conditions.</div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            <i class="fas fa-user-plus me-2"></i> Register Now
+        </button>
+    </form>
+
+    <div class="login-link">
+        <p>Already have an account? <a th:href="@{/jobseeker/login}">Sign in here</a></p>
+    </div>
+</div>
+
+<div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="termsModalLabel"><i class="fas fa-file-contract me-2"></i>Our Terms and Conditions</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h6>1. User Profile Completion:</h6>
+                <p>Users are required to complete their profile, including uploading a profile picture and resume, to fully utilize our services. Incomplete profiles may limit access to certain features.</p>
+
+                <h6>2. Privacy and Data Protection:</h6>
+                <p>We are committed to protecting your privacy. All personal data, including your profile picture, resume, and any other information you provide, will be handled in accordance with our Privacy Policy. We ensure secure storage and processing of your data and will not share it with third parties without your explicit consent, except as required by law.</p>
+
+                <h6>3. Communication and Feedback:</h6>
+                <p>By registering, you agree that we may use your provided contact information to send you service-related notifications, job alerts, and platform updates. We maintain dedicated sections for company reviews and feedback. We encourage users to keep all communication and feedback respectful, constructive, and free from inappropriate content.</p>
+
+                <h6>4. Content Accuracy:</h6>
+                <p>Users are solely responsible for the accuracy and legality of the information they provide on their profiles and in their resumes. Misrepresentation of qualifications or experience may lead to account suspension or termination.</p>
+
+                <h6>5. Platform Integrity:</h6>
+                <p>Users agree not to engage in any activity that could harm the platform, its users, or its operations, including but not limited to, unauthorized access, data scraping, or distributing malicious software.</p>
+
+                <h6>6. Service Modifications:</h6>
+                <p>We reserve the right to modify or discontinue any part of our service, temporarily or permanently, with or without notice. We also reserve the right to update these Terms and Conditions periodically.</p>
+                <p class="text-muted small mt-3">By clicking "Register Now", you acknowledge that you have read, understood, and agreed to these Terms and Conditions.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    (function() {
+        'use strict';
+        const form = document.querySelector('form');
+        form.addEventListener('submit', function(event) {
+            // Check Bootstrap's built-in validity
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            form.classList.add('was-validated'); // Apply Bootstrap validation styles
+
+            // Manual file size validation before submission
+            const profilePictureInput = document.getElementById('profilePictureFile');
+            const resumeInput = document.getElementById('resumeFile');
+            const termsCheck = document.getElementById('termsCheck');
+
+            // Profile Picture validation
+            if (profilePictureInput.files.length > 0 && profilePictureInput.files[0].size > 10 * 1024 * 1024) {
+                event.preventDefault();
+                profilePictureInput.classList.add('is-invalid');
+                // Target the specific invalid-feedback div
+                profilePictureInput.closest('.mb-4').querySelector('.invalid-feedback').textContent = 'Profile picture size exceeds 10MB limit.';
+            } else {
+                profilePictureInput.classList.remove('is-invalid');
+                profilePictureInput.closest('.mb-4').querySelector('.invalid-feedback').textContent = 'Please upload a profile picture.'; // Reset to default
+            }
+
+            // Resume validation
+            if (resumeInput.files.length > 0 && resumeInput.files[0].size > 10 * 1024 * 1024) {
+                event.preventDefault();
+                resumeInput.classList.add('is-invalid');
+                resumeInput.closest('.mb-4').querySelector('.invalid-feedback').textContent = 'Resume file size exceeds 10MB limit.';
+            } else {
+                resumeInput.classList.remove('is-invalid');
+                resumeInput.closest('.mb-4').querySelector('.invalid-feedback').textContent = 'Please upload your resume.'; // Reset to default
+            }
+
+            // Terms checkbox validation
+            if (!termsCheck.checked) {
+                event.preventDefault();
+                termsCheck.classList.add('is-invalid');
+                termsCheck.closest('.form-check').querySelector('.invalid-feedback').textContent = 'You must agree to the terms and conditions.';
+            } else {
+                termsCheck.classList.remove('is-invalid');
+            }
+
+        }, false);
+
+        // --- Live file size validation on input change for better UX ---
+        function setupFileSizeValidation(inputId, maxSizeMB, defaultMessage) {
+            const inputElement = document.getElementById(inputId);
+            inputElement.addEventListener('change', function() {
+                const feedbackDiv = inputElement.closest('.mb-4').querySelector('.invalid-feedback');
+
+                if (inputElement.files.length > 0 && inputElement.files[0].size > maxSizeMB * 1024 * 1024) {
+                    inputElement.classList.add('is-invalid');
+                    feedbackDiv.textContent = `${inputElement.labels[0].textContent.replace(/\s\*\s*$/, '')} size exceeds ${maxSizeMB}MB limit.`;
+                } else {
+                    inputElement.classList.remove('is-invalid');
+                    feedbackDiv.textContent = defaultMessage; // Reset to original message
+                }
+            });
+        }
+
+        setupFileSizeValidation('profilePictureFile', 10, 'Please upload a profile picture.');
+        setupFileSizeValidation('resumeFile', 10, 'Please upload your resume.');
+
+    })();
+</script>
+</body>
+</html>
