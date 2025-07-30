@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Skills</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --accent-color: #4895ef;
+            --light-bg: #f8f9fa;
+            --dark-color: #212529;
+            --success-color: #4cc9f0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f7fa;
+            color: var(--dark-color);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--primary-color) !important;
+        }
+
+        .skill-category-card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            margin-bottom: 25px;
+            overflow: hidden;
+            background: white;
+        }
+
+        .skill-category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        }
+
+        .category-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 15px 20px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .category-header.collapsed {
+            background: white;
+            color: var(--dark-color);
+            border-bottom: 1px solid #eee;
+        }
+
+        .category-header h5 {
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .category-icon {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        .skill-badge {
+            margin: 5px;
+            border-radius: 20px;
+            padding: 8px 15px;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            border: 1px solid #dee2e6;
+        }
+
+        .skill-badge:hover {
+            background-color: var(--primary-color);
+            color: white;
+            transform: scale(1.05);
+            border-color: var(--primary-color);
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .search-results {
+            position: absolute;
+            z-index: 1000;
+            width: 100%;
+            max-height: 300px;
+            overflow-y: auto;
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .search-result-item {
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .search-result-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .proficiency-select {
+            width: auto;
+            display: inline-block;
+            border-radius: 20px;
+            padding: 5px 10px;
+        }
+
+        .btn-rounded {
+            border-radius: 20px;
+            padding: 8px 20px;
+        }
+
+        .skill-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .skill-item:last-child {
+            border-bottom: none;
+        }
+
+        .skill-name {
+            font-weight: 500;
+            flex-grow: 1;
+        }
+
+        .proficiency-stars {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 30px;
+            color: #6c757d;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            color: #dee2e6;
+            margin-bottom: 15px;
+        }
+
+        .floating-action-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.4);
+            z-index: 100;
+            transition: all 0.3s;
+        }
+
+        .floating-action-btn:hover {
+            transform: scale(1.1);
+            background: var(--secondary-color);
+            color: white;
+        }
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --light-bg: #f8f9fa;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+            --dark-color: #343a40;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--light-bg);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--primary-color) !important;
+            font-size: 1.5rem;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-brand .company-logo-nav {
+            height: 35px;
+            margin-right: 10px;
+        }
+
+        .card {
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            margin-bottom: 25px;
+            border: none;
+            overflow: hidden;
+        }
+
+        .card-header {
+            background-color: white;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 1.25rem 1.5rem;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .btn-outline-primary {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+            border-color: #2980b9;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            border-color: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
+        }
+
+        h2 {
+            color: var(--secondary-color);
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        h5, h6 {
+            font-weight: 600;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+
+        .form-control {
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            border: 1px solid #ced4da;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+        }
+
+        .text-danger {
+            font-size: 0.875em;
+            margin-top: 0.25rem;
+        }
+
+        .dropdown-menu {
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border: none;
+        }
+
+        .dropdown-item {
+            padding: 0.5rem 1.5rem;
+        }
+
+        .dropdown-item:hover {
+            background-color: rgba(52, 152, 219, 0.1);
+            color: var(--primary-color);
+        }
+
+        .dropdown-divider {
+            border-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-link {
+            transition: all 0.2s ease;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <div class="container">
+        <a class="navbar-brand" href="#">
+            <img th:src="@{/websitelogo.png}" alt="Company Logo" class="company-logo-nav">
+            JobSeeker
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/jobseeker/dashboard}">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Jobs</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Applications</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" th:href="@{/jobseeker/profile}">Profile</a>
+                </li>
+            </ul>
+            <div class="d-flex align-items-center">
+                <div class="dropdown">
+                    <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown">
+<!--                        <img th:if="${jobSeeker != null and jobSeeker.profilePicture != null}"-->
+<!--                             th:src="@{/jobseeker/profile-picture}"-->
+<!--                             alt="Profile Picture"-->
+<!--                             class="rounded-circle me-2" width="40" height="40">-->
+<!--                        <img th:unless="${jobSeeker != null and jobSeeker.profilePicture != null}"-->
+<!--                             src="/images/default-profile.png"-->
+<!--                             alt="Default Profile Picture"-->
+<!--                             class="rounded-circle me-2" width="40" height="40">-->
+
+                        <span class="d-none d-sm-inline" th:text="${jobSeeker != null ? jobSeeker.name : 'Job Seeker'}">Job Seeker</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" th:href="@{/jobseeker/edit}"><i class="fas fa-user-edit me-2"></i>Profile</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" th:href="@{/jobseeker/logout}"><i class="fas fa-sign-out-alt me-2"></i>Sign out</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-primary">
+            <i class="fas fa-tools me-2"></i>Manage Your Skills
+        </h2>
+        <a th:href="@{/jobseeker/dashboard}" class="btn btn-outline-secondary btn-rounded">
+            <i class="fas fa-arrow-left me-1"></i> Back to Dashboard
+        </a>
+    </div>
+
+    <!-- Add New Skill -->
+    <div class="card skill-category-card mb-4">
+        <div class="category-header" data-bs-toggle="collapse" href="#addSkillSection">
+            <h5><i class="fas fa-plus-circle category-icon"></i>Add New Skill</h5>
+            <i class="fas fa-chevron-down ms-auto"></i>
+        </div>
+        <div class="collapse show" id="addSkillSection">
+            <div class="card-body">
+                <div class="position-relative mb-3">
+                    <div class="input-group">
+                        <span class="input-group-text bg-white"><i class="fas fa-search"></i></span>
+                        <input type="text" id="skillSearch" class="form-control" placeholder="Search for skills...">
+                    </div>
+                    <div id="searchResults" class="search-results mt-1"></div>
+                </div>
+                <div id="selectedSkill" class="mt-3 p-3 bg-light rounded" style="display: none;">
+                    <h6 id="selectedSkillName" class="fw-bold mb-3"></h6>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Proficiency Level</label>
+                        <select id="proficiencyLevel" class="form-select">
+                            <option value="1">1 - Beginner</option>
+                            <option value="2">2 - Basic</option>
+                            <option value="3" selected>3 - Intermediate</option>
+                            <option value="4">4 - Advanced</option>
+                            <option value="5">5 - Expert</option>
+                        </select>
+                    </div>
+                    <button id="addSkillBtn" class="btn btn-primary btn-rounded">
+                        <i class="fas fa-plus me-1"></i> Add Skill
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Available Skills Section -->
+    <div class="card skill-category-card mb-4">
+        <div class="category-header" data-bs-toggle="collapse" href="#availableSkillsSection">
+            <h5><i class="fas fa-list-ul category-icon"></i>Browse Skills by Category</h5>
+            <i class="fas fa-chevron-down ms-auto"></i>
+        </div>
+        <div class="collapse show" id="availableSkillsSection">
+            <div class="card-body">
+                <!-- Programming Skills -->
+                <div class="skill-category-card mb-3">
+                    <div class="category-header collapsed" data-bs-toggle="collapse" href="#programmingSkills">
+                        <h5><i class="fas fa-code category-icon"></i>Programming</h5>
+                        <i class="fas fa-chevron-down ms-auto"></i>
+                    </div>
+                    <div class="collapse" id="programmingSkills">
+                        <div class="card-body">
+                            <div class="d-flex flex-wrap">
+                                <button class="btn btn-outline-primary skill-badge add-skill-btn"
+                                        th:each="skill : ${skillService.getSkillsByCategory(skillService.getCategoryIdByName('Programming'))}"
+                                        th:text="${skill.name}"
+                                        th:data-skill-id="${skill.skillId}">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Design Skills -->
+                <div class="skill-category-card mb-3">
+                    <div class="category-header collapsed" data-bs-toggle="collapse" href="#designSkills">
+                        <h5><i class="fas fa-paint-brush category-icon"></i>Design</h5>
+                        <i class="fas fa-chevron-down ms-auto"></i>
+                    </div>
+                    <div class="collapse" id="designSkills">
+                        <div class="card-body">
+                            <div class="d-flex flex-wrap">
+                                <button class="btn btn-outline-primary skill-badge add-skill-btn"
+                                        th:each="skill : ${skillService.getSkillsByCategory(skillService.getCategoryIdByName('Design'))}"
+                                        th:text="${skill.name}"
+                                        th:data-skill-id="${skill.skillId}">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Healthcare Skills -->
+                <div class="skill-category-card mb-3">
+                    <div class="category-header collapsed" data-bs-toggle="collapse" href="#healthcareSkills">
+                        <h5><i class="fas fa-hospital category-icon"></i>Healthcare</h5>
+                        <i class="fas fa-chevron-down ms-auto"></i>
+                    </div>
+                    <div class="collapse" id="healthcareSkills">
+                        <div class="card-body">
+                            <div class="d-flex flex-wrap">
+                                <button class="btn btn-outline-primary skill-badge add-skill-btn"
+                                        th:each="skill : ${skillService.getSkillsByCategory(skillService.getCategoryIdByName('Healthcare'))}"
+                                        th:text="${skill.name}"
+                                        th:data-skill-id="${skill.skillId}">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hospitality Skills -->
+                <div class="skill-category-card mb-3">
+                    <div class="category-header collapsed" data-bs-toggle="collapse" href="#hospitalitySkills">
+                        <h5><i class="fas fa-concierge-bell category-icon"></i>Hospitality</h5>
+                        <i class="fas fa-chevron-down ms-auto"></i>
+                    </div>
+                    <div class="collapse" id="hospitalitySkills">
+                        <div class="card-body">
+                            <div class="d-flex flex-wrap">
+                                <button class="btn btn-outline-primary skill-badge add-skill-btn"
+                                        th:each="skill : ${skillService.getSkillsByCategory(skillService.getCategoryIdByName('Hospitality'))}"
+                                        th:text="${skill.name}"
+                                        th:data-skill-id="${skill.skillId}">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Construction Skills -->
+                <div class="skill-category-card mb-3">
+                    <div class="category-header collapsed" data-bs-toggle="collapse" href="#constructionSkills">
+                        <h5><i class="fas fa-hard-hat category-icon"></i>Construction</h5>
+                        <i class="fas fa-chevron-down ms-auto"></i>
+                    </div>
+                    <div class="collapse" id="constructionSkills">
+                        <div class="card-body">
+                            <div class="d-flex flex-wrap">
+                                <button class="btn btn-outline-primary skill-badge add-skill-btn"
+                                        th:each="skill : ${skillService.getSkillsByCategory(skillService.getCategoryIdByName('Construction'))}"
+                                        th:text="${skill.name}"
+                                        th:data-skill-id="${skill.skillId}">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Language Skills -->
+                <div class="skill-category-card mb-3">
+                    <div class="category-header collapsed" data-bs-toggle="collapse" href="#languageSkills">
+                        <h5><i class="fas fa-language category-icon"></i>Language</h5>
+                        <i class="fas fa-chevron-down ms-auto"></i>
+                    </div>
+                    <div class="collapse" id="languageSkills">
+                        <div class="card-body">
+                            <div class="d-flex flex-wrap">
+                                <button class="btn btn-outline-primary skill-badge add-skill-btn"
+                                        th:each="skill : ${skillService.getSkillsByCategory(skillService.getCategoryIdByName('Language'))}"
+                                        th:text="${skill.name}"
+                                        th:data-skill-id="${skill.skillId}">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Management Skills -->
+                <div class="skill-category-card mb-3">
+                    <div class="category-header collapsed" data-bs-toggle="collapse" href="#managementSkills">
+                        <h5><i class="fas fa-briefcase category-icon"></i>Management</h5>
+                        <i class="fas fa-chevron-down ms-auto"></i>
+                    </div>
+                    <div class="collapse" id="managementSkills">
+                        <div class="card-body">
+                            <div class="d-flex flex-wrap">
+                                <button class="btn btn-outline-primary skill-badge add-skill-btn"
+                                        th:each="skill : ${skillService.getSkillsByCategory(skillService.getCategoryIdByName('Management'))}"
+                                        th:text="${skill.name}"
+                                        th:data-skill-id="${skill.skillId}">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- General Labor Skills -->
+                <div class="skill-category-card">
+                    <div class="category-header collapsed" data-bs-toggle="collapse" href="#generalLaborSkills">
+                        <h5><i class="fas fa-tools category-icon"></i>General Labor</h5>
+                        <i class="fas fa-chevron-down ms-auto"></i>
+                    </div>
+                    <div class="collapse" id="generalLaborSkills">
+                        <div class="card-body">
+                            <div class="d-flex flex-wrap">
+                                <button class="btn btn-outline-primary skill-badge add-skill-btn"
+                                        th:each="skill : ${skillService.getSkillsByCategory(skillService.getCategoryIdByName('General Labor'))}"
+                                        th:text="${skill.name}"
+                                        th:data-skill-id="${skill.skillId}">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Current Skills -->
+    <div class="card skill-category-card">
+        <div class="category-header" data-bs-toggle="collapse" href="#yourSkillsSection">
+            <h5><i class="fas fa-check-circle category-icon"></i>Your Skills</h5>
+            <i class="fas fa-chevron-down ms-auto"></i>
+        </div>
+        <div class="collapse show" id="yourSkillsSection">
+            <div class="card-body">
+                <div th:if="${jobSeekerSkills.empty}" class="empty-state">
+                    <i class="fas fa-inbox"></i>
+                    <h5>No Skills Added Yet</h5>
+                    <p class="text-muted">Start by adding skills from the categories above</p>
+                </div>
+
+                <div th:unless="${jobSeekerSkills.empty}">
+                    <div th:each="category : ${categories}"
+                         th:if="${#lists.contains(jobSeekerSkills.![skill.category.categoryId], category.categoryId)}">
+                        <div class="skill-category-card mb-3">
+                            <div class="category-header collapsed" data-bs-toggle="collapse" th:attr="data-bs-target='#category-' + ${category.categoryId}">
+                                <h5><i th:classappend="${'category-icon ' +
+                                    (category.name == 'Programming' ? 'fa-code' :
+                                     category.name == 'Design' ? 'fa-paint-brush' :
+                                     category.name == 'Healthcare' ? 'fa-hospital' :
+                                     category.name == 'Hospitality' ? 'fa-concierge-bell' :
+                                     category.name == 'Construction' ? 'fa-hard-hat' :
+                                     category.name == 'Language' ? 'fa-language' :
+                                     category.name == 'Management' ? 'fa-briefcase' : 'fa-tools')}"></i>
+                                    <span th:text="${category.name}">Category</span>
+                                </h5>
+                                <i class="fas fa-chevron-down ms-auto"></i>
+                            </div>
+                            <div class="collapse" th:attr="id='category-' + ${category.categoryId}">
+                                <div class="card-body">
+                                    <div th:each="userSkill : ${jobSeekerSkills}"
+                                         th:if="${userSkill.skill.category.categoryId == category.categoryId}">
+                                        <div class="skill-item">
+                                            <span class="skill-name" th:text="${userSkill.skill.name}">Skill Name</span>
+                                            <div class="proficiency-stars">
+                                                <select class="form-select proficiency-select"
+                                                        th:data-skill-id="${userSkill.skill.skillId}">
+                                                    <option th:each="i : ${#numbers.sequence(1, 5)}"
+                                                            th:value="${i}"
+                                                            th:selected="${i == userSkill.proficiencyLevel}">
+                                                        [[${i}]] [[${i == 1 ? 'Beginner' :
+                                                        i == 2 ? 'Basic' :
+                                                        i == 3 ? 'Intermediate' :
+                                                        i == 4 ? 'Advanced' : 'Expert'}]]
+                                                    </option>
+                                                </select>
+                                                <button class="btn btn-sm btn-outline-danger remove-skill"
+                                                        th:data-skill-id="${userSkill.skill.skillId}">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Floating Action Button -->
+<a th:href="@{/jobseeker/dashboard}" class="floating-action-btn">
+    <i class="fas fa-home"></i>
+</a>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Skill search functionality
+        const skillSearch = document.getElementById('skillSearch');
+        const searchResults = document.getElementById('searchResults');
+        const selectedSkill = document.getElementById('selectedSkill');
+        const selectedSkillName = document.getElementById('selectedSkillName');
+        const addSkillBtn = document.getElementById('addSkillBtn');
+
+        let selectedSkillId = null;
+
+        skillSearch.addEventListener('input', function() {
+            const query = this.value.trim();
+            if (query.length >= 2) {
+                fetch(`/skills/search?query=${encodeURIComponent(query)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        searchResults.innerHTML = '';
+                        if (data.length > 0) {
+                            data.forEach(skill => {
+                                const item = document.createElement('div');
+                                item.className = 'search-result-item';
+                                item.textContent = skill.name;
+                                item.addEventListener('click', function() {
+                                    selectedSkillId = skill.skillId;
+                                    selectedSkillName.textContent = skill.name;
+                                    selectedSkill.style.display = 'block';
+                                    searchResults.style.display = 'none';
+                                    skillSearch.value = '';
+                                });
+                                searchResults.appendChild(item);
+                            });
+                            searchResults.style.display = 'block';
+                        } else {
+                            searchResults.style.display = 'none';
+                        }
+                    });
+            } else {
+                searchResults.style.display = 'none';
+            }
+        });
+
+        document.addEventListener('click', function(e) {
+            if (!skillSearch.contains(e.target) && !searchResults.contains(e.target)) {
+                searchResults.style.display = 'none';
+            }
+        });
+
+        // Add skill button from search
+        addSkillBtn.addEventListener('click', function() {
+            if (selectedSkillId) {
+                const proficiencyLevel = document.getElementById('proficiencyLevel').value;
+                submitSkillForm('/skills/add', {
+                    skillId: selectedSkillId,
+                    proficiencyLevel: proficiencyLevel
+                });
+            }
+        });
+
+        // Add skill button from category list
+        document.querySelectorAll('.add-skill-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const skillId = this.dataset.skillId;
+                if (confirm('Add this skill with default proficiency level (3 - Intermediate)?')) {
+                    submitSkillForm('/skills/add', {
+                        skillId: skillId,
+                        proficiencyLevel: 3
+                    });
+                }
+            });
+        });
+
+        // Update proficiency level
+        document.querySelectorAll('.proficiency-select').forEach(select => {
+            select.addEventListener('change', function() {
+                const skillId = this.dataset.skillId;
+                const proficiencyLevel = this.value;
+                submitSkillForm('/skills/update', {
+                    skillId: skillId,
+                    proficiencyLevel: proficiencyLevel
+                });
+            });
+        });
+
+        // Remove skill
+        document.querySelectorAll('.remove-skill').forEach(button => {
+            button.addEventListener('click', function() {
+                if (confirm('Are you sure you want to remove this skill?')) {
+                    const skillId = this.dataset.skillId;
+                    submitSkillForm('/skills/remove', {
+                        skillId: skillId
+                    });
+                }
+            });
+        });
+
+        // Helper function to submit forms
+        function submitSkillForm(action, data) {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = action;
+
+            for (const key in data) {
+                if (data.hasOwnProperty(key)) {
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = key;
+                    input.value = data[key];
+                    form.appendChild(input);
+                }
+            }
+
+            const csrfToken = document.querySelector('meta[name="_csrf"]')?.content;
+            if (csrfToken) {
+                const csrfInput = document.createElement('input');
+                csrfInput.type = 'hidden';
+                csrfInput.name = '_csrf';
+                csrfInput.value = csrfToken;
+                form.appendChild(csrfInput);
+            }
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+    });
+</script>
+</body>
+</html>
