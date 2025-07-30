@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Skills</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            padding-top: 50px; /* Space for fixed header if any */
+        }
+        .container {
+            margin-top: 20px;
+        }
+        .card {
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
+            border: none;
+            margin-bottom: 20px;
+        }
+        .card-header {
+            background-color: #3498db;
+            color: white;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+            padding: 1.25rem 1.5rem;
+            text-align: center;
+        }
+        .form-label {
+            font-weight: 600;
+            color: #555;
+        }
+        .btn-primary {
+            background-color: #3498db;
+            border-color: #3498db;
+        }
+        .btn-primary:hover {
+            background-color: #2980b9;
+            border-color: #2980b9;
+        }
+        .alert {
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+        .invalid-feedback {
+            display: block; /* Always show for server-side errors */
+        }
+        .skill-list-group .list-group-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1.25rem;
+            border-left: 5px solid #3498db; /* Accent border */
+        }
+        .skill-list-group .list-group-item:nth-child(even) {
+            background-color: #f0f8ff; /* Light alternate background */
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0"><i class="fas fa-tools me-2"></i>Add New Skill</h4>
+                </div>
+                <div class="card-body">
+                    <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+                        <i class="fas fa-check-circle me-2"></i><span th:text="${successMessage}"></span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="fas fa-exclamation-circle me-2"></i><span th:text="${errorMessage}"></span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+
+                    <form th:action="@{/skills/add}" th:object="${skill}" method="post">
+                        <div class="mb-3">
+                            <label for="skillName" class="form-label">Skill Name</label>
+                            <input type="text" id="skillName" class="form-control" th:field="*{name}"
+                                   th:classappend="${#fields.hasErrors('name')} ? 'is-invalid' : ''" required
+                                   placeholder="e.g., Java, Project Management, Communication">
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="skillCategory" class="form-label">Skill Category</label>
+                            <input type="text" id="skillCategory" class="form-control" th:field="*{category}"
+                                   th:classappend="${#fields.hasErrors('category')} ? 'is-invalid' : ''" required
+                                   placeholder="e.g., Programming, Soft Skill, Design">
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('category')}" th:errors="*{category}"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <button type="button" id="suggestSkillBtn" class="btn btn-info btn-sm">
+                                <i class="fas fa-lightbulb me-1"></i> Suggest Category & Related Skills
+                            </button>
+                            <div id="suggestionResult" class="mt-2 text-muted" style="display: none;"></div>
+                        </div>
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-1"></i> Add Skill
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0"><i class="fas fa-list me-2"></i>Existing Skills</h4>
+                </div>
+                <div class="card-body">
+                    <div th:if="${#lists.isEmpty(allSkills)}" class="alert alert-info text-center">
+                        No skills added yet.
+                    </div>
+                    <ul class="list-group skill-list-group" th:unless="${#lists.isEmpty(allSkills)}">
+                        <li class="list-group-item" th:each="skill : ${allSkills}">
+                            <div>
+                                <strong th:text="${skill.name}">Skill Name</strong>
+                                <span class="badge bg-secondary ms-2" th:text="${skill.category}">Category</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const suggestSkillBtn = document.getElementById('suggestSkillBtn');
+        const skillNameInput = document.getElementById('skillName');
+        const skillCategoryInput = document.getElementById('skillCategory');
+        const suggestionResultDiv = document.getElementById('suggestionResult');
+
+        suggestSkillBtn.addEventListener('click', async function() {
+            const skillName = skillNameInput.value.trim();
+            if (!skillName) {
+                suggestionResultDiv.style.display = 'block';
+                suggestionResultDiv.innerHTML = '<span class="text-danger"><i class="fas fa-exclamation-triangle me-1"></i> Please enter a skill name to get suggestions.</span>';
+                return;
+            }
+
+            suggestionResultDiv.style.display = 'block';
+            suggestionResultDiv.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> Getting suggestions...';
+
+            try {
+                const response = await fetch('/skills/api/suggest-category', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ skill: skillName })
+                });
+
+                const apiResult = await response.json(); // Parse the JSON response from your backend
+
+                if (apiResult.success) {
+                    suggestionResultDiv.innerHTML = `
+                        <span class="text-success"><i class="fas fa-check-circle me-1"></i> Suggested Category: <strong>${apiResult.suggestedCategory}</strong></span>
+                        <br>
+                        <small>Related Skills: ${apiResult.relatedSkills.length > 0 ? apiResult.relatedSkills.join(', ') : 'None'}</small>
+                    `;
+                    skillCategoryInput.value = apiResult.suggestedCategory; // Auto-fill category
+                } else {
+                    suggestionResultDiv.innerHTML = `
+                        <span class="text-danger"><i class="fas fa-exclamation-circle me-1"></i> Error: ${apiResult.message || 'Could not get suggestions.'}</span>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error fetching skill suggestions:', error);
+                suggestionResultDiv.innerHTML = `
+                    <span class="text-danger"><i class="fas fa-exclamation-triangle me-1"></i> An error occurred while fetching suggestions. Please try again.</span>
+                `;
+            }
+        });
+    });
+</script>
+</body>
+</html>
