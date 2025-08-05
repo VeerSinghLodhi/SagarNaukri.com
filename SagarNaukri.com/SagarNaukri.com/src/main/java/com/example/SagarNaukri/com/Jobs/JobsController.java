@@ -1,7 +1,9 @@
-package com.example.SagarNaukri.com.Jobs;
+package SagarNaukriMerge.SagarNaukriMerge.Jobs;
 
 
-import com.example.SagarNaukri.com.CompaniesPackage.Company;
+import SagarNaukriMerge.SagarNaukriMerge.CompaniesPackage.Company;
+import SagarNaukriMerge.SagarNaukriMerge.JobSeeker.JobSeeker;
+import SagarNaukriMerge.SagarNaukriMerge.JobSeeker.JobSeekerRepository;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +24,9 @@ public class JobsController {
 
     @GetMapping("/addjob")
     public String addjob(Model model ,HttpSession session){
+        Company company=(Company) session.getAttribute("comdata");
         model.addAttribute("jobs" , new Jobs());
+        model.addAttribute("comdata" , company);
         return "JobsHtml/addjobs";
     }
 
@@ -138,5 +142,20 @@ public class JobsController {
         model.addAttribute("popupType" , "jobDeleted");
         return "JobsHtml/showalljobs";
     }
+
+    @Autowired
+    JobSeekerRepository jobSeekerRepository;
+
+    @GetMapping("/alljobs")
+    public String getAllJobs(Model model, HttpSession session){
+//
+        JobSeeker jobSeeker = jobSeekerRepository.findById((Long)session.getAttribute("jobSeekerId")).orElse(null);
+        model.addAttribute("jobSeeker",jobSeeker);
+        model.addAttribute("jobsList",jobsRepository.findAll());
+        session.setAttribute("jobSeekerId", jobSeeker.getJSId());
+        session.setAttribute("jobSeekerName", jobSeeker.getName());
+        return "JobsHtml/allcompaniesjobs";
+    }
+
 
 }
