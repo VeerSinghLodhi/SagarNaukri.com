@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"  th:fragment="layout(content)">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" th:fragment="layout(content)">
 
 <head>
   <meta charset="UTF-8" />
@@ -9,322 +9,433 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
   <style>
     body {
-      margin-left: 10px;
-      margin-right: 10px;
+        margin-left: 0px;
+        margin-right: 0px;
+
+    }
+
+    /* Navbar link hover effect */
+    .nav-link {
+        position: relative;
+        font-weight: 500;
+        color:white;
+    }
+
+    .nav-link::after {
+        content: '';
+        position: absolute;
+        width: 0%;
+        height: 2px;
+        background: var(--bs-primary);
+        left: 0;
+        bottom: 0;
+        transition: 0.3s;
+    }
+
+    .nav-link:hover::after,
+    .nav-link.active::after {
+        width: 100%;
+    }
+
+    /* Search Bar focus effect */
+    .form-control:focus {
+        box-shadow: 0 0 8px rgba(13, 110, 253, 0.4);
+    }
+
+    /* Navbar shadow */
+    .navbar {
+        transition: all 0.3s ease-in-out;
     }
 
     .search-mobile-row {
-      display: none;
+        display: none;
     }
 
     @media (max-width: 768px) {
-      .desktop-search {
-        display: none;
-      }
+        .desktop-search {
+            display: none;
+        }
 
-      .search-mobile-row {
-        display: block;
-        padding: 10px 15px;
-      }
+        .search-mobile-row {
+            display: block;
+            padding: 10px 15px;
+        }
     }
 
     @media (min-width: 769px) {
-      .mobile-search-icon {
-        display: none !important;
-      }
+        .mobile-search-icon {
+            display: none !important;
+        }
     }
 
-    .dropdown-submenu {
-      position: relative;
-    }
 
-    .dropdown-submenu>.dropdown-menu {
-      top: 0;
-      left: 100%;
-      margin-top: -1px;
-    }
-
-    .nav-link {
-      padding: 0.5rem 1.2rem;
-    }
 
     .logo {
-      height: 80px;
-      width: 80px;
+        height: 80px;
+        width: 80px;
     }
 
     /* Middle theme  */
     .carousel-item {
-      height: 100vh;
-      background-size: cover;
-      background-position: center;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+        height: 100vh;
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
     }
 
     .carousel-caption-custom {
-      background-color: rgba(0, 0, 0, 0.6);
-      padding: 30px;
-      border-radius: 10px;
-      width: 100%;
-      max-width: 1000px;
+        background-color: rgba(0, 0, 0, 0.6);
+        padding: 30px;
+        border-radius: 10px;
+        width: 100%;
+        max-width: 1000px;
     }
 
     .form-inline-group {
-      display: flex;
-      flex-wrap: nowrap;
-      gap: 10px;
-      margin-top: 20px;
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 10px;
+        margin-top: 20px;
     }
 
     .form-inline-group .form-control,
     .form-inline-group .form-select,
     .form-inline-group .input-group {
-      flex: 1;
-      min-width: 150px;
+        flex: 1;
+        min-width: 150px;
     }
 
     @media (max-width: 768px) {
-      .form-inline-group {
-        flex-direction: column;
-      }
+        .form-inline-group {
+            flex-direction: column;
+        }
     }
 
     /* Given below is the CSS of the profession comes under the dropdown of jobs  */
     .professions-navbar {
-      background-color: #0d6efd;
-      width: 800px;
+        background-color: #0d6efd;
+        width: 800px;
     }
 
     .professions-navbar .nav-link {
-      color: white;
-      font-weight: 500;
-      padding: 0.75rem 1rem;
+        color: white;
+        font-weight: 500;
+        padding: 0.75rem 1rem;
     }
 
     .professions-navbar .nav-link:hover,
     .professions-navbar .nav-link.active {
-      background-color: #0b5ed7;
-      color: #ffffff;
+        background-color: #0b5ed7;
+        color: #ffffff;
     }
 
     @media (max-width: 768px) {
-      .professions-navbar .nav-link {
-        font-size: 0.9rem;
-        padding: 0.5rem 0.75rem;
-      }
+        .professions-navbar .nav-link {
+            font-size: 0.9rem;
+            padding: 0.5rem 0.75rem;
+        }
     }
 
     .preofession-container {
-      margin-left: 40px;
-      margin-right: 40px;
+        margin-left: 40px;
+        margin-right: 40px;
     }
 
     .profession-type {
-      width: 100%;
+        width: 100%;
     }
 
     /* navitem->dropdown->subdropdown */
     /* Custom styles for sub-dropdowns */
     .dropdown-submenu {
-      position: relative;
+        position: relative;
     }
 
     .dropdown-submenu .dropdown-menu {
-      top: 0;
-      left: 100%;
-      margin-left: 0;
-      margin-top: -1px;
-      display: none;
+        top: 0;
+        left: 100%;
+        margin-left: 0;
+        margin-top: -1px;
+        display: none;
     }
 
     .dropdown-submenu:hover .dropdown-menu {
-      display: block;
+        display: block;
     }
 
     #dropdownsubmenu {
-      margin-left: 2px;
-      margin-right: 2px;
+        margin-left: 2px;
+        margin-right: 2px;
     }
 
-    /* <---------------------------------------> */
+
+    /* Category Card */
+    .category-card {
+        background: #fff;
+        border: 1px solid #eaeaea;
+        border-radius: 10px;
+        text-align: center;
+        padding: 20px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .category-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .category-card i {
+        font-size: 40px;
+        margin-bottom: 10px;
+        color: #007bff;
+    }
+
+    .category-card h5 {
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+
+    .category-card p {
+        font-size: 14px;
+        color: #6c757d;
+        min-height: 40px;
+    }
+
+    /* Why Choose Us Cards */
+    .choose-card {
+        background: #fff;
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .choose-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .choose-card i {
+        font-size: 40px;
+        margin-bottom: 10px;
+    }
+
+    .choose-card h5 {
+        font-weight: 600;
+    }
+
+    .choose-card p {
+        font-size: 14px;
+        color: #6c757d;
+    }
+
+    /* ===== CONTACT SECTION ===== */
+    #contact {
+        background: #f8f9fa;
+        /* Light background */
+    }
+
+    #contact h2 {
+        font-size: 2rem;
+    }
+
+    #contact p {
+        margin-bottom: 0.8rem;
+    }
+
+    /* Contact Info Box */
+    #contact .bg-white {
+        border-radius: 12px;
+    }
+
+    /* Icons Styling */
+    #contact i {
+        font-size: 1.2rem;
+        margin-right: 8px;
+        vertical-align: middle;
+    }
+
+    /* Labels */
+    #contact .form-label {
+        font-weight: 600;
+        color: #333;
+    }
+
+    /* Inputs & Textarea */
+    #contact .form-control {
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        padding: 10px 14px;
+        transition: all 0.3s ease;
+    }
+
+    #contact .form-control:focus {
+        border-color: #ffc107;
+        box-shadow: 0 0 6px rgba(255, 193, 7, 0.4);
+    }
+
+    /* Submit Button */
+    #contact .btn-warning {
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    #contact .btn-warning:hover {
+        background-color: #e0a800;
+        transform: translateY(-2px);
+    }
+
+    /* Shadow on Hover for Cards */
+    #contact .bg-white:hover {
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s ease;
+    }
+
+    /* Feedback Floating button  */
+    /* Floating Button */
+    #feedback-btn {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #ffc107;
+        color: white;
+        width: 55px;
+        height: 55px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+        font-size: 1.5rem;
+        z-index: 9999;
+        transition: background 0.3s;
+    }
+
+    #feedback-btn:hover {
+        background: #e0a800;
+        backdrop-filter: blur(6px);
+        /* Blur background */
+        background: rgba(0, 0, 0, 0.4);
+        /* Dark overlay */
+    }
+
+    /* Feedback Form Popup */
+    #feedback-form {
+        position: fixed;
+        bottom: 90px;
+        right: 20px;
+        width: 300px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        padding: 15px;
+        display: none;
+        /* Hidden initially */
+        animation: slideUp 0.3s ease-out;
+        z-index: 9999;
+    }
+
+    /* Header */
+    .feedback-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .feedback-header h5 {
+        margin: 0;
+        font-weight: bold;
+    }
+
+    #close-feedback {
+        cursor: pointer;
+        font-size: 1.2rem;
+    }
+
+    /* Animation */
+    @keyframes slideUp {
+        from {
+            transform: translateY(20px);
+            opacity: 0;
+        }
+
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
   </style>
 </head>
 
 <body>
-<!-- 🔵 First Row -->
-<div class="container-fluid py-2 border-bottom" style="  background-color: #c2cfe5">
-  <div class="d-flex justify-content-between align-items-center">
-    <!-- Logo -->
-    <div class="d-flex align-items-center gap-3">
-      <img src="../Images/websitelogo.png"  class="logo" alt="Logo" />
-    </div>
+<!-- ======== HEADER START ======== -->
+<header class="fixed-top " style="background:transparent;">
+  <nav class="navbar navbar-expand-lg navbar-light ">
+    <div class="container-fluid px-4">
 
-    <!-- Search Bar (Large Screens) -->
-    <div class="input-group desktop-search mx-3" style="max-width: 400px;">
-      <input type="text" class="form-control" placeholder="Search Jobs" />
-      <button class="btn btn-outline-secondary bg-secondary " type="button"><i class="bi bi-search "
-                                                                               style="color: aliceblue;"></i></button>
-    </div>
+      <!-- Logo -->
+      <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+        <img src="Images/Naukri_com_white.png" alt="City Job Portal" width="40" height="40">
+        <span class="fw-bold text-primary fs-5">JobSagar</span>
+      </a>
 
-    <!-- Login, Signup & Search Icon -->
-    <div class="d-flex align-items-center gap-2">
-      <!-- Search icon (for small screens) -->
-      <button class="btn btn-secondary mobile-search-icon" style="color: aliceblue;" onclick="toggleMobileSearch()">
-        <i class="bi bi-search"></i>
+      <!-- Mobile Toggle -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu">
+        <span class="navbar-toggler-icon"></span>
       </button>
 
-      <!-- Login dropdown -->
-      <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">Login</button>
-        <ul class="dropdown-menu dropdown-menu-end">
-          <li><a class="dropdown-item" th:href="@{/jobseeker/register}">Employer</a></li>
-          <li><a class="dropdown-item" th:href="@{/jobseeker/login}">Seeker</a></li>
+      <!-- Menu -->
+      <div class="collapse navbar-collapse" id="navbarMenu">
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#jobs">Jobs</a></li>
+          <li class="nav-item"><a class="nav-link" href="#categories">Categories</a></li>
+          <li class="nav-item"><a class="nav-link" href="#about">About Us</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
         </ul>
-      </div>
 
-      <!-- Signup dropdown -->
-      <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">Signup</button>
-        <ul class="dropdown-menu dropdown-menu-end ">
-          <li><a class="dropdown-item" th:href="@{/company/companyform}">Employer</a></li>
-          <li><a class="dropdown-item" th:href="@{/company/companylogin}">Seeker</a></li>
-        </ul>
+
+        <!-- Auth Buttons -->
+        <div class="d-flex gap-2">
+<!--          <a href="#" class="btn btn-outline-primary rounded-pill">Login</a>-->
+          <div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">Login</button>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" th:href="@{/company/companylogin}">Employer</a></li>
+              <li><a class="dropdown-item" th:href="@{/jobseeker/login}">Seeker</a></li>
+            </ul>
+          </div>
+
+          <!-- Signup dropdown -->
+          <div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">Signup</button>
+            <ul class="dropdown-menu dropdown-menu-end ">
+              <li><a class="dropdown-item" th:href="@{/company/companyform}">Employer</a></li>
+              <li><a class="dropdown-item" th:href="@{/jobseeker/register}">Seeker</a></li>
+            </ul>
+          </div>
+<!--          <a href="#" class="btn btn-primary rounded-pill">Sign Up</a>-->
+        </div>
       </div>
     </div>
-  </div>
-</div>
+  </nav>
+</header>
 
-<!-- 🟡 Second Row (mobile search bar only) -->
-<div id="mobileSearchRow" class="container-fluid search-mobile-row">
-  <div class="input-group my-2">
-    <input type="text" class="form-control" placeholder="Search Jobs..." />
-    <button class="btn btn-outline-secondary" type="button"><i class="bi bi-search"></i></button>
-  </div>
-</div>
-
-<!-- 🟢 Third Row (Navigation) -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
-
-  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarCollapse">
-    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-
-      <!-- Home Menu -->
-      <li class="nav-item ">
-        <a class="nav-link" th:href="@{/footerhome}">Home</a>
-      </li>
-      <!-- Job Menu -->
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="jobsDropdown" role="button" data-bs-toggle="dropdown">
-          Jobs
-        </a>
-        <ul class="dropdown-menu" aria-labelledby="jobsDropdown">
-          <!-- IT Jobs (Sub-dropdown) -->
-          <li class="dropdown-submenu">
-            <a class="dropdown-item dropdown-toggle" href="#">> IT Jobs</a>
-            <ul class="dropdown-menu" th:id="dropdownsubmenu">
-              <li><a class="dropdown-item" href="#">> Web developer</a></li>
-              <li><a class="dropdown-item" href="#">> Software Engineer</a></li>
-              <li><a class="dropdown-item" href="#">> IT support</a></li>
-              <li><a class="dropdown-item" href="#">> Data Analyst</a></li>
-            </ul>
-          </li>
-          <li class="dropdown-submenu">
-            <a class="dropdown-item dropdown-toggle" href="#">
-              > Healthcare jops
-            </a>
-            <ul class="dropdown-menu" th:id="dropdownsubmenu">
-              <li><a class="dropdown-item" href="#">> Nurse</a></li>
-              <li><a class="dropdown-item" href="#">> Pharmacist</a></li>
-              <li><a class="dropdown-item" href="#">> Lab technician</a></li>
-            </ul>
-          </li>
-          <li class="dropdown-submenu">
-            <a class="dropdown-item dropdown-toggle" href="#">
-              > Education
-            </a>
-            <ul class="dropdown-menu" th:id="dropdownsubmenu">
-              <li><a class="dropdown-item" href="#">> Teacher</a></li>
-              <li><a class="dropdown-item" href="#">> Tutor</a></li>
-              <li><a class="dropdown-item" href="#">> Academic Counsellor</a></li>
-            </ul>
-          </li>
-          <li class="dropdown-submenu">
-            <a class="dropdown-item dropdown-toggle" href="#">
-              > Construction
-            </a>
-            <ul class="dropdown-menu" th:id="dropdownsubmenu">
-              <li><a class="dropdown-item" href="#">> Site Engineer</a></li>
-              <li><a class="dropdown-item" href="#">> Civil Supervisor</a></li>
-              <li><a class="dropdown-item" href="#">> Electrician</a></li>
-            </ul>
-          </li>
-          <li class="dropdown-submenu">
-            <a class="dropdown-item dropdown-toggle" href="#">
-              > Hospitality
-            </a>
-            <ul class="dropdown-menu" th:id="dropdownsubmenu">
-              <li><a class="dropdown-item" href="#">> Hotel Manager</a></li>
-              <li><a class="dropdown-item" href="#">> House keeping</a></li>
-              <li><a class="dropdown-item" href="#">> Chef</a></li>
-            </ul>
-          </li>
-
-          <li class="dropdown-submenu">
-            <a class="dropdown-item dropdown-toggle" href="#">
-              > Retail
-            </a>
-            <ul class="dropdown-menu" th:id="dropdownsubmenu">
-              <li><a class="dropdown-item" href="#">> Cashier</a></li>
-              <li><a class="dropdown-item" href="#">> Store Manager</a></li>
-              <li><a class="dropdown-item" href="#">> Sales Executive</a></li>
-            </ul>
-          </li>
-        </ul>
-      </li>
-
-
-
-      <!-- Companies Menu -->
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Companies</a>
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="#">Product based company</a></li>
-          <li><a class="dropdown-item" href="#">Service based company</a></li>
-        </ul>
-      </li>
-
-      <li class="nav-item">
-        <a class="nav-link" href="#">About</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" th:href="@{/feedback}">Feedback</a>
-      </li>
-
-    </ul>
-  </div>
-</nav>
-
-
-<div></div>
 
 <!-- Theme Final  -->
 <div th:fragment="layout(content)">
   <div th:replace="${content}"></div>
 </div>
-
-
-
 <script>
   function toggleMobileSearch() {
-    const row = document.getElementById("mobileSearchRow");
-    row.style.display = row.style.display === "none" || row.style.display === "" ? "block" : "none";
+      const row = document.getElementById("mobileSearchRow");
+      row.style.display = row.style.display === "none" || row.style.display === "" ? "block" : "none";
   }
 </script>
 
@@ -332,7 +443,227 @@
 
 
 
-<!-- Given Below is the footer of the home page  -->
+
+
+
+<!-- JOB CATEGORIES SECTION -->
+<section id="job-categories" class="py-5">
+  <div class="container">
+    <div class="text-center mb-4">
+      <h2 class="fw-bold">💼 Job Categories</h2>
+      <p class="text-muted">Choose a category to see all available jobs</p>
+    </div>
+
+    <div class="row g-4">
+      <!-- IT & Software -->
+      <div class="col-lg-3 col-md-4 col-sm-6">
+        <div class="category-card">
+          <i class="bi bi-laptop"></i>
+          <h5>IT & Software</h5>
+          <p>Developer, Designer, Tester</p>
+          <a href="jobs.html?category=it-software" class="btn btn-sm btn-primary">View Jobs</a>
+        </div>
+      </div>
+
+      <!-- Marketing -->
+      <div class="col-lg-3 col-md-4 col-sm-6">
+        <div class="category-card">
+          <i class="bi bi-bar-chart-line"></i>
+          <h5>Marketing</h5>
+          <p>SEO, Digital, Branding</p>
+          <a href="jobs.html?category=marketing" class="btn btn-sm btn-primary">View Jobs</a>
+        </div>
+      </div>
+
+      <!-- Finance -->
+      <div class="col-lg-3 col-md-4 col-sm-6">
+        <div class="category-card">
+          <i class="bi bi-bank"></i>
+          <h5>Finance</h5>
+          <p>Banking, Accounting, Tax</p>
+          <a href="jobs.html?category=finance" class="btn btn-sm btn-primary">View Jobs</a>
+        </div>
+      </div>
+
+      <!-- Healthcare -->
+      <div class="col-lg-3 col-md-4 col-sm-6">
+        <div class="category-card">
+          <i class="bi bi-heart-pulse"></i>
+          <h5>Healthcare</h5>
+          <p>Doctor, Nurse, Therapist</p>
+          <a href="jobs.html?category=healthcare" class="btn btn-sm btn-primary">View Jobs</a>
+        </div>
+      </div>
+
+      <!-- Logistics -->
+      <div class="col-lg-3 col-md-4 col-sm-6">
+        <div class="category-card">
+          <i class="bi bi-truck"></i>
+          <h5>Logistics</h5>
+          <p>Driver, Delivery, Supply</p>
+          <a href="jobs.html?category=logistics" class="btn btn-sm btn-primary">View Jobs</a>
+        </div>
+      </div>
+
+      <!-- Creative Arts -->
+      <div class="col-lg-3 col-md-4 col-sm-6">
+        <div class="category-card">
+          <i class="bi bi-brush"></i>
+          <h5>Creative Arts</h5>
+          <p>Designer, Writer, Media</p>
+          <a href="jobs.html?category=creative-arts" class="btn btn-sm btn-primary">View Jobs</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY CHOOSE US SECTION -->
+<section id="why-choose-us" class="py-5 bg-light">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold text-dark">🌟 Why Choose Us?</h2>
+      <p class="text-muted">We make finding your dream job easier and faster.</p>
+    </div>
+
+    <div class="row g-4">
+      <!-- Verified Employers -->
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="choose-card h-100">
+          <i class="bi bi-shield-check text-primary"></i>
+          <h5 class="fw-bold">Verified Employers</h5>
+          <p>All employers are verified for authenticity and trust.</p>
+        </div>
+      </div>
+
+      <!-- Latest Jobs Updated Daily -->
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="choose-card h-100">
+          <i class="bi bi-clock-history text-success"></i>
+          <h5 class="fw-bold">Daily Updates</h5>
+          <p>Fresh job listings are added every day for you.</p>
+        </div>
+      </div>
+
+      <!-- Easy Apply -->
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="choose-card h-100">
+          <i class="bi bi-mouse text-warning"></i>
+          <h5 class="fw-bold">Easy Apply</h5>
+          <p>Apply to jobs with just one click — fast and simple.</p>
+        </div>
+      </div>
+
+      <!-- Wide Range of Categories -->
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="choose-card h-100">
+          <i class="bi bi-grid-3x3-gap text-danger"></i>
+          <h5 class="fw-bold">Wide Categories</h5>
+          <p>Find jobs across multiple industries and skills.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--===================================== -->
+
+
+
+<!-- CONTACT SECTION -->
+<section id="contact" class="py-5">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold text-dark">📞 Get in Touch With Us</h2>
+      <p class="text-muted">For employer connections and inquiries in your area, we're here to help you.</p>
+    </div>
+    <div class="row g-4">
+      <div class="col-lg-5">
+        <div class="p-4 bg-white shadow rounded h-100">
+          <h5 class="fw-bold mb-3">Contact Information</h5>
+          <p><i class="bi bi-geo-alt-fill text-warning"></i> Sagar, India</p>
+          <p><i class="bi bi-envelope-fill text-warning"></i> contact@sagarjobtalent.com</p>
+          <p><i class="bi bi-telephone-fill text-warning"></i> +91 8770480826</p>
+          <hr>
+        </div>
+      </div>
+      <div class="col-lg-7">
+        <div class="p-4 bg-white shadow rounded h-100">
+          <h5 class="fw-bold mb-3">Send Us a Message</h5>
+          <form>
+            <div class="mb-3">
+              <label class="form-label">Your Name</label>
+              <input type="text" class="form-control" placeholder="Enter your name">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Your Email</label>
+              <input type="email" class="form-control" placeholder="Enter your email">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Subject</label>
+              <input type="text" class="form-control" placeholder="Employer Connection Inquiry">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Message</label>
+              <textarea class="form-control" rows="4"
+                        placeholder="Write your message here..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-warning px-4 fw-bold">Send Message</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- Floating Feedback Button -->
+<div id="feedback-btn">
+  <i class="bi bi-chat-dots-fill"></i>
+</div>
+<!-- Feedback Form Popup -->
+<div id="feedback-form">
+  <div class="feedback-header">
+    <h5>Feedback</h5>
+    <span id="close-feedback">&times;</span>
+  </div>
+  <form th:action="@{/submitFeedback}" class="feedbackform" method="post">
+    <div class="mb-2">
+      <label class="form-label" for="name">Your Name</label>
+      <input type="text" class="form-control" name="name" id="name" placeholder="Enter your name.....">
+    </div>
+    <div class="mb-2">
+      <label class="form-label" for="email">Email:</label>
+      <input type="email" name="email" id="email" class="form-control" placeholder="Your Email Address...."
+             required />
+    </div>
+    <div class="mb-2">
+      <label for="words" class="form-label">Message:</label>
+      <textarea name="words" id="words" class="form-control" rows="4"
+                placeholder="Enter your message here...." required></textarea>
+    </div>
+    <button type="submit" class="btn btn-warning w-100">Submit</button>
+  </form>
+  <div th:if="${Saved}">
+    <script>
+      alert("Feedback submitted successfully");
+    </script>
+  </div>
+  <p class="mt-3 text-success" th:if="${message}" th:text="${message}"></p>
+</div>
+
+<!-- script of feedback button on hovering it open  -->
+<script>
+  document.getElementById('feedback-btn').addEventListener('click', function () {
+      document.getElementById('feedback-form').style.display = 'block';
+  });
+
+  document.getElementById('close-feedback').addEventListener('click', function () {
+      document.getElementById('feedback-form').style.display = 'none';
+  });
+</script>
+<!-- --------------------------------------------------------  -->
+<!--Given below is the footer of the homepage -->
 <footer class="bg-dark text-white pt-5 pb-3 ">
   <div class="container">
     <div class="row">
@@ -349,27 +680,27 @@
         <script>
           // Show/hide button on scroll
           window.onscroll = function () {
-            const btn = document.getElementById("backToTop");
-            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
-              btn.style.display = "block";
-            } else {
-              btn.style.display = "none";
-            }
+              const btn = document.getElementById("backToTop");
+              if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                  btn.style.display = "block";
+              } else {
+                  btn.style.display = "none";
+              }
           };
 
           // Smooth scroll to top
           function scrollToTop() {
-            window.scrollTo({
-              top: 0,
-              behavior: "smooth"
-            });
+              window.scrollTo({
+                  top: 0,
+                  behavior: "smooth"
+              });
           }
         </script>
 
       </div>
       <!-- Logo Column -->
       <div class="col-md-3 mb-4">
-        <img src="../Images/Naukri_com_white.png" alt="Job Portal Logo" class="img-fluid mb-3 w-50">
+        <img src="Logo/websitelogo.jpg" alt="Job Portal Logo" class="img-fluid mb-3 w-50">
         <p>Find your dream job or hire top talent fast — all in one place.</p>
       </div>
       <!-- Footer Links and Details -->
@@ -383,7 +714,8 @@
               <li><a href="#jobs" class="text-white text-decoration-none">Jobs</a></li>
               <li><a href="@{/companies}" class="text-white text-decoration-none">Companies</a></li>
               <li><a th:href="@{/contact}" class="text-white text-decoration-none">Contact Us</a></li>
-              <li><a th:href="@{/termandcondition}" class="text-white text-decoration-none">Terms and condition</a></li>
+              <li><a th:href="@{/termandcondition}" class="text-white text-decoration-none">Terms and
+                condition</a></li>
             </ul>
           </div>
 
@@ -411,7 +743,6 @@
 
     <!-- Divider -->
     <hr class="border-secondary">
-
     <!-- Bottom Row -->
     <div class="row align-items-center">
       <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
@@ -423,8 +754,8 @@
                alt="Google Play" height="40">
         </a>
         <a href="#">
-          <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store"
-               height="40">
+          <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"
+               alt="App Store" height="40">
         </a>
       </div>
     </div>
@@ -434,3 +765,440 @@
 </body>
 
 </html>
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"  th:fragment="layout(content)">-->
+
+<!--<head>-->
+<!--  <meta charset="UTF-8" />-->
+<!--  <meta name="viewport" content="width=device-width, initial-scale=1.0" />-->
+<!--  <title>City Job Portal Header</title>-->
+<!--  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">-->
+<!--  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">-->
+<!--  <style>-->
+<!--    body {-->
+<!--      margin-left: 10px;-->
+<!--      margin-right: 10px;-->
+<!--    }-->
+
+<!--    .search-mobile-row {-->
+<!--      display: none;-->
+<!--    }-->
+
+<!--    @media (max-width: 768px) {-->
+<!--      .desktop-search {-->
+<!--        display: none;-->
+<!--      }-->
+
+<!--      .search-mobile-row {-->
+<!--        display: block;-->
+<!--        padding: 10px 15px;-->
+<!--      }-->
+<!--    }-->
+
+<!--    @media (min-width: 769px) {-->
+<!--      .mobile-search-icon {-->
+<!--        display: none !important;-->
+<!--      }-->
+<!--    }-->
+
+<!--    .dropdown-submenu {-->
+<!--      position: relative;-->
+<!--    }-->
+
+<!--    .dropdown-submenu>.dropdown-menu {-->
+<!--      top: 0;-->
+<!--      left: 100%;-->
+<!--      margin-top: -1px;-->
+<!--    }-->
+
+<!--    .nav-link {-->
+<!--      padding: 0.5rem 1.2rem;-->
+<!--    }-->
+
+<!--    .logo {-->
+<!--      height: 80px;-->
+<!--      width: 80px;-->
+<!--    }-->
+
+<!--    /* Middle theme  */-->
+<!--    .carousel-item {-->
+<!--      height: 100vh;-->
+<!--      background-size: cover;-->
+<!--      background-position: center;-->
+<!--      display: flex;-->
+<!--      align-items: center;-->
+<!--      justify-content: center;-->
+<!--      color: white;-->
+<!--      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);-->
+<!--    }-->
+
+<!--    .carousel-caption-custom {-->
+<!--      background-color: rgba(0, 0, 0, 0.6);-->
+<!--      padding: 30px;-->
+<!--      border-radius: 10px;-->
+<!--      width: 100%;-->
+<!--      max-width: 1000px;-->
+<!--    }-->
+
+<!--    .form-inline-group {-->
+<!--      display: flex;-->
+<!--      flex-wrap: nowrap;-->
+<!--      gap: 10px;-->
+<!--      margin-top: 20px;-->
+<!--    }-->
+
+<!--    .form-inline-group .form-control,-->
+<!--    .form-inline-group .form-select,-->
+<!--    .form-inline-group .input-group {-->
+<!--      flex: 1;-->
+<!--      min-width: 150px;-->
+<!--    }-->
+
+<!--    @media (max-width: 768px) {-->
+<!--      .form-inline-group {-->
+<!--        flex-direction: column;-->
+<!--      }-->
+<!--    }-->
+
+<!--    /* Given below is the CSS of the profession comes under the dropdown of jobs  */-->
+<!--    .professions-navbar {-->
+<!--      background-color: #0d6efd;-->
+<!--      width: 800px;-->
+<!--    }-->
+
+<!--    .professions-navbar .nav-link {-->
+<!--      color: white;-->
+<!--      font-weight: 500;-->
+<!--      padding: 0.75rem 1rem;-->
+<!--    }-->
+
+<!--    .professions-navbar .nav-link:hover,-->
+<!--    .professions-navbar .nav-link.active {-->
+<!--      background-color: #0b5ed7;-->
+<!--      color: #ffffff;-->
+<!--    }-->
+
+<!--    @media (max-width: 768px) {-->
+<!--      .professions-navbar .nav-link {-->
+<!--        font-size: 0.9rem;-->
+<!--        padding: 0.5rem 0.75rem;-->
+<!--      }-->
+<!--    }-->
+
+<!--    .preofession-container {-->
+<!--      margin-left: 40px;-->
+<!--      margin-right: 40px;-->
+<!--    }-->
+
+<!--    .profession-type {-->
+<!--      width: 100%;-->
+<!--    }-->
+
+<!--    /* navitem->dropdown->subdropdown */-->
+<!--    /* Custom styles for sub-dropdowns */-->
+<!--    .dropdown-submenu {-->
+<!--      position: relative;-->
+<!--    }-->
+
+<!--    .dropdown-submenu .dropdown-menu {-->
+<!--      top: 0;-->
+<!--      left: 100%;-->
+<!--      margin-left: 0;-->
+<!--      margin-top: -1px;-->
+<!--      display: none;-->
+<!--    }-->
+
+<!--    .dropdown-submenu:hover .dropdown-menu {-->
+<!--      display: block;-->
+<!--    }-->
+
+<!--    #dropdownsubmenu {-->
+<!--      margin-left: 2px;-->
+<!--      margin-right: 2px;-->
+<!--    }-->
+
+<!--    /* <-&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&ndash;&gt; */-->
+<!--  </style>-->
+<!--</head>-->
+
+<!--<body>-->
+<!--&lt;!&ndash; 🔵 First Row &ndash;&gt;-->
+<!--<div class="container-fluid py-2 border-bottom" style="  background-color: #c2cfe5">-->
+<!--  <div class="d-flex justify-content-between align-items-center">-->
+<!--    &lt;!&ndash; Logo &ndash;&gt;-->
+<!--    <div class="d-flex align-items-center gap-3">-->
+<!--      <img src="../Images/websitelogo.png"  class="logo" alt="Logo" />-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Search Bar (Large Screens) &ndash;&gt;-->
+<!--    <div class="input-group desktop-search mx-3" style="max-width: 400px;">-->
+<!--      <input type="text" class="form-control" placeholder="Search Jobs" />-->
+<!--      <button class="btn btn-outline-secondary bg-secondary " type="button"><i class="bi bi-search "-->
+<!--                                                                               style="color: aliceblue;"></i></button>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Login, Signup & Search Icon &ndash;&gt;-->
+<!--    <div class="d-flex align-items-center gap-2">-->
+<!--      &lt;!&ndash; Search icon (for small screens) &ndash;&gt;-->
+<!--      <button class="btn btn-secondary mobile-search-icon" style="color: aliceblue;" onclick="toggleMobileSearch()">-->
+<!--        <i class="bi bi-search"></i>-->
+<!--      </button>-->
+
+<!--      &lt;!&ndash; Login dropdown &ndash;&gt;-->
+<!--      <div class="dropdown">-->
+<!--        <button class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">Login</button>-->
+<!--        <ul class="dropdown-menu dropdown-menu-end">-->
+<!--          <li><a class="dropdown-item" th:href="@{/jobseeker/register}">Employer</a></li>-->
+<!--          <li><a class="dropdown-item" th:href="@{/jobseeker/login}">Seeker</a></li>-->
+<!--        </ul>-->
+<!--      </div>-->
+
+<!--      &lt;!&ndash; Signup dropdown &ndash;&gt;-->
+<!--      <div class="dropdown">-->
+<!--        <button class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">Signup</button>-->
+<!--        <ul class="dropdown-menu dropdown-menu-end ">-->
+<!--          <li><a class="dropdown-item" th:href="@{/company/companyform}">Employer</a></li>-->
+<!--          <li><a class="dropdown-item" th:href="@{/company/companylogin}">Seeker</a></li>-->
+<!--        </ul>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+
+<!--&lt;!&ndash; 🟡 Second Row (mobile search bar only) &ndash;&gt;-->
+<!--<div id="mobileSearchRow" class="container-fluid search-mobile-row">-->
+<!--  <div class="input-group my-2">-->
+<!--    <input type="text" class="form-control" placeholder="Search Jobs..." />-->
+<!--    <button class="btn btn-outline-secondary" type="button"><i class="bi bi-search"></i></button>-->
+<!--  </div>-->
+<!--</div>-->
+
+<!--&lt;!&ndash; 🟢 Third Row (Navigation) &ndash;&gt;-->
+<!--<nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">-->
+
+<!--  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">-->
+<!--    <span class="navbar-toggler-icon"></span>-->
+<!--  </button>-->
+<!--  <div class="collapse navbar-collapse" id="navbarCollapse">-->
+<!--    <ul class="navbar-nav me-auto mb-2 mb-lg-0">-->
+
+<!--      &lt;!&ndash; Home Menu &ndash;&gt;-->
+<!--      <li class="nav-item ">-->
+<!--        <a class="nav-link" th:href="@{/footerhome}">Home</a>-->
+<!--      </li>-->
+<!--      &lt;!&ndash; Job Menu &ndash;&gt;-->
+<!--      <li class="nav-item dropdown">-->
+<!--        <a class="nav-link dropdown-toggle" href="#" id="jobsDropdown" role="button" data-bs-toggle="dropdown">-->
+<!--          Jobs-->
+<!--        </a>-->
+<!--        <ul class="dropdown-menu" aria-labelledby="jobsDropdown">-->
+<!--          &lt;!&ndash; IT Jobs (Sub-dropdown) &ndash;&gt;-->
+<!--          <li class="dropdown-submenu">-->
+<!--            <a class="dropdown-item dropdown-toggle" href="#">> IT Jobs</a>-->
+<!--            <ul class="dropdown-menu" th:id="dropdownsubmenu">-->
+<!--              <li><a class="dropdown-item" href="#">> Web developer</a></li>-->
+<!--              <li><a class="dropdown-item" href="#">> Software Engineer</a></li>-->
+<!--              <li><a class="dropdown-item" href="#">> IT support</a></li>-->
+<!--              <li><a class="dropdown-item" href="#">> Data Analyst</a></li>-->
+<!--            </ul>-->
+<!--          </li>-->
+<!--          <li class="dropdown-submenu">-->
+<!--            <a class="dropdown-item dropdown-toggle" href="#">-->
+<!--              > Healthcare jops-->
+<!--            </a>-->
+<!--            <ul class="dropdown-menu" th:id="dropdownsubmenu">-->
+<!--              <li><a class="dropdown-item" href="#">> Nurse</a></li>-->
+<!--              <li><a class="dropdown-item" href="#">> Pharmacist</a></li>-->
+<!--              <li><a class="dropdown-item" href="#">> Lab technician</a></li>-->
+<!--            </ul>-->
+<!--          </li>-->
+<!--          <li class="dropdown-submenu">-->
+<!--            <a class="dropdown-item dropdown-toggle" href="#">-->
+<!--              > Education-->
+<!--            </a>-->
+<!--            <ul class="dropdown-menu" th:id="dropdownsubmenu">-->
+<!--              <li><a class="dropdown-item" href="#">> Teacher</a></li>-->
+<!--              <li><a class="dropdown-item" href="#">> Tutor</a></li>-->
+<!--              <li><a class="dropdown-item" href="#">> Academic Counsellor</a></li>-->
+<!--            </ul>-->
+<!--          </li>-->
+<!--          <li class="dropdown-submenu">-->
+<!--            <a class="dropdown-item dropdown-toggle" href="#">-->
+<!--              > Construction-->
+<!--            </a>-->
+<!--            <ul class="dropdown-menu" th:id="dropdownsubmenu">-->
+<!--              <li><a class="dropdown-item" href="#">> Site Engineer</a></li>-->
+<!--              <li><a class="dropdown-item" href="#">> Civil Supervisor</a></li>-->
+<!--              <li><a class="dropdown-item" href="#">> Electrician</a></li>-->
+<!--            </ul>-->
+<!--          </li>-->
+<!--          <li class="dropdown-submenu">-->
+<!--            <a class="dropdown-item dropdown-toggle" href="#">-->
+<!--              > Hospitality-->
+<!--            </a>-->
+<!--            <ul class="dropdown-menu" th:id="dropdownsubmenu">-->
+<!--              <li><a class="dropdown-item" href="#">> Hotel Manager</a></li>-->
+<!--              <li><a class="dropdown-item" href="#">> House keeping</a></li>-->
+<!--              <li><a class="dropdown-item" href="#">> Chef</a></li>-->
+<!--            </ul>-->
+<!--          </li>-->
+
+<!--          <li class="dropdown-submenu">-->
+<!--            <a class="dropdown-item dropdown-toggle" href="#">-->
+<!--              > Retail-->
+<!--            </a>-->
+<!--            <ul class="dropdown-menu" th:id="dropdownsubmenu">-->
+<!--              <li><a class="dropdown-item" href="#">> Cashier</a></li>-->
+<!--              <li><a class="dropdown-item" href="#">> Store Manager</a></li>-->
+<!--              <li><a class="dropdown-item" href="#">> Sales Executive</a></li>-->
+<!--            </ul>-->
+<!--          </li>-->
+<!--        </ul>-->
+<!--      </li>-->
+
+
+
+<!--      &lt;!&ndash; Companies Menu &ndash;&gt;-->
+<!--      <li class="nav-item dropdown">-->
+<!--        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Companies</a>-->
+<!--        <ul class="dropdown-menu">-->
+<!--          <li><a class="dropdown-item" href="#">Product based company</a></li>-->
+<!--          <li><a class="dropdown-item" href="#">Service based company</a></li>-->
+<!--        </ul>-->
+<!--      </li>-->
+
+<!--      <li class="nav-item">-->
+<!--        <a class="nav-link" href="#">About</a>-->
+<!--      </li>-->
+<!--      <li class="nav-item">-->
+<!--        <a class="nav-link" th:href="@{/feedback}">Feedback</a>-->
+<!--      </li>-->
+
+<!--    </ul>-->
+<!--  </div>-->
+<!--</nav>-->
+
+
+<!--<div></div>-->
+
+<!--&lt;!&ndash; Theme Final  &ndash;&gt;-->
+<!--<div th:fragment="layout(content)">-->
+<!--  <div th:replace="${content}"></div>-->
+<!--</div>-->
+
+
+
+<!--<script>-->
+<!--  function toggleMobileSearch() {-->
+<!--    const row = document.getElementById("mobileSearchRow");-->
+<!--    row.style.display = row.style.display === "none" || row.style.display === "" ? "block" : "none";-->
+<!--  }-->
+<!--</script>-->
+
+
+
+
+
+<!--&lt;!&ndash; Given Below is the footer of the home page  &ndash;&gt;-->
+<!--<footer class="bg-dark text-white pt-5 pb-3 ">-->
+<!--  <div class="container">-->
+<!--    <div class="row">-->
+<!--      <div class="col-md-1">-->
+<!--        &lt;!&ndash; Back to top button inserted fix to move to the top of the page on the single click  &ndash;&gt;-->
+<!--        &lt;!&ndash; Content &ndash;&gt;-->
+<!--        <div class="container-fluid fixed-bottom mb-4">-->
+<!--          &lt;!&ndash; Back to Top Button &ndash;&gt;-->
+<!--          <button onclick="scrollToTop()" id="backToTop" title="Go to top"-->
+<!--                  style="background-color: azure; color: rgba(0, 0, 0, 0.7);">-->
+<!--            ↑-->
+<!--          </button>-->
+<!--        </div>-->
+<!--        <script>-->
+<!--          // Show/hide button on scroll-->
+<!--          window.onscroll = function () {-->
+<!--            const btn = document.getElementById("backToTop");-->
+<!--            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {-->
+<!--              btn.style.display = "block";-->
+<!--            } else {-->
+<!--              btn.style.display = "none";-->
+<!--            }-->
+<!--          };-->
+
+<!--          // Smooth scroll to top-->
+<!--          function scrollToTop() {-->
+<!--            window.scrollTo({-->
+<!--              top: 0,-->
+<!--              behavior: "smooth"-->
+<!--            });-->
+<!--          }-->
+<!--        </script>-->
+
+<!--      </div>-->
+<!--      &lt;!&ndash; Logo Column &ndash;&gt;-->
+<!--      <div class="col-md-3 mb-4">-->
+<!--        <img src="../Images/Naukri_com_white.png" alt="Job Portal Logo" class="img-fluid mb-3 w-50">-->
+<!--        <p>Find your dream job or hire top talent fast — all in one place.</p>-->
+<!--      </div>-->
+<!--      &lt;!&ndash; Footer Links and Details &ndash;&gt;-->
+<!--      <div class="col-md-8">-->
+<!--        <div class="row">-->
+<!--          &lt;!&ndash; Quick Links &ndash;&gt;-->
+<!--          <div class="col-sm-3 mb-3">-->
+<!--            <h5>Quick Links</h5>-->
+<!--            <ul class="list-unstyled">-->
+<!--              <li><a href="#home" class="text-white text-decoration-none">Home</a></li>-->
+<!--              <li><a href="#jobs" class="text-white text-decoration-none">Jobs</a></li>-->
+<!--              <li><a href="@{/companies}" class="text-white text-decoration-none">Companies</a></li>-->
+<!--              <li><a th:href="@{/contact}" class="text-white text-decoration-none">Contact Us</a></li>-->
+<!--              <li><a th:href="@{/termandcondition}" class="text-white text-decoration-none">Terms and condition</a></li>-->
+<!--            </ul>-->
+<!--          </div>-->
+
+<!--          &lt;!&ndash; Services &ndash;&gt;-->
+<!--          <div class="col-sm-4 mb-3">-->
+<!--            <h5>Services</h5>-->
+<!--            <ul class="list-unstyled">-->
+<!--              <li><a href="#" class="text-white text-decoration-none">Post a Job</a></li>-->
+<!--              <li><a href="#" class="text-white text-decoration-none">Search Resumes</a></li>-->
+<!--              <li><a href="#" class="text-white text-decoration-none">Job Alerts</a></li>-->
+<!--              <li><a href="#" class="text-white text-decoration-none">Employer Login</a></li>-->
+<!--            </ul>-->
+<!--          </div>-->
+
+<!--          &lt;!&ndash; Contact &ndash;&gt;-->
+<!--          <div class="col-sm-4 mb-3">-->
+<!--            <h5>Contact</h5>-->
+<!--            <p class="mb-1"><i class="bi bi-geo-alt-fill me-2"></i>369,Xansa IT Solutions ,Sagar</p>-->
+<!--            <p class="mb-1"><i class="bi bi-envelope-fill me-2"></i>SagarJobTalent.com</p>-->
+<!--            <p><i class="bi bi-telephone-fill me-2"></i>+91 8770480826</p>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Divider &ndash;&gt;-->
+<!--    <hr class="border-secondary">-->
+
+<!--    &lt;!&ndash; Bottom Row &ndash;&gt;-->
+<!--    <div class="row align-items-center">-->
+<!--      <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">-->
+<!--        <p class="mb-0">&copy; 2025 Sagar Job Talent. All rights reserved.</p>-->
+<!--      </div>-->
+<!--      <div class="col-md-6 text-center text-md-end">-->
+<!--        <a href="#" class="me-2">-->
+<!--          <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"-->
+<!--               alt="Google Play" height="40">-->
+<!--        </a>-->
+<!--        <a href="#">-->
+<!--          <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store"-->
+<!--               height="40">-->
+<!--        </a>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</footer>-->
+<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>-->
+<!--</body>-->
+
+<!--</html>-->
