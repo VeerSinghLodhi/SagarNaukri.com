@@ -8,368 +8,497 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
   <style>
+    html {
+        scroll-behavior: smooth;
+    }
+
+    * {
+        transition: all 0.3s ease-in-out;
+    }
+
+
     /* Navbar */
     .navbar {
-      background: linear-gradient(90deg, #004e92, #000428);
+        /* background: linear-gradient(90deg, #004e92, #000428);*/
+        background: transparent;
     }
+
     .navbar-brand img {
-      height: 40px;
+        height: 40px;
     }
+
     .navbar-nav .nav-link {
-      color: white !important;
-      font-weight: 500;
-      transition: color 0.3s ease;
+        color: white !important;
+        font-weight: 500;
+        transition: color 0.3s ease;
     }
+
     .navbar-nav .nav-link:hover {
-      color: #ffc107 !important;
+        color: #ffc107 !important;
     }
+
     .dropdown-menu {
-      background: #ffffff;
+        background: #ffffff;
     }
+
     .dropdown-item:hover {
-      background: #f8f9fa;
+        background: #f8f9fa;
     }
 
     .search-mobile-row {
-      display: none;
+        display: none;
     }
 
     @media (max-width: 768px) {
-      .desktop-search {
-        display: none;
-      }
+        .desktop-search {
+            display: none;
+        }
 
-      .search-mobile-row {
-        display: block;
-        padding: 10px 15px;
-      }
+        .search-mobile-row {
+            display: block;
+            padding: 10px 15px;
+        }
     }
 
     @media (min-width: 769px) {
-      .mobile-search-icon {
-        display: none !important;
-      }
+        .mobile-search-icon {
+            display: none !important;
+        }
     }
 
 
 
     .logo {
-      height: 80px;
-      width: 80px;
+        height: 80px;
+        width: 80px;
     }
 
     /* Hero Carousel */
     .carousel-item {
-      height: 90vh;
-      min-height: 740px;
-     /*  background: no-repeat center center scroll;
-      background-size: cover;
-     position: relative;*/
-background-color:white;
-color:#000;
+        height: 90vh;
+        min-height: 900px;
+        background-color: white;
+        color: #000;
     }
-   /* .carousel::before {
-      content: "";
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.4);
-      z-index: 1;
-    }*/
+
+    /* .carousel::before {
+content: "";
+position: absolute;
+top: 0; left: 0; right: 0; bottom: 0;
+background: rgba(0, 0, 0, 0.4);
+z-index: 1;
+}*/
     .carousel-caption-custom {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      text-align: center;
-      z-index: 2;
-      color: #000;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        z-index: 2;
+        color: #000;
     }
+
     .carousel-caption-custom h1 {
-      font-size: 3rem;
-      font-weight: bold;
-      text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+        font-size: 3rem;
+        font-weight: bold;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
     }
+
     .carousel-caption-custom p {
-      font-size: 1.3rem;
+        font-size: 1.3rem;
     }
+
     .carousel-caption-custom .btn {
-      padding: 10px 25px;
-      font-size: 1.1rem;
-      margin: 5px;
-      border-radius: 30px;
-      transition: transform 0.3s ease, background 0.3s ease;
+        padding: 10px 25px;
+        font-size: 1.1rem;
+        margin: 5px;
+        border-radius: 30px;
+        transition: transform 0.3s ease, background 0.3s ease;
     }
+
     .carousel-caption-custom .btn:hover {
-      transform: translateY(-3px);
+        transform: translateY(-3px);
     }
 
     /* Given below is the CSS of the profession comes under the dropdown of jobs  */
     .professions-navbar {
-      background-color: #0d6efd;
-      width: 800px;
+        background-color: #0d6efd;
+        width: 800px;
     }
 
     .professions-navbar .nav-link {
-      color: white;
-      font-weight: 500;
-      padding: 0.75rem 1rem;
+        color: white;
+        font-weight: 500;
+        padding: 0.75rem 1rem;
     }
 
     .professions-navbar .nav-link:hover,
     .professions-navbar .nav-link.active {
-      background-color: #0b5ed7;
-      color: #ffffff;
+        background-color: #0b5ed7;
+        color: #ffffff;
     }
 
     @media (max-width: 768px) {
-      .professions-navbar .nav-link {
-        font-size: 0.9rem;
-        padding: 0.5rem 0.75rem;
-      }
+        .professions-navbar .nav-link {
+            font-size: 0.9rem;
+            padding: 0.5rem 0.75rem;
+        }
     }
 
     .preofession-container {
-      margin-left: 40px;
-      margin-right: 40px;
+        margin-left: 40px;
+        margin-right: 40px;
     }
 
     .profession-type {
-      width: 100%;
+        width: 100%;
     }
 
     /* navitem->dropdown->subdropdown */
     /* Custom styles for sub-dropdowns */
     .dropdown-submenu {
-      position: relative;
+        position: relative;
     }
 
     .dropdown-submenu .dropdown-menu {
-      top: 0;
-      left: 100%;
-      margin-left: 0;
-      margin-top: -1px;
-      display: none;
+        top: 0;
+        left: 100%;
+        margin-left: 0;
+        margin-top: -1px;
+        display: none;
     }
 
     .dropdown-submenu:hover .dropdown-menu {
-      display: block;
+        display: block;
     }
 
     #dropdownsubmenu {
-      margin-left: 2px;
-      margin-right: 2px;
+        margin-left: 2px;
+        margin-right: 2px;
     }
 
 
     /* Category Card */
     .category-card {
-      background: #fff;
-      border: 1px solid #eaeaea;
-      border-radius: 10px;
-      text-align: center;
-      padding: 20px;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+        background: #fff;
+        border: 1px solid #eaeaea;
+        border-radius: 10px;
+        text-align: center;
+        padding: 20px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
     .category-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
+        transform: translateY(-5px);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
     }
 
     .category-card i {
-      font-size: 40px;
-      margin-bottom: 10px;
-      color: #007bff;
+        font-size: 40px;
+        margin-bottom: 10px;
+        color: #007bff;
     }
 
     .category-card h5 {
-      font-weight: 600;
-      margin-bottom: 5px;
+        font-weight: 600;
+        margin-bottom: 5px;
     }
 
     .category-card p {
-      font-size: 14px;
-      color: #6c757d;
-      min-height: 40px;
+        font-size: 14px;
+        color: #6c757d;
+        min-height: 40px;
     }
 
     /* Why Choose Us Cards */
     .choose-card {
-      background: #fff;
-      border-radius: 10px;
-      padding: 20px;
-      text-align: center;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+        background: #fff;
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
     .choose-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
     }
 
     .choose-card i {
-      font-size: 40px;
-      margin-bottom: 10px;
+        font-size: 40px;
+        margin-bottom: 10px;
     }
 
     .choose-card h5 {
-      font-weight: 600;
+        font-weight: 600;
     }
 
     .choose-card p {
-      font-size: 14px;
-      color: #6c757d;
+        font-size: 14px;
+        color: #6c757d;
     }
 
     /* ===== CONTACT SECTION ===== */
     #contact {
-      background: #f8f9fa;
-      /* Light background */
+        background: #f8f9fa;
+        /* Light background */
     }
 
     #contact h2 {
-      font-size: 2rem;
+        font-size: 2rem;
     }
 
     #contact p {
-      margin-bottom: 0.8rem;
+        margin-bottom: 0.8rem;
     }
 
     /* Contact Info Box */
     #contact .bg-white {
-      border-radius: 12px;
+        border-radius: 12px;
     }
 
     /* Icons Styling */
     #contact i {
-      font-size: 1.2rem;
-      margin-right: 8px;
-      vertical-align: middle;
+        font-size: 1.2rem;
+        margin-right: 8px;
+        vertical-align: middle;
     }
 
     /* Labels */
     #contact .form-label {
-      font-weight: 600;
-      color: #333;
+        font-weight: 600;
+        color: #333;
     }
 
     /* Inputs & Textarea */
     #contact .form-control {
-      border-radius: 8px;
-      border: 1px solid #ddd;
-      padding: 10px 14px;
-      transition: all 0.3s ease;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        padding: 10px 14px;
+        transition: all 0.3s ease;
     }
 
     #contact .form-control:focus {
-      border-color: #ffc107;
-      box-shadow: 0 0 6px rgba(255, 193, 7, 0.4);
+        border-color: #ffc107;
+        box-shadow: 0 0 6px rgba(255, 193, 7, 0.4);
     }
 
     /* Submit Button */
     #contact .btn-warning {
-      border-radius: 8px;
-      transition: all 0.3s ease;
+        border-radius: 8px;
+        transition: all 0.3s ease;
     }
 
     #contact .btn-warning:hover {
-      background-color: #e0a800;
-      transform: translateY(-2px);
+        background-color: #e0a800;
+        transform: translateY(-2px);
     }
 
     /* Shadow on Hover for Cards */
     #contact .bg-white:hover {
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
-      transition: box-shadow 0.3s ease;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s ease;
     }
 
     /* Feedback Floating button  */
     /* Floating Button */
     #feedback-btn {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: #ffc107;
-      color: white;
-      width: 55px;
-      height: 55px;
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-      cursor: pointer;
-      font-size: 1.5rem;
-      z-index: 9999;
-      transition: background 0.3s;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #ffc107;
+        color: white;
+        width: 55px;
+        height: 55px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+        font-size: 1.5rem;
+        z-index: 9999;
+        transition: background 0.3s;
     }
 
     #feedback-btn:hover {
-      background: #e0a800;
-      backdrop-filter: blur(6px);
-      /* Blur background */
-      background: rgba(0, 0, 0, 0.4);
-      /* Dark overlay */
+        background: #e0a800;
+        backdrop-filter: blur(6px);
+        /* Blur background */
+        background: rgba(0, 0, 0, 0.4);
+        /* Dark overlay */
     }
 
     /* Feedback Form Popup */
     #feedback-form {
-      position: fixed;
-      bottom: 90px;
-      right: 20px;
-      width: 300px;
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-      padding: 15px;
-      display: none;
-      /* Hidden initially */
-      animation: slideUp 0.3s ease-out;
-      z-index: 9999;
+        position: fixed;
+        bottom: 90px;
+        right: 20px;
+        width: 300px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        padding: 15px;
+        display: none;
+        /* Hidden initially */
+        animation: slideUp 0.3s ease-out;
+        z-index: 9999;
     }
 
     /* Header */
     .feedback-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
     .feedback-header h5 {
-      margin: 0;
-      font-weight: bold;
+        margin: 0;
+        font-weight: bold;
     }
 
     #close-feedback {
-      cursor: pointer;
-      font-size: 1.2rem;
+        cursor: pointer;
+        font-size: 1.2rem;
     }
 
     /* Animation */
     @keyframes slideUp {
-      from {
-        transform: translateY(20px);
-        opacity: 0;
-      }
+        from {
+            transform: translateY(20px);
+            opacity: 0;
+        }
 
-      to {
-        transform: translateY(0);
-        opacity: 1;
-      }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
     }
 
+
+
+    /* Hero Carousel */
+    #heroCarousel .carousel-item {
+        height: 90vh;
+        min-height: 800px;
+        background-size: cover;
+        background-position: center;
+        position: relative;
+    }
+
+    /* Center text nicely */
+    .carousel-caption-custom {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        max-width: 700px;
+    }
+
+    .carousel-caption-custom h1 {
+        font-size: 3rem;
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+
+    .carousel-caption-custom p {
+        font-size: 1.25rem;
+        margin-bottom: 25px;
+    }
+
+    /* Buttons */
+    .carousel-caption-custom .btn {
+        margin: 5px;
+        padding: 12px 25px;
+        font-size: 1rem;
+        border-radius: 30px;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .carousel-caption-custom .btn-warning {
+        background-color: #ffb400;
+        border: none;
+        font-weight: bold;
+    }
+
+    .carousel-caption-custom .btn-warning:hover {
+        background-color: #e6a200;
+        transform: scale(1.05);
+    }
+
+    .carousel-caption-custom .btn-outline-light:hover {
+        background-color: #fff;
+        color: #000;
+        transform: scale(1.05);
+    }
+
+    /* Carousel controls */
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+        filter: invert(1);
+    }
+
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+        filter: invert(1);
+     }
+
+
+    #main-header {
+        transition: all 0.4s ease-in-out;
+    }
+
+    #backToTop {
+        display: none;
+        border: 1px solid black;
+        padding: 10px 15px;
+        border-radius: 50%;
+        cursor: pointer;
+    }
   </style>
 </head>
 
 <body>
+<script>
+  document.addEventListener("scroll", function () {
+      const mainheader = document.getElementById("main-header");
+      const btn = document.getElementById("backToTop");
+
+      // Header background change
+      if (document.documentElement.scrollTop > 80) {
+          mainheader.style.background = "linear-gradient(90deg, #004e92, #000428)";
+          mainheader.style.boxShadow = "0 2px 10px rgba(0,0,0,0.3)";
+      } else {
+          mainheader.style.background = "transparent";
+          mainheader.style.boxShadow = "none";
+      }
+
+      // Back-to-top button toggle
+      if (document.documentElement.scrollTop > 300) {
+          btn.style.display = "block";
+      } else {
+          btn.style.display = "none";
+      }
+  });
+
+  // Smooth scroll to top
+  function scrollToTop() {
+      window.scrollTo({
+          top: 0,
+          behavior: "smooth"
+      });
+  }
+</script>
+
 <!-- ======== HEADER START ======== -->
-<header class="fixed-top" id="main-header" style="background:transparent;">
-  <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+<header class="fixed-top" id="main-header">
+  <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container">
       <a class="navbar-brand d-flex align-items-center gap-2" href="#">
-        <img src="Images/Naukri_com_white.png" alt="City Job Portal" width="40" height="40">
-        <span class="fw-bold">JobSagar</span>
+        <img src="Images/Naukri_com_white.png" alt="City Job Portal" width="45" height="45">
+        <span class="fw-bold">Job<span class="text-warning">Sagar</span></span>
       </a>
 
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -382,33 +511,37 @@ color:#000;
           <li class="nav-item"><a class="nav-link" href="#">About</a></li>
 
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Jobs</a>
+            <a class="nav-link dropdown-toggle" href="#" role="button"
+               data-bs-toggle="dropdown">Jobs</a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Search Jobs</a></li>
+              <li><a class="dropdown-item" href="#job-categories">Search Jobs</a></li>
               <li><a class="dropdown-item" href="#">Recent Jobs</a></li>
               <li><a class="dropdown-item" href="#">Top Companies</a></li>
             </ul>
           </li>
 
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Users</a>
+            <a class="nav-link dropdown-toggle" href="#" role="button"
+               data-bs-toggle="dropdown">Users</a>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="#">Employer</a></li>
               <li><a class="dropdown-item" href="#">Job Seeker</a></li>
             </ul>
           </li>
 
-          <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
         </ul>
         <div class="dropdown">
-          <a href="#" class="btn btn-warning ms-3 dropdown-toggle" data-bs-toggle="dropdown">Login</a>
+          <a href="#" class="btn btn-warning ms-3 ms-xs-0 dropdown-toggle"
+             data-bs-toggle="dropdown">Login</a>
           <ul class="dropdown-menu dropdown-menu-end">
             <li><a class="dropdown-item" th:href="@{/company/companylogin}">Employer</a></li>
             <li><a class="dropdown-item" th:href="@{/jobseeker/login}">Seeker</a></li>
           </ul>
         </div>
         <div class="dropdown">
-          <a href="#" class="btn btn-outline-light ms-2 dropdown-toggle" data-bs-toggle="dropdown">Register</a>
+          <a href="#" class="btn btn-outline-light ms-2 mt-3 mt-lg-0 ms-xs-0 dropdown-toggle"
+             data-bs-toggle="dropdown">Register</a>
           <ul class="dropdown-menu dropdown-menu-end ">
             <li><a class="dropdown-item" th:href="@{/company/companyform}">Employer</a></li>
             <li><a class="dropdown-item" th:href="@{/jobseeker/register}">Seeker</a></li>
@@ -420,61 +553,67 @@ color:#000;
 
 </header>
 
-<!--            <button class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">Login</button>-->
-<!--            <ul class="dropdown-menu dropdown-menu-end">-->
-<!--              <li><a class="dropdown-item" th:href="@{/company/companylogin}">Employer</a></li>-->
-<!--              <li><a class="dropdown-item" th:href="@{/jobseeker/login}">Seeker</a></li>-->
-<!--            </ul>-->
-<!--          </div>-->
-
-<!--          &lt;!&ndash; Signup dropdown &ndash;&gt;-->
-          <div class="dropdown">
-            <button class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">Signup</button>
-            <ul class="dropdown-menu dropdown-menu-end ">
-              <li><a class="dropdown-item" th:href="@{/company/companyform}">Employer</a></li>
-              <li><a class="dropdown-item" th:href="@{/jobseeker/register}">Seeker</a></li>
-            </ul>
-          </div>
-
-
 <!-- Hero Section (Carousel) -->
 <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
-  <div class="carousel-inner bg-light">
+  <div class="carousel-inner">
 
-<!--    <div class="carousel-item active" style="background-image: url('/Logo/front-view-couple-talking-real-estate-agent.jpg');">-->
-      <div class="carousel-item active bg-light" >
-      <div class="carousel-caption-custom">
+    <!-- Slide 1 -->
+    <div class="carousel-item active"
+         style="background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+                url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg0xTYoscxZ3L2Or3wyhkvHl0WFxShsJNLWHpBJrDMF9FoRDiuFjCr201RxPSaviTTyoRoNfX8EJbfK5p5sPiW20htQZNXrk86ras171BQD2sThXoGkdDJX71N5qyIk9zU52egN6HKtSMUCNrtkzvsr5okb1BwAk8BSijcaTpVeOGsJlA3dcet0r_NHwUcX/s1600/backgroundimage11.jpg') center/cover no-repeat; height:90vh;">
+      <div class="carousel-caption-custom text-white">
         <h1>Find Your Dream Job</h1>
         <p>Search thousands of opportunities and connect with top companies</p>
-        <a href="#" class="btn btn-warning">Search Jobs</a>
-        <a href="#" class="btn btn-outline-primary">Post a Job</a>
+        <a th:href="@{/jobseeker/login}" class="btn btn-warning">Search Jobs</a>
+        <a href="/company/companylogin" class="btn btn-outline-light">Post a Job</a>
       </div>
     </div>
 
-    <div class="carousel-item bg-light" style="background-image: url('https://source.unsplash.com/1600x900/?business,team');">
-      <div class="carousel-caption-custom">
+    <!-- Slide 2 -->
+    <div class="carousel-item"
+         style="background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+                url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjj-lW_o_LrhcmTbSxZosVwHeWvO47qDoWUFP9djtHvH0kjuU0OqsEwOOsBq0H5F7tCti83GAAct62AgM4LyssmlZOdEWT6yZkif8evN-LqmSPgNhX3bAV5ib-ZEptL5oGFy61PJez52PQkJ-C8_enekUT6NnYlzV60Y4YLdXZXDq3ghtpZzLNJz88g6t0C/s1600/backgroundimage22.jpg') center/cover no-repeat; height:90vh;">
+      <div class="carousel-caption-custom text-white">
         <h1>Connect with Top Employers</h1>
         <p>Build your career and explore new opportunities</p>
-        <a href="#" class="btn btn-warning">Join Now</a>
-        <a href="#" class="btn btn-outline-primary">Learn More</a>
+        <a th:href="@{/company/companylogin}" class="btn btn-warning">Join Now</a>
+        <a href="#" class="btn btn-outline-light">Learn More</a>
+      </div>
+    </div>
+
+    <!-- Slide 3 -->
+    <div class="carousel-item"
+         style="background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+                url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEge-n9lQpbWxf-adKD7RvgPZBweT6sfl5EKiBcKU9nHakPmz4U16o2F3KdtgXHtKZkUcohXv0WahhDcwPU-btS6yezxafwzZfq5uva5qvKVPNp93hSbMRvNdqS3AbobhGL5R1GYqUax4t10peZnl-YVgPxcUddt-DcMessWAXMXePHKna_PuW_ViA0nBhsU/s7800/front-view-couple-talking-real-estate-agent.jpg') center/cover no-repeat; height:90vh;">
+      <div class="carousel-caption-custom text-white">
+        <h1>Post Jobs & Hire Talent</h1>
+        <p>Employers can easily post jobs and connect with the right candidates</p>
+        <a href="/company/companylogin" class="btn btn-warning">Post a Job</a>
+        <a href="#" class="btn btn-outline-light">Search Resumes</a>
       </div>
     </div>
 
   </div>
+  <!--  front-view-couple-talking-real-estate-agent.jpg-->
+  <!-- Controls -->
   <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon" style="filter: invert(1);"></span>
+<!--    <span class="carousel-control-prev-icon" style="filter: invert(1);"></span>-->
+    <i class="bi bi-arrow-left-circle fs-1 text-warning"></i>
   </button>
+
   <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
-    <span class="carousel-control-next-icon" style="filter: invert(1);"></span>
+<!--    <span class="carousel-control-next-icon" style="filter: invert(1);"></span>-->
+    <i class="bi bi-arrow-right-circle fs-1 text-warning"></i>
   </button>
 
 </div>
 
-<hr>
+
+<!--<hr>-->
 <script>
   function toggleMobileSearch() {
-    const row = document.getElementById("mobileSearchRow");
-    row.style.display = row.style.display === "none" || row.style.display === "" ? "block" : "none";
+      const row = document.getElementById("mobileSearchRow");
+      row.style.display = row.style.display === "none" || row.style.display === "" ? "block" : "none";
   }
 </script>
 
@@ -493,7 +632,7 @@ color:#000;
           <i class="bi bi-laptop"></i>
           <h5>IT & Software</h5>
           <p>Developer, Designer, Tester</p>
-          <a href="jobs.html?category=it-software" class="btn btn-sm btn-primary">View Jobs</a>
+          <a th:href="@{/jobseeker/login}" class="btn btn-sm btn-primary">View Jobs</a>
         </div>
       </div>
 
@@ -503,7 +642,7 @@ color:#000;
           <i class="bi bi-bar-chart-line"></i>
           <h5>Marketing</h5>
           <p>SEO, Digital, Branding</p>
-          <a href="jobs.html?category=marketing" class="btn btn-sm btn-primary">View Jobs</a>
+          <a th:href="@{/jobseeker/login}" class="btn btn-sm btn-primary">View Jobs</a>
         </div>
       </div>
 
@@ -513,7 +652,7 @@ color:#000;
           <i class="bi bi-bank"></i>
           <h5>Finance</h5>
           <p>Banking, Accounting, Tax</p>
-          <a href="jobs.html?category=finance" class="btn btn-sm btn-primary">View Jobs</a>
+          <a th:href="@{/jobseeker/login}" class="btn btn-sm btn-primary">View Jobs</a>
         </div>
       </div>
 
@@ -523,7 +662,7 @@ color:#000;
           <i class="bi bi-heart-pulse"></i>
           <h5>Healthcare</h5>
           <p>Doctor, Nurse, Therapist</p>
-          <a href="jobs.html?category=healthcare" class="btn btn-sm btn-primary">View Jobs</a>
+          <a th:href="@{/jobseeker/login}" class="btn btn-sm btn-primary">View Jobs</a>
         </div>
       </div>
 
@@ -533,7 +672,7 @@ color:#000;
           <i class="bi bi-truck"></i>
           <h5>Logistics</h5>
           <p>Driver, Delivery, Supply</p>
-          <a href="jobs.html?category=logistics" class="btn btn-sm btn-primary">View Jobs</a>
+          <a th:href="@{/jobseeker/login}" class="btn btn-sm btn-primary">View Jobs</a>
         </div>
       </div>
 
@@ -543,9 +682,30 @@ color:#000;
           <i class="bi bi-brush"></i>
           <h5>Creative Arts</h5>
           <p>Designer, Writer, Media</p>
-          <a href="jobs.html?category=creative-arts" class="btn btn-sm btn-primary">View Jobs</a>
+          <a th:href="@{/jobseeker/login}" class="btn btn-sm btn-primary">View Jobs</a>
         </div>
       </div>
+
+      <!-- Hospitality-->
+      <div class="col-lg-3 col-md-4 col-sm-6">
+        <div class="category-card">
+          <i class="bi bi-cup-hot"></i>
+          <h5>Hospitality</h5>
+          <p>Hotel, Restaurant, Travel</p>
+          <a th:href="@{/jobseeker/login}" class="btn btn-sm btn-primary">View Jobs</a>
+        </div>
+      </div>
+
+      <!-- Education -->
+      <div class="col-lg-3 col-md-4 col-sm-6">
+        <div class="category-card">
+          <i class="bi bi-book"></i>
+          <h5>Education</h5>
+          <p>Teacher, Trainer, Tutor</p>
+          <a th:href="@{/jobseeker/login}" class="btn btn-sm btn-primary">View Jobs</a>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -612,8 +772,8 @@ color:#000;
       <div class="col-lg-5">
         <div class="p-4 bg-white shadow rounded h-100">
           <h5 class="fw-bold mb-3">Contact Information</h5>
-          <p><i class="bi bi-geo-alt-fill text-warning"></i> Sagar, India</p>
-          <p><i class="bi bi-envelope-fill text-warning"></i> contact@sagarjobtalent.com</p>
+          <p><i class="bi bi-geo-alt-fill text-warning"></i>369, Xansa IT Solutions, Sagar</p>
+          <p><i class="bi bi-envelope-fill text-warning"></i> contactjobsagar@gmail.com</p>
           <p><i class="bi bi-telephone-fill text-warning"></i> +91 8770480826</p>
           <hr>
         </div>
@@ -636,7 +796,8 @@ color:#000;
             </div>
             <div class="mb-3">
               <label class="form-label">Message</label>
-              <textarea class="form-control" rows="4" placeholder="Write your message here..."></textarea>
+              <textarea class="form-control" rows="4"
+                        placeholder="Write your message here..."></textarea>
             </div>
             <button type="submit" class="btn btn-warning px-4 fw-bold">Send Message</button>
           </form>
@@ -670,8 +831,8 @@ color:#000;
     </div>
     <div class="mb-2">
       <label for="words" class="form-label">Message:</label>
-      <textarea name="words" id="words" class="form-control" rows="4" placeholder="Enter your message here...."
-                required></textarea>
+      <textarea name="words" id="words" class="form-control" rows="4"
+                placeholder="Enter your message here...." required></textarea>
     </div>
     <button type="submit" class="btn btn-warning w-100">Submit</button>
   </form>
@@ -686,11 +847,11 @@ color:#000;
 <!-- script of feedback button on hovering it open  -->
 <script>
   document.getElementById('feedback-btn').addEventListener('click', function () {
-    document.getElementById('feedback-form').style.display = 'block';
+      document.getElementById('feedback-form').style.display = 'block';
   });
 
   document.getElementById('close-feedback').addEventListener('click', function () {
-    document.getElementById('feedback-form').style.display = 'none';
+      document.getElementById('feedback-form').style.display = 'none';
   });
 </script>
 <!-- ---------------------------------------------------------->
@@ -708,30 +869,11 @@ color:#000;
             ↑
           </button>
         </div>
-        <script>
-          // Show/hide button on scroll
-          window.onscroll = function () {
-            const btn = document.getElementById("backToTop");
-            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
-              btn.style.display = "block";
-            } else {
-              btn.style.display = "none";
-            }
-          };
-
-          // Smooth scroll to top
-          function scrollToTop() {
-            window.scrollTo({
-              top: 0,
-              behavior: "smooth"
-            });
-          }
-        </script>
 
       </div>
       <!-- Logo Column -->
       <div class="col-md-3 mb-4">
-        <img src="Logo/websitelogo.jpg" alt="Job Portal Logo" class="img-fluid mb-3 w-50">
+        <img src="Images/Naukri_com_white.png" alt="Job Portal Logo" class="img-fluid mb-3 w-50">
         <p>Find your dream job or hire top talent fast — all in one place.</p>
       </div>
       <!-- Footer Links and Details -->
@@ -764,8 +906,8 @@ color:#000;
           <!-- Contact -->
           <div class="col-sm-4 mb-3">
             <h5>Contact</h5>
-            <p class="mb-1"><i class="bi bi-geo-alt-fill me-2"></i>369,Xansa IT Solutions ,Sagar</p>
-            <p class="mb-1"><i class="bi bi-envelope-fill me-2"></i>SagarJobTalent.com</p>
+            <p class="mb-1"><i class="bi bi-geo-alt-fill me-2"></i>369, Xansa IT Solutions, Sagar</p>
+            <p class="mb-1"><i class="bi bi-envelope-fill me-2"></i>contactjobsagar@gmail.com</p>
             <p><i class="bi bi-telephone-fill me-2"></i>+91 8770480826</p>
           </div>
         </div>
@@ -775,23 +917,24 @@ color:#000;
     <!-- Divider -->
     <hr class="border-secondary">
     <!-- Bottom Row -->
-    <div class="row align-items-center">
-      <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-        <p class="mb-0">&copy; 2025 Sagar Job Talent. All rights reserved.</p>
+    <div class="row align-items-center justify-content-center">
+      <div class="text-center text-md-start mb-3 mb-md-0">
+        <p class="text-center mb-0 text-secondary">&copy; 2025 Sagar Job Talent. All rights reserved.</p>
       </div>
-      <div class="col-md-6 text-center text-md-end">
-        <a href="#" class="me-2">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"
-               alt="Google Play" height="40">
-        </a>
-        <a href="#">
-          <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store"
-               height="40">
-        </a>
-      </div>
+      <!--      <div class="col-md-6 text-center text-md-end">-->
+      <!--        <a href="#" class="me-2">-->
+      <!--          <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"-->
+      <!--               alt="Google Play" height="40">-->
+      <!--        </a>-->
+      <!--        <a href="#">-->
+      <!--          <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store"-->
+      <!--               height="40">-->
+      <!--        </a>-->
+      <!--      </div>-->
     </div>
   </div>
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
