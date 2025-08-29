@@ -1,7 +1,12 @@
-package com.example.SagarNaukri.com.CompaniesPackage;
+package SagarNaukriMerge.SagarNaukriMerge.CompaniesPackage;
 
-import com.example.SagarNaukri.com.EmailServices.EmailService;
-import com.example.SagarNaukri.com.Jobs.JobsRepository;
+import SagarNaukriMerge.SagarNaukriMerge.ApplicationPackage.ApplicationRepository;
+import SagarNaukriMerge.SagarNaukriMerge.ApplicationPackage.Applications;
+import SagarNaukriMerge.SagarNaukriMerge.EmailServices.EmailService2;
+import SagarNaukriMerge.SagarNaukriMerge.JobSeeker.JobSeeker;
+import SagarNaukriMerge.SagarNaukriMerge.JobSeeker.JobSeekerRepository;
+import SagarNaukriMerge.SagarNaukriMerge.Jobs.Jobs;
+import SagarNaukriMerge.SagarNaukriMerge.Jobs.JobsRepository;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +15,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -29,10 +40,16 @@ public class CompanyController {
     CompanyRepository companyRepository;
 
     @Autowired
-    EmailService emailService;
+    EmailService2 emailService;
 
     @Autowired
     CompanyLogoService companyLogoService;
+
+    @Autowired
+    ApplicationRepository applicationRepository;
+
+    @Autowired
+    JobSeekerRepository jobSeekerRepository;
 
     @PostMapping("/company/companyregister")
     public String getSaveCompannyDetails(HttpSession session,
@@ -114,17 +131,18 @@ public class CompanyController {
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
-        return "redirect:/company/companylogin";
+        return "redirect:/home";
     }
 
     @PostMapping("/company/getotp")
     public String getOTPHTML(@Valid @ModelAttribute("comdata") Company comdata, BindingResult bindingResult, @RequestParam("company_logo") MultipartFile companylogo, HttpSession session, Model model) {
         if (bindingResult.hasErrors()) {
+            System.out.println("Inside the validation Errors");
             bindingResult.getAllErrors().forEach(err -> System.out.println(err.getDefaultMessage()));
             return "CompaniesHTML/companyform";
         } else {
             try {
-
+            System.out.println("Inside the OTP Page");
                 // If Email Already Exists
                 if (companyRepository.findByEmail(comdata.getEmail()).isPresent()) {
                     model.addAttribute("error", "Email address already exists");
@@ -142,6 +160,7 @@ public class CompanyController {
                 session.setAttribute("systemotp", otp);
                 session.setAttribute("otptime", tenMinutesLater);  // +10m
 
+                System.out.println("Completed till OTP");
                 return "CompaniesHTML/companyotp";
             } catch (Exception e) {
                 return "error";
@@ -154,6 +173,7 @@ public class CompanyController {
     public String getResendOTPHTML(HttpSession session, Model model) {
         try {
             // Company Object
+
             Company comdata = (Company) session.getAttribute("comdata");
 
             String otp = emailService.sendOTP(comdata.getEmail(), comdata.getCompanyname());
@@ -313,6 +333,51 @@ public class CompanyController {
             return "CompaniesHTML/companyprofile";
         }
 
+    }
+
+    // **7
+    @GetMapping("/company/getapplicants")
+    public String getApplicants(Model model ,HttpSession session){
+        Company company = (Company) session.getAttribute("comdata");
+        int companyId=company.getCompanyid();
+//veer 10
+        List<Jobs> allJobsList=jobsRepository.findByCompanyid(companyId); //10
+
+        List<Applications>applicationsList=new ArrayList<>();
+        List<JobSeeker>jobSeekerList=new ArrayList<>();
+        List<Jobs>allAppliedJobs=new ArrayList<>();
+
+        System.out.println("==========================Before For loop===============================");
+
+        for (Jobs jobs : allJobsList) {
+            int jobId = jobs.getJobid();
+
+            List<Applications> applications = applicationRepository.findApplicationsByJobid(jobId);
+
+            if (applications != null && !applications.isEmpty()) {
+                applicationsList.addAll(applications);  // add all instead of one
+            }
+        }
+
+
+        System.out.println(applicationsList);
+
+        for (Applications application : applicationsList){
+            Long jobSeekerId=(long) application.getJsid();//1
+            int jobId=application.getJobid();
+            JobSeeker jobSeeker=jobSeekerRepository.findById(jobSeekerId).get();
+            Jobs jobs=jobsRepository.findById(jobId).get();
+            jobSeekerList.add(jobSeeker);
+            allAppliedJobs.add(jobs);
+        }
+
+        model.addAttribute("allAppliedJobs",allAppliedJobs);
+        model.addAttribute("jobSeekerList",jobSeekerList);
+        model.addAttribute("applicationsList",applicationsList);
+        model.addAttribute("comdata",company);
+
+
+        return "/ApplicationHTML/companyapplicants";
     }
 
 }
