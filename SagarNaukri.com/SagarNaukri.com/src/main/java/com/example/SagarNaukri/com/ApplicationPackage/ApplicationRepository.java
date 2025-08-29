@@ -15,4 +15,8 @@ public interface ApplicationRepository extends JpaRepository<Applications,Intege
     @Query("select a from Applications a where a.jobid=:jobid")
     Applications findApplicationByJobid7(@Param("jobid")int jobid);
 
+    @Query("SELECT a FROM Applications a WHERE a.jobid = :jobid")
+    List<Applications> findApplicationsByJobid(@Param("jobid") int jobid);
+
+
 }
