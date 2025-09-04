@@ -9,8 +9,17 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- Font Awesome -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
 
   <style>
+
+    :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --light-bg: #f8f9fa;
+        }
     body {
       background-color: #f8f9fa;
     }
@@ -58,8 +67,17 @@
 
 <div class="container my-4">
   <div class="row">
-    <div class="col-lg-3 mb-4" th:include="CompaniesHTML/headerfragment :: sidediv(${comdata})"></div>
+    <div class="col-lg-3 mb-4 ">
+      <div class="sticky-top" th:include="CompaniesHTML/headerfragment :: sidediv(${comdata})"></div>
+    </div>
     <div class="col-lg-9">
+
+      <h2 class="text-center mb-4">
+        <i class="fas fa-clipboard-list me-2"></i>Your Company Applications
+      </h2>
+      <div th:if="${applicationsList.size() == 0}">
+        <div class="alert alert-info text-center">Company hasn’t received any application yet.</div>
+      </div>
           <div class="row" >
             <div class="col-md-6 mb-4" th:each="app,stat : ${applicationsList}">
               <div class="card shadow-sm">
@@ -84,11 +102,13 @@
                     <strong>Date Applied:</strong>
                     <span th:text="${#dates.format(app.dateapplied, 'dd-MM-yyyy')}">04-08-2025</span>
                   </p>
-
+            </div>
+                <div class="card-footer bg-white d-flex justify-content-between align-items-center">
                   <a th:href="@{'/resume/download/' + ${app.appid}}" class="btn btn-outline-success btn-sm" target="_blank">
                     <i class="fas fa-download me-1"></i>Download Resume
                   </a>
-            </div>
+                  <a class="btn btn-outline-success btn-sm" href="#"><i class="bi bi-send me-2"></i>Message</a>
+                </div>
           </div>
         </div>
       </div>
