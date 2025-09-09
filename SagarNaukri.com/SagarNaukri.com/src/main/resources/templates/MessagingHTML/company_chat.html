@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat with <span th:text="${jobSeeker.name}">Job Seeker</span></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .chat-box {
+            height: 60vh;
+            overflow-y: scroll;
+            border: 1px solid #e0e0e0;
+            padding: 1rem;
+            background-color: #f9f9f9;
+            border-radius: .5rem;
+        }
+        .message {
+            padding: 8px 14px;
+            border-radius: 18px;
+            margin-bottom: 10px;
+            max-width: 70%;
+            word-wrap: break-word;
+        }
+        .sent {
+            background-color: #0d6efd;
+            color: white;
+            margin-left: auto; /* Aligns to the right */
+            text-align: right;
+        }
+        .received {
+            background-color: #e9ecef;
+            color: black;
+            margin-right: auto; /* Aligns to the left */
+        }
+        .message small {
+            font-size: 0.75rem;
+            display: block;
+            margin-top: 4px;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+<div th:insert="~{CompaniesHTML/headerfragment :: siteheader(${comdata})}"></div>
+
+<div class="container my-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-white">
+            <h4 class="mb-0">Chat with <span th:text="${jobSeeker.name}">Job Seeker</span></h4>
+        </div>
+        <div class="card-body">
+            <div class="chat-box mb-3" id="chatBox">
+                <div th:if="${#lists.isEmpty(messages)}">
+                    <p class="text-center text-muted">No messages yet. Start the conversation!</p>
+                </div>
+                <div th:each="msg : ${messages}">
+                    <div class="message" th:classappend="${msg.senderType == 'COMPANY'} ? 'sent' : 'received'">
+                        <p th:text="${msg.content}" class="mb-0">Message content here.</p>
+                        <small th:text="${#temporals.format(msg.timestamp, 'dd-MMM hh:mm a')}"></small>
+                    </div>
+                </div>
+            </div>
+
+            <form id="messageForm" class="input-group"> <input type="hidden" name="conversationId" th:value="${conversation.id}" />
+                <input type="text" id="messageInput" class="form-control" placeholder="Type a message..." required autofocus> <button type="submit" class="btn btn-primary">Send</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Simple script to scroll to the bottom of the chat box on page load
+    window.onload = function() {
+        var chatBox = document.getElementById('chatBox');
+        chatBox.scrollTop = chatBox.scrollHeight;
+    };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.1/dist/sockjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+</body>
+<script th:inline="javascript">
+    // Get data passed from the Spring Boot Model
+    const conversationId = /*[[${conversation.id}]]*/ 'default';
+    const loggedInUser = {
+        id: /*[[${comdata.companyid}]]*/ 'default',
+        name: /*[[${comdata.companyname}]]*/ 'default',
+        type: 'COMPANY'
+    };
+    const otherParticipant = {
+        name: /*[[${jobSeeker.name}]]*/ 'default'
+    };
+
+    let stompClient = null;
+    const chatBox = document.getElementById('chatBox');
+    const messageForm = document.getElementById('messageForm');
+    const messageInput = document.getElementById('messageInput');
+
+    // 1. Connect to the WebSocket endpoint
+    function connect() {
+        const socket = new SockJS('/ws');
+        stompClient = Stomp.over(socket);
+        stompClient.connect({}, onConnected, onError);
+    }
+
+    // 2. Subscribe to the conversation topic after connecting
+    function onConnected() {
+        console.log('Connected to WebSocket!');
+        stompClient.subscribe('/topic/messages/' + conversationId, onMessageReceived);
+    }
+
+    function onError(error) {
+        console.error('Could not connect to WebSocket server. Please refresh and try again!');
+    }
+
+    // 3. Handle incoming messages from the topic subscription
+    function onMessageReceived(payload) {
+        const message = JSON.parse(payload.body);
+
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('message');
+
+        // Style the message based on who sent it
+        if (message.senderId === loggedInUser.id) {
+            messageElement.classList.add('sent');
+        } else {
+            messageElement.classList.add('received');
+        }
+
+        const senderName = message.senderType === 'COMPANY' ? loggedInUser.name : otherParticipant.name;
+
+        messageElement.innerHTML = `
+            <strong>${senderName}:</strong>
+            <p class="mb-0">${message.content}</p>
+            <small class="text-muted d-block text-end">${new Date(message.timestamp).toLocaleTimeString()}</small>
+        `;
+
+        chatBox.appendChild(messageElement);
+        chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom
+    }
+
+    // 4. Send a message over the WebSocket
+    function sendMessage(event) {
+        event.preventDefault(); // Stop the form from doing a page reload
+        const messageContent = messageInput.value.trim();
+
+        if (messageContent && stompClient) {
+            const chatMessage = {
+                senderId: loggedInUser.id,
+                senderType: loggedInUser.type,
+                content: messageInput.value
+            };
+            stompClient.send("/app/chat/" + conversationId, {}, JSON.stringify(chatMessage));
+            messageInput.value = ''; // Clear the input field
+        }
+    }
+
+    // Connect when the page loads
+    connect();
+
+    // Add event listener to the form
+    messageForm.addEventListener('submit', sendMessage, true);
+</script>
+</html>
